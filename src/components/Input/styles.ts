@@ -6,7 +6,6 @@ interface DivProps {
 }
 
 export const Container = styled.div`
-  margin-bottom: 1.5rem;
   min-width: 20rem;
 `;
 

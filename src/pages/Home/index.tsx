@@ -23,7 +23,7 @@ export function Home() {
     <Container>
       <Body>
         <HeaderNavigation>
-          <LinkButton to={""}>
+          <LinkButton to={"/signin"}>
             <TextLink>Login</TextLink>
           </LinkButton>
           <LinkButton to={""}>
