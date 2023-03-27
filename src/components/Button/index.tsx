@@ -5,7 +5,7 @@ import { Container, Title } from "./styles";
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   title: string;
   variant: "fill" | "outline";
-  size: "small" | "medium" | "large";
+  size: "small" | "medium" | "large" | "xlarge";
   children?: React.ReactNode;
 }
 
@@ -46,6 +46,16 @@ export function Button({
             style={{ height: 56, paddingInline: 24, gap: 8 }}
             variant={variant}
             {...rest}
+          >
+            {children}
+            <Title style={{ fontSize: 18 }}>{title}</Title>
+          </Container>
+        );
+      case "xlarge":
+        return(
+          <Container
+            style={{ justifyContent:"center",  height: "3rem", paddingInline: 120, gap: 8, }}
+            variant={variant}
           >
             {children}
             <Title style={{ fontSize: 18 }}>{title}</Title>
