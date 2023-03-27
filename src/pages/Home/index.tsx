@@ -29,7 +29,7 @@ export function Home() {
           <LinkButton to={""}>
             <TextLink>Buscar impressão</TextLink>
           </LinkButton>
-          <LinkButton to={""}>
+          <LinkButton to={"/anonymous/request_print"}>
             <TextLink>Solicitar impressão</TextLink>
           </LinkButton>
         </HeaderNavigation>
