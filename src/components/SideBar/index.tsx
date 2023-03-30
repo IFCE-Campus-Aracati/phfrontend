@@ -54,7 +54,7 @@ export function SideBar({ variant }: SideBarProps) {
               weight={pathname === "/" ? "fill" : "regular"}
             />
           ),
-          to: "/",
+          to: "/list_prints",
         },
         {
           label: "Dashboard",
