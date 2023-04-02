@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Status } from "../../Status";
+import { Status } from "./../Status";
 
 import {
   Container,
