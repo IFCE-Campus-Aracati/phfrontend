@@ -15,6 +15,7 @@ export const Container = styled.button<ButtonProps>`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+
 `;
 
 export const Title = styled.p`
