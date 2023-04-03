@@ -6,6 +6,7 @@ import { SignUp } from "../pages/SignUp";
 import { SignIn } from "../pages/SignIn";
 import { SideBar } from "../components/SideBar";
 import { ListPrints } from "../pages/Admin/ListPrints";
+import { SearchPrint } from "../pages/Anonymous/SearchPrint";
 
 export function RoutesApp() {
   return (
@@ -15,6 +16,7 @@ export function RoutesApp() {
       <Route path="/signup" element={<SignUp />} />
 
       <Route path="/anonymous/request_print" element={<RequestPrinting />} />
+      <Route path="/anonymous/search_print" element={<SearchPrint />} />
 
       <Route path="/" element={<SideBar variant="admin" />}>
         <Route path="/list_prints" element={<ListPrints />} />
