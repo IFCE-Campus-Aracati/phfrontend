@@ -51,7 +51,7 @@ export const Footer = styled.div`
     width: 100%;
     padding: 1rem;
     margin-left: 7.5rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 `;
 
 export const Attachments = styled.label`

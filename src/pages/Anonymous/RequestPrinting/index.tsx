@@ -9,6 +9,12 @@ import { useNavigate } from "react-router-dom";
 export function RequestPrinting() {
   const navigate = useNavigate();
 
+  const options = [
+    {value: "ABS", text: "ABS"},
+    {value: "exemplo1", text: "exemplo1"},
+    {value: "exemplo2", text: "exemplo2"},
+  ];
+
   return (
     <Container>
       <Content>
@@ -25,7 +31,7 @@ export function RequestPrinting() {
           <InputFile label={"Anexar"}/>
 
           <TitleInput>Material para Impressão</TitleInput>
-          <SelectInput />
+          <SelectInput options={options}/>
         </FormContainer>
       </Content>
       <Footer>

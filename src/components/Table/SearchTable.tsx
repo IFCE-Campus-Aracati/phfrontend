@@ -1,5 +1,5 @@
 import React from "react";
-import { Status } from "../../Status";
+import { Status } from "./../Status";
 import {
   Container,
   TableContainer,
@@ -18,7 +18,7 @@ import {
   Trash,
 } from "@phosphor-icons/react";
 
-export interface TableSearchDataProps {
+export interface SearchTableDataProps {
   id: string;
   idSearch: string;
   title: string;
@@ -26,8 +26,8 @@ export interface TableSearchDataProps {
   status: "pending" | "approved" | "decline";
 }
 
-interface TableSearchProps {
-  data: TableSearchDataProps[];
+interface SearchTableProps {
+  data: SearchTableDataProps[];
   header: string[];
   isView?: boolean;
   isDelete?: boolean;
@@ -35,12 +35,12 @@ interface TableSearchProps {
 }
 
 export function SearchTable({
-  data = [] as TableSearchDataProps[],
+  data = [] as SearchTableDataProps[],
   header,
   isView = false,
   isDelete = false,
   isEdit = false,
-}: TableSearchProps) {
+}: SearchTableProps) {
   return (
     <Container>
       <TableContainer>

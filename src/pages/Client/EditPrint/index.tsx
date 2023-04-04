@@ -7,6 +7,12 @@ import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachmen
 import { useNavigate } from "react-router-dom";
 import { SideBar } from "../../../components/SideBar";
 
+const options = [
+  { value: "option1", text: "ABS" },
+  { value: "option2", text: "PLA" },
+  { value: "option3", text: "PETG" },
+];
+
 export function EditPrint() {
   const navigate = useNavigate();
 
@@ -34,7 +40,7 @@ export function EditPrint() {
                 />
             </Attachments>
           <TitleInput>Material para Impressão</TitleInput>
-          <SelectInput />
+          <SelectInput open={true} options={options}/>
         </FormContainer>
       </Content>
       <Footer>

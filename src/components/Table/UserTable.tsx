@@ -18,15 +18,15 @@ import {
   Trash,
 } from "@phosphor-icons/react";
 
-export interface TableUserDataProps {
-  id: number;
+export interface UserTableDataProps {
+  id: string;
   name: string;
   email: string;
   role: string;
 }
 
-interface TableProps {
-  data: TableUserDataProps[];
+interface UserTableProps {
+  data: UserTableDataProps[];
   header: string[];
   isView?: boolean;
   isDelete?: boolean;
@@ -34,12 +34,12 @@ interface TableProps {
 }
 
 export function UserTable({
-  data = [] as TableUserDataProps[],
+  data = [] as UserTableDataProps[],
   header,
   isView = false,
   isDelete = false,
   isEdit = false,
-}: TableProps) {
+}: UserTableProps) {
   return (
     <Container>
       <TableContainer>
