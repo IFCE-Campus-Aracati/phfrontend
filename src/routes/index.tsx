@@ -11,6 +11,7 @@ import { SideBar } from "../components/SideBar";
 import { ListPrints } from "../pages/Admin/ListPrints";
 import { SearchPrint } from "../pages/Anonymous/SearchPrint";
 import { RequestPrinting } from "../pages/Anonymous/RequestPrinting";
+import { MyPrints } from "../pages/Client/MyPrints";
 
 export function RoutesApp() {
   return (
@@ -19,8 +20,11 @@ export function RoutesApp() {
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
 
-      <Route path="/client/profile" element={<Profile />} />
-      <Route path="/client/edit_print" element={<EditPrint />} />
+      <Route path="/client" element={<SideBar variant="client" />}>
+        <Route path="/client/profile" element={<Profile />} />
+        <Route path="/client/edit_print" element={<EditPrint />} />
+        <Route path="/client/my_prints" element={<MyPrints />} />
+      </Route>
 
       <Route path="/anonymous/request_print" element={<RequestPrinting />} />
       <Route path="/anonymous/search_print" element={<SearchPrint />} />

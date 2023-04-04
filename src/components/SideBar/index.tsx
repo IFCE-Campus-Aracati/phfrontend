@@ -22,7 +22,6 @@ import {
 } from "./styles";
 
 interface SideBarProps {
-  children: ReactNode;
   variant: "admin" | "client";
 }
 
@@ -42,7 +41,7 @@ export function SideBar({ variant }: SideBarProps) {
               weight={pathname === "/" ? "fill" : "regular"}
             />
           ),
-          to: "/",
+          to: "/client/my_prints",
         },
       ],
       admin: [

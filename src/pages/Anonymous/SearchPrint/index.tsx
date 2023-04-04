@@ -3,6 +3,7 @@ import { ButtonBack, InputSearchContainer, InputTitle, Container, Content, Heade
 import { Table } from "../../../components/Table";
 import { SearchTableDataProps } from "../../../components/Table/SearchTable";
 import { Input } from "../../../components/Input";
+import { useNavigate } from "react-router-dom";
 
 const header = ["Id", "Título", "Data", "Status", "Detalhes"];
 
@@ -17,11 +18,13 @@ const data: SearchTableDataProps[] = [
 ]
 
 export function SearchPrint() {
+  const navigate = useNavigate();
+  
   return (
     <Container>
       <Header>
         <TitleContainer>
-          <ButtonBack>
+          <ButtonBack onClick={() => navigate("/")}>
             <ArrowLeft size={36} weight="bold" />
           </ButtonBack>
           <Title>Buscar Impressões</Title>
