@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import {
   ListChecks,
   ChartPieSlice,
@@ -22,6 +22,7 @@ import {
 } from "./styles";
 
 interface SideBarProps {
+  children: ReactNode;
   variant: "admin" | "client";
 }
 
@@ -137,7 +138,6 @@ export function SideBar({ variant }: SideBarProps) {
                 </Button>
               );
             })}
-
         <ButtonSignout>
           <SignOut color={"#FFF"} size={"1.5rem"} />
         </ButtonSignout>
