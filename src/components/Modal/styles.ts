@@ -21,8 +21,8 @@ export const Overlay = styled(Dialog.Overlay)`
 
 export const Content = styled(Dialog.Content)`
   background-color: ${theme.colors.background.secondary};
-  height: 50vh;
-  width: 50vw;
+  min-height: 25vh;
+  min-width: 25vw;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -33,6 +33,7 @@ export const Content = styled(Dialog.Content)`
 
 export const Title = styled(Dialog.Title)`
   color: ${theme.colors.white};
+  font-size: 1.5rem;
 `;
 
 export const Description = styled(Dialog.Description)``;

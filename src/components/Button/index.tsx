@@ -21,7 +21,7 @@ export function Button({
       case "small":
         return (
           <Container
-            style={{ height: 36, paddingInline: 16, gap: 6 }}
+            style={{ height: "2.25rem", paddingInline: "1rem", gap: 6 }}
             variant={variant}
             {...rest}
           >
@@ -32,7 +32,7 @@ export function Button({
       case "medium":
         return (
           <Container
-            style={{ height: '2.5rem', paddingInline: 20, gap: 8 }}
+            style={{ height: "2.5rem", paddingInline: "1.25rem", gap: 8 }}
             variant={variant}
             {...rest}
           >
@@ -43,7 +43,7 @@ export function Button({
       case "large":
         return (
           <Container
-            style={{ height: 56, paddingInline: 24, gap: 8 }}
+            style={{ height: "3.5rem", paddingInline: "2rem", gap: 8 }}
             variant={variant}
             {...rest}
           >
@@ -52,9 +52,14 @@ export function Button({
           </Container>
         );
       case "xlarge":
-        return(
+        return (
           <Container
-            style={{ justifyContent:"center",  height: "3rem", paddingInline: 120, gap: 8, }}
+            style={{
+              justifyContent: "center",
+              height: "3rem",
+              paddingInline: 120,
+              gap: 8,
+            }}
             variant={variant}
           >
             {children}
