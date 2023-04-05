@@ -13,6 +13,7 @@ import { SearchPrint } from "../pages/Anonymous/SearchPrint";
 import { RequestPrinting } from "../pages/Anonymous/RequestPrinting";
 import { MyPrints } from "../pages/Client/MyPrints";
 import { ListUsers } from "../pages/Admin/ListUsers";
+import { ListPrinters } from "../pages/Admin/ListPrinters";
 
 export function RoutesApp() {
   return (
@@ -32,7 +33,8 @@ export function RoutesApp() {
 
       <Route path="/admin" element={<SideBar variant="admin" />}>
         <Route path="/admin/list_prints" element={<ListPrints />} />
-        <Route path="/admin/list_users"  element={<ListUsers />}/>
+        <Route path="/admin/list_users" element={<ListUsers />} />
+        <Route path="/admin/list_printers" element={<ListPrinters />} />
       </Route>
     </Routes>
   );
