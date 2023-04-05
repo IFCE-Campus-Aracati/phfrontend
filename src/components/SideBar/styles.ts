@@ -21,6 +21,7 @@ export const NavContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 1.6rem;
+  position: fixed;
 `;
 
 export const Root = styled(Avatar.Root)`
@@ -84,4 +85,5 @@ export const ButtonSignout = styled.button`
 
 export const Body = styled.div`
   width: 100%;
+  margin-left: 5rem;
 `;
