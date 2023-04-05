@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div``;
 
  export const TextAreaContainer = styled.textarea`
-  height: 150px;
+  height: 9rem;
   max-width: 100%;
   width: 500px;
   resize: none;

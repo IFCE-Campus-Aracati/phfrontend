@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { theme } from "../../../styles/theme";
 
 export const Container = styled.div`
-  padding: 3rem 4rem;
+  padding: 1.5rem 3rem;
 `;
 
 export const Header = styled.div`
@@ -35,17 +35,17 @@ export const ButtonBack = styled.button`
 `;
 
 export const Title = styled.h1`
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: ${theme.colors.white};
 `;
 
 export const InputTitle = styled.span`
    color: ${theme.colors.white};
-   font-size: 1.125rem;
+   font-size: 1rem;
    margin-bottom: 0.625rem;
-    letter-spacing: 1px;
+    /* letter-spacing: 1px; */
 `;
 
 export const Content = styled.div`
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 `;

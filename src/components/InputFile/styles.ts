@@ -20,6 +20,7 @@ export const Container = styled.div`
 export const FileInput = styled.input``;
 
 export const Label = styled.label`
+  font-size: 0.8rem;
   color: ${theme.colors.black};
 `;
 

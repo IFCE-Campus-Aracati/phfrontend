@@ -25,7 +25,7 @@ export function SearchPrint() {
       <Header>
         <TitleContainer>
           <ButtonBack onClick={() => navigate("/")}>
-            <ArrowLeft size={36} weight="bold" />
+            <ArrowLeft size={26} weight="bold" />
           </ButtonBack>
           <Title>Buscar Impressões</Title>
         </TitleContainer>
@@ -33,7 +33,7 @@ export function SearchPrint() {
         <InputSearchContainer>
           <InputTitle>Informe o identificador de busca</InputTitle>
           <Input
-            placeholder="Digite aqui"
+            placeholder="Buscar pedido de impressão"
             variant="search"
            />
           </InputSearchContainer>
