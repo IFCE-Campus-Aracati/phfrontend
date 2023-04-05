@@ -26,10 +26,10 @@ export function Home() {
           <LinkButton to={"/signin"}>
             <TextLink>Login</TextLink>
           </LinkButton>
-          <LinkButton to={""}>
+          <LinkButton to={"/anonymous/search_print"}>
             <TextLink>Buscar impressão</TextLink>
           </LinkButton>
-          <LinkButton to={""}>
+          <LinkButton to={"/anonymous/request_print"}>
             <TextLink>Solicitar impressão</TextLink>
           </LinkButton>
         </HeaderNavigation>
@@ -40,13 +40,13 @@ export function Home() {
             size="large"
             title="Buscar impressão"
             variant="fill"
-            onClick={() => navigate("")}
+            onClick={() => navigate("/anonymous/search_print")}
           />
           <Button
             size="large"
             title="Solicitar impressão"
             variant="fill"
-            onClick={() => navigate("")}
+            onClick={() => navigate("/anonymous/request_print")}
           />
         </RowButtons>
       </Body>

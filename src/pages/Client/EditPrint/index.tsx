@@ -18,8 +18,6 @@ export function EditPrint() {
 
   return (
     <Container>
-      <SideBar variant="client"> 
-      </SideBar>
       <Content>
         <Title>Editar Impressão</Title>
 

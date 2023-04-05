@@ -43,8 +43,6 @@ export function Profile(){
 
   return(
     <Container>
-      <SideBar variant="client">
-      </SideBar>
         <Content>
           <Title>Perfil</Title> 
 
