@@ -2,6 +2,7 @@
 //   Container
 // } from './styles';
 
+import { DetailsPrinters } from "./DetailsPrinters/detailsPrinters";
 import { DetailsUser } from "./DetailsUser/detailsUser";
 
 interface ModalProps {
@@ -21,6 +22,7 @@ export function Modal({ variant, children, title }: ModalProps) {
     case "detailsAnonymous":
     case "detailsPrint":
     case "detailsPrinters":
+      return <DetailsPrinters tilte={title}>{children}</DetailsPrinters>;
     case "detailsUser":
       return <DetailsUser tilte={title}>{children}</DetailsUser>;
   }

@@ -73,10 +73,10 @@ export function SideBar({ variant }: SideBarProps) {
             <Users
               color={"#FFF"}
               size={"1.5rem"}
-              weight={pathname === "/" ? "fill" : "regular"}
+              weight={pathname === "/admin/list_users" ? "fill" : "regular"}
             />
           ),
-          to: "/list_users",
+          to: "/admin/list_users",
         },
         {
           label: "Printers",
@@ -84,10 +84,10 @@ export function SideBar({ variant }: SideBarProps) {
             <Printer
               color={"#FFF"}
               size={"1.5rem"}
-              weight={pathname === "/" ? "fill" : "regular"}
+              weight={pathname === "/admin/list_printers" ? "fill" : "regular"}
             />
           ),
-          to: "/",
+          to: "/admin/list_printers",
         },
         {
           label: "myPrints",

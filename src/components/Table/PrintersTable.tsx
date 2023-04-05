@@ -19,10 +19,11 @@ import {
   PencilSimpleLine,
   Trash,
 } from "@phosphor-icons/react";
+import { Modal } from "../Modal";
 
 export interface PrintersTableDataProps {
   id: string;
-  owner: string;
+  name: string;
   type: string;
   material: string;
   status: "available" | "unavailable";
@@ -58,7 +59,7 @@ export function PrintersTable({
           {data.map((item) => {
             return (
               <Row>
-                <TableData>{item.owner}</TableData>
+                <TableData>{item.name}</TableData>
                 <TableData>{item.type}</TableData>
                 <TableData>{item.material}</TableData>
                 <TableData>
@@ -67,9 +68,11 @@ export function PrintersTable({
                 <TableData>
                   <RowIcons>
                     {isView && (
-                      <ButtonIcon onClick={() => alert("FOI")}>
-                        <MagnifyingGlass size={"1rem"} color={"#FFF"} />
-                      </ButtonIcon>
+                      <Modal title="Detalhes" variant="detailsPrinters">
+                        <ButtonIcon>
+                          <MagnifyingGlass size={"1rem"} color={"#FFF"} />
+                        </ButtonIcon>
+                      </Modal>
                     )}
                     {isEdit && (
                       <ButtonIcon onClick={() => alert("FOI")}>
