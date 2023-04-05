@@ -12,6 +12,7 @@ import { ListPrints } from "../pages/Admin/ListPrints";
 import { SearchPrint } from "../pages/Anonymous/SearchPrint";
 import { RequestPrinting } from "../pages/Anonymous/RequestPrinting";
 import { MyPrints } from "../pages/Client/MyPrints";
+import { ListUsers } from "../pages/Admin/ListUsers";
 
 export function RoutesApp() {
   return (
@@ -31,6 +32,7 @@ export function RoutesApp() {
 
       <Route path="/" element={<SideBar variant="admin" />}>
         <Route path="/list_prints" element={<ListPrints />} />
+        <Route path="/list_users"  element={<ListUsers />}/>
       </Route>
     </Routes>
   );
