@@ -4,6 +4,7 @@ export const theme = {
       primary: "#1B1D1E",
       secondary: "#242728",
     },
+    overlay: "rgba(0,0,0,0.25)",
     blue: {
       dark: "#1B3553",
       light: "#1D4E89",
