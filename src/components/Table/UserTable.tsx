@@ -17,6 +17,7 @@ import {
   PencilSimpleLine,
   Trash,
 } from "@phosphor-icons/react";
+import { Modal } from "../Modal";
 
 export interface UserTableDataProps {
   id: string;
@@ -62,9 +63,11 @@ export function UserTable({
                 <TableData>
                   <RowIcons>
                     {isView && (
-                      <ButtonIcon onClick={() => alert("FOI")}>
-                        <MagnifyingGlass size={"1rem"} color={"#FFF"} />
-                      </ButtonIcon>
+                      <Modal title="Detalhes" variant="detailsUser">
+                        <ButtonIcon>
+                          <MagnifyingGlass size={"1rem"} color={"#FFF"} />
+                        </ButtonIcon>
+                      </Modal>
                     )}
                     {isEdit && (
                       <ButtonIcon onClick={() => alert("FOI")}>
