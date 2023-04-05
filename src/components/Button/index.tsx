@@ -32,7 +32,7 @@ export function Button({
       case "medium":
         return (
           <Container
-            style={{ height: 40, paddingInline: 20, gap: 8 }}
+            style={{ height: '2.5rem', paddingInline: 20, gap: 8 }}
             variant={variant}
             {...rest}
           >

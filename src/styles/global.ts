@@ -17,11 +17,6 @@ export const GlobalTheme = createGlobalStyle`
     }
   }
 
-  :focus {
-    outline: 0;
-    box-shadow: 0 0 0 2px ${theme.colors.blue.light};
-  }
-
   body {
     -webkit-font-smoothing: antialiased;
     background-color: ${theme.colors.background.primary};

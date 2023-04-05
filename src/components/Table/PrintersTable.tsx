@@ -68,17 +68,17 @@ export function PrintersTable({
                   <RowIcons>
                     {isView && (
                       <ButtonIcon onClick={() => alert("FOI")}>
-                        <MagnifyingGlass size={"1.5rem"} color={"#FFF"} />
+                        <MagnifyingGlass size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}
                     {isEdit && (
                       <ButtonIcon onClick={() => alert("FOI")}>
-                        <PencilSimpleLine size={"1.5rem"} color={"#FFF"} />
+                        <PencilSimpleLine size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}
                     {isDelete && (
                       <ButtonIcon onClick={() => alert("FOI")}>
-                        <Trash size={"1.5rem"} color={"#FFF"} />
+                        <Trash size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}
                   </RowIcons>

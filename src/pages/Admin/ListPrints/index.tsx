@@ -13,6 +13,34 @@ const list: ListTableDataProps[] = [
     date: "30/03/2023",
     status: "pending",
   },
+  {
+    id: "2",
+    title: "Peça de xadrez",
+    owner: "Gabriel C Moura",
+    date: "30/03/2023",
+    status: "pending",
+  },
+  {
+    id: "3",
+    title: "Peça de xadrez",
+    owner: "Gabriel C Moura",
+    date: "30/03/2023",
+    status: "pending",
+  },
+  {
+    id: "4",
+    title: "Peça de xadrez",
+    owner: "Gabriel C Moura",
+    date: "30/03/2023",
+    status: "pending",
+  },
+  {
+    id: "5",
+    title: "Peça de xadrez",
+    owner: "Gabriel C Moura",
+    date: "30/03/2023",
+    status: "pending",
+  },
 ];
 
 const header = ["Título", "Emissor", "Data", "Status", "Detalhes"];
@@ -27,7 +55,7 @@ export function ListPrints() {
           placeholder="Buscar pedido de impressão"
           style={{ maxWidth: "20%" }}
         />
-        <Button size="large" title="Adicionar impressão" variant="outline">
+        <Button size="medium" title="Adicionar impressão" variant="outline">
           <Plus size={"1.5rem"} color={"#FFF"} />
         </Button>
       </Row>

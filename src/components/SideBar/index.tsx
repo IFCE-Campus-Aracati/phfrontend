@@ -38,7 +38,7 @@ export function SideBar({ variant }: SideBarProps) {
             <ClipboardText
               color={"#FFF"}
               size={"1.5rem"}
-              weight={pathname === "/" ? "fill" : "regular"}
+              weight={pathname === "/client/my_prints" ? "fill" : "regular"}
             />
           ),
           to: "/client/my_prints",
@@ -51,10 +51,10 @@ export function SideBar({ variant }: SideBarProps) {
             <ListChecks
               color={"#FFF"}
               size={"1.5rem"}
-              weight={pathname === "/" ? "fill" : "regular"}
+              weight={pathname === "/admin/list_prints" ? "fill" : "regular"}
             />
           ),
-          to: "/list_prints",
+          to: "/admin/list_prints",
         },
         {
           label: "Dashboard",

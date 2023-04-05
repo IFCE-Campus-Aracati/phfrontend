@@ -2,19 +2,19 @@ import styled from "styled-components";
 import { theme } from "../../../styles/theme";
 
 export const Container = styled.div`
-  padding: 3rem 1.5rem;
+  padding: 1.5rem;
 `;
 
 export const Header = styled.div`
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 `;
 
 export const Content = styled.div``;
 
 export const Title = styled.h1`
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: ${theme.colors.white};
-  margin-bottom: 2.25rem;
+  margin-bottom: 1rem;
 `;
 
 export const InputContainer = styled.div`

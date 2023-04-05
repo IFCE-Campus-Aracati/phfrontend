@@ -30,9 +30,9 @@ export function RoutesApp() {
       <Route path="/anonymous/request_print" element={<RequestPrinting />} />
       <Route path="/anonymous/search_print" element={<SearchPrint />} />
 
-      <Route path="/" element={<SideBar variant="admin" />}>
-        <Route path="/list_prints" element={<ListPrints />} />
-        <Route path="/list_users"  element={<ListUsers />}/>
+      <Route path="/admin" element={<SideBar variant="admin" />}>
+        <Route path="/admin/list_prints" element={<ListPrints />} />
+        <Route path="/admin/list_users"  element={<ListUsers />}/>
       </Route>
     </Routes>
   );

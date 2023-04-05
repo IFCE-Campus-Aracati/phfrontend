@@ -33,7 +33,7 @@ export const ContainerInput = styled.div<DivProps>`
 export const InputArea = styled.input`
   background-color: transparent;
   border: none;
-  height: 3rem;
+  height: 2.5rem;
   width: 95%;
   font-size: 1rem;
   color: ${theme.colors.white};

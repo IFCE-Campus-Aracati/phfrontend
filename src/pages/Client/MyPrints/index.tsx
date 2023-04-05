@@ -26,7 +26,7 @@ export function MyPrints() {
           placeholder="Buscar pedido de impressão"
           style={{ maxWidth: "20%" }}
         />
-        <Button size="large" title="Adicionar impressão" variant="outline">
+        <Button size="medium" title="Adicionar impressão" variant="outline">
           <Plus size={"1.5rem"} color={"#FFF"} />
         </Button>
       </Row>

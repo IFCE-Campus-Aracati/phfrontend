@@ -42,5 +42,5 @@ export const Content = styled.div<StatusProps>`
 `;
 
 export const StatusText = styled.span`
-  font-size: 1rem;
+  font-size: 0.8rem;
 `;

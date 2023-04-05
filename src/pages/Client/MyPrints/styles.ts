@@ -11,7 +11,7 @@ export const Container = styled.div`
 export const Title = styled.span`
   color: ${theme.colors.white};
   font-weight: bold;
-  font-size: 2rem;
+  font-size: 1.5rem;
 `;
 
 export const Row = styled.div`
@@ -19,5 +19,5 @@ export const Row = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin: 2rem 0;
+  margin: 1rem 0;
 `;

@@ -18,7 +18,7 @@ export const Row = styled.tr`
 
 export const Head = styled.thead`
   color: ${theme.colors.white};
-  font-size: 1.375rem;
+  font-size: 1rem;
 `;
 
 export const TH = styled.th``;
@@ -30,8 +30,9 @@ export const Body = styled.tbody`
 export const TableData = styled.td`
   color: ${theme.colors.white};
   text-align: center;
-  padding: 1rem 0;
+  padding: 0.5rem 0;
   width: 20%;
+  font-size: 0.8rem;
 
   :first-child {
     border-top-left-radius: 0.5rem;
@@ -53,8 +54,9 @@ export const RowIcons = styled.div`
 export const ButtonIcon = styled.button`
   background-color: ${theme.colors.blue.light};
   border: none;
-  height: 2.5rem;
-  width: 2.5rem;
+  line-height: 0;
+  height: 2rem;
+  width: 2rem;
   border-radius: 0.2rem;
 
   :hover {
