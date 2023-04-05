@@ -3,7 +3,7 @@ import { theme } from "../../../styles/theme";
 
 export const Container = styled.div`
     width: 100%;
-    padding: 3rem 4rem;
+    padding: 1.5rem 3rem;
     background: ${theme.colors.background.primary};
 `;
 
@@ -13,21 +13,20 @@ export const FormContainer = styled.form``;
 
 export const Title = styled.h1`
     color: ${theme.colors.white};
-    font-size: 2rem;
-    margin-bottom: 2.5rem;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
 `;
 
 export const TitleInput = styled.h3`
     color: ${theme.colors.white};
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    margin-top: 2.25rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
 `;
 
 export const Footer = styled.div`
     display: flex;
     flex-direction: row;
     gap: 1.5rem;
-    margin-top: 2.25rem;
-    margin-bottom: 5rem;
+    margin-top: 2rem;
 `;

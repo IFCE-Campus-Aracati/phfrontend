@@ -10,7 +10,7 @@ export const TriggerContainer = styled(Trigger)`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 0 15px;
   font-size: 13px;
   font-family: 'Roboto';
@@ -42,7 +42,7 @@ export const SelectPortal = styled(Portal)``;
 export const SelectContent = styled(Content)`
   overflow: hidden;
   background-color: white;
-  border-radius: 5px;
+  border-radius: 8px;
   box-shadow: 0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2);
 `;
 

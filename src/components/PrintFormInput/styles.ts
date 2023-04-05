@@ -4,11 +4,11 @@ export const Container = styled.div``;
 
 export const InputContainer = styled.input`
   padding: 12px 8px;
-  font-size: 14px;
+  font-size: 0.8rem;
   border: none;
   border-radius: 8px;
-  width: 500px;
-  max-width: 350px;
+  width: 100%;
+  max-width: 500px;
   height: 50px;
  
   &:focus {
