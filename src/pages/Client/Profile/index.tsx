@@ -1,6 +1,5 @@
-import { Button } from "../../../components/Button";
-import { InputFile } from "../../../components/InputFile";
 import { useNavigate } from "react-router-dom";
+
 import {
   Container,
   Content,
@@ -10,13 +9,15 @@ import {
   TitleInput,
   ImageSide,
   Attachments,
-  Pass,
+  ButtonEdit,
   ProfileContent,
   ImageContent,
   ButtonIcon,
   ButtonRemove
 } from "./styles";
+
 import DefaultProfile from "../../../assets/default-profile.jpeg";
+import { Modal } from "../../../components/Modal";
 import { UploadSimple, X } from "@phosphor-icons/react";
 
 export function Profile() {
@@ -40,14 +41,13 @@ export function Profile() {
 
             <TitleInput>Senha:</TitleInput>
             <Subtitle>************</Subtitle>
-            <Pass>
-              <Button
-                title="alterar senha"
-                variant="outline"
-                size="small"
-                onClick={() => navigate("/")}
-              />
-            </Pass>
+
+            <ButtonEdit>
+              <Modal title="Alterar senha" variant="changePassword">
+                <span>alterar senha</span>
+              </Modal>
+            </ButtonEdit>
+
           </ProfileContent>
           <ImageContent>
             <ImageSide src={DefaultProfile} />

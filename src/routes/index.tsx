@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
+import { SideBar } from "../components/SideBar";
+
 import { Home } from "../pages/Home";
 import { SignUp } from "../pages/SignUp";
 import { SignIn } from "../pages/SignIn";
@@ -7,14 +9,14 @@ import { SignIn } from "../pages/SignIn";
 import { Profile } from "../pages/Client/Profile";
 import { EditPrint } from "../pages/Client/MyPrints/EditPrint";
 
-import { SideBar } from "../components/SideBar";
-import { ListPrints } from "../pages/Admin/ListPrints";
-import { SearchPrint } from "../pages/Anonymous/SearchPrint";
 import { RequestPrinting } from "../pages/Anonymous/RequestPrinting";
-import { MyPrints } from "../pages/Client/MyPrints";
+import { SearchPrint } from "../pages/Anonymous/SearchPrint";
+
+import { ListPrints } from "../pages/Admin/ListPrints";
 import { ListUsers } from "../pages/Admin/ListUsers";
 import { ListPrinters } from "../pages/Admin/ListPrinters";
 import { CreatePrint } from "../pages/Client/MyPrints/CreatePrint";
+import { MyPrints } from "../pages/Client/MyPrints";
 
 export function RoutesApp() {
   return (
@@ -25,6 +27,7 @@ export function RoutesApp() {
 
       <Route path="/client" element={<SideBar variant="client" />}>
         <Route path="/client/profile" element={<Profile />} />
+        <Route path="/client/my_prints/create_print" element={<CreatePrint />} />
         <Route path="/client/edit_print" element={<EditPrint />} />
         <Route path="/client/create_print" element={<CreatePrint />} />
         <Route path="/client/my_prints" element={<MyPrints />} />

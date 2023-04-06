@@ -104,7 +104,18 @@ export const ButtonRemove = styled.button`
   }
 `;
 
-export const Pass = styled.div`
-  margin-left: 8rem;
-  margin-top: -2rem;
+export const ButtonEdit = styled.div`
+  margin-top: 1rem;
+  text-align: center;
+  background-color: none;  
+  padding: 0.8rem;
+  max-width: 8rem;
+  border-radius: 8px;
+  border: 1px solid ${theme.colors.blue.dark};
+  :hover{
+    background-color: ${theme.colors.blue.light};
+    }
+  span{
+    color: ${theme.colors.white};
+  }
 `;

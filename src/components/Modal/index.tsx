@@ -4,6 +4,7 @@
 
 import { DetailsPrinters } from "./DetailsPrinters/detailsPrinters";
 import { DetailsUser } from "./DetailsUser/detailsUser";
+import { ChangePassword } from "./ChangePassword/changePassword";
 
 interface ModalProps {
   variant:
@@ -19,6 +20,7 @@ interface ModalProps {
 export function Modal({ variant, children, title }: ModalProps) {
   switch (variant) {
     case "changePassword":
+      return <ChangePassword tilte={title}>{children}</ChangePassword>;
     case "detailsAnonymous":
     case "detailsPrint":
     case "detailsPrinters":
@@ -27,3 +29,5 @@ export function Modal({ variant, children, title }: ModalProps) {
       return <DetailsUser tilte={title}>{children}</DetailsUser>;
   }
 }
+
+
