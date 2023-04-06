@@ -4,6 +4,7 @@ import { Input } from "../../../components/Input";
 import { Container, Row, Title } from "./styles";
 import { Table } from "../../../components/Table";
 import { ClientListTableDataProps } from "../../../components/Table/ClientListTable";
+import { useNavigate } from "react-router";
 
 const list: ClientListTableDataProps[] = [
   {
@@ -17,16 +18,17 @@ const list: ClientListTableDataProps[] = [
 const header = ["Título", "Data", "Status", "Detalhes"];
 
 export function MyPrints() {
+  const navigate = useNavigate();
   return(
     <Container>
-      <Title>Lista de Impressões</Title>
+      <Title>Minhas Impressões</Title>
       <Row>
         <Input
           variant="search"
           placeholder="Buscar pedido de impressão"
           style={{ maxWidth: "20%" }}
         />
-        <Button size="medium" title="Adicionar impressão" variant="outline">
+        <Button size="medium" title="Adicionar impressão" variant="outline" onClick={() => navigate("/client/create_print")} >
           <Plus size={"1.5rem"} color={"#FFF"} />
         </Button>
       </Row>

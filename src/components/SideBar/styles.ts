@@ -69,6 +69,7 @@ export const Button = styled.button<ButtonProps>`
   justify-content: center;
   margin-bottom: 1rem;
   transition: 0.3s;
+  cursor: pointer;
 `;
 
 export const ButtonSignout = styled.button`
@@ -81,6 +82,7 @@ export const ButtonSignout = styled.button`
   align-items: center;
   justify-content: center;
   margin-top: auto;
+  cursor: pointer;
 `;
 
 export const Body = styled.div`

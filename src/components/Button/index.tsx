@@ -61,6 +61,7 @@ export function Button({
               gap: 8,
             }}
             variant={variant}
+            {...rest}
           >
             {children}
             <Title style={{ fontSize: 18 }}>{title}</Title>

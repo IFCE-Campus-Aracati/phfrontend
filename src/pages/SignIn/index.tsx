@@ -37,7 +37,7 @@ export function SignIn() {
           <SmallLinkButton to={"/"}>
             <TextLink>Esqueceu a senha?</TextLink>
           </SmallLinkButton>
-          <Button size="xlarge" variant="fill" title="Entrar" />
+          <Button size="xlarge" variant="fill" title="Entrar" onClick={() => navigate("/admin/list_prints")} />
           <TextContainer>
             <Text>Não possui uma conta ainda?</Text>
             <SmallLinkButton to={"/signup"}>
