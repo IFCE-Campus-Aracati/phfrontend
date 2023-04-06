@@ -4,19 +4,15 @@ import { theme } from "../../../styles/theme";
 import { Link } from "react-router-dom";
 
 export const Container = styled.div`
-  background: ${theme.colors.background.primary};
-  position: relative;
-  overflow: auto;
-  height: 100vh;
-  width: 100%;
+    width: 100%;
+    padding: 1.5rem 3rem;
+    background: ${theme.colors.background.primary};
 `;
 
 export const Title = styled.h1`
-  color: ${theme.colors.white};
-  position: absolute;
-  top: 35px;
-  font-size: 1.5rem;
-  margin-left: 1.5rem;
+    color: ${theme.colors.white};
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
 `;
 
 export const SideBar = styled.div`
@@ -24,23 +20,31 @@ export const SideBar = styled.div`
 `;
 
 export const FormContainer = styled.div`
-  background-color: ${theme.colors.background.secondary};  
-  position: absolute;
+  background-color: ${theme.colors.background.secondary};
   top: 80px;
   padding: 2rem;
-  width: 88vw;
-  height: 80%;
+  width: 100%;
+  height: auto;
   border-radius: 8px;
-  text-align: top;
-  margin-left: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+;`
+
+export const ProfileContent = styled.form`
+`;
+
+export const ImageContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-right: 10%;
 `;
 
 export const TitleInput = styled.h2`
   color: ${theme.colors.white};
-  font-size: 1rem;
-  margin-bottom: 1.4rem;
-  margin-top: 0.25rem;
-  text-align: left;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
 `;
 
 export const Subtitle = styled.h3`
@@ -49,7 +53,6 @@ export const Subtitle = styled.h3`
   font-weight: 400;
   font-size: 0.8rem;
   line-height: 1.4rem;
-  margin-bottom: 2.5rem;
   text-align: left;
 `;
 
@@ -59,28 +62,49 @@ export const Content = styled.main`
 export const ImageSide = styled.img`
   border: 1px dashed rgba(255, 255, 255, 0.25);
   border-radius: 0.2rem;
+  height: 18rem;
+  width: 15rem;
   object-fit: cover;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  height: 50vh;
-  width: 20vw;
-  object-fit: cover;
-  margin-left: 10rem;
-  margin-top: -10rem;
 `;
 
 export const Attachments = styled.div`
-  position: absolute;
   display: flex;
   flex-direction: row;
-  gap: 1.0rem;
-  padding: 1rem;
-  margin-left: 50.5rem;
-  margin-top: 29rem;
+  justify-content: space-evenly;
+  padding: 1rem 1rem 0rem 1rem;
+`;
+
+export const ButtonIcon = styled.button`
+  background-color: ${theme.colors.blue.light};
+  border: none;
+  line-height: 0;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0.2rem;
+
+  :hover {
+    background-color: ${theme.colors.blue.dark};
+    transition: 0.2s;
+    cursor: pointer;
+  }
+`;
+
+export const ButtonRemove = styled.button`
+  background-color: transparent;
+  border: 1px solid ${theme.colors.blue.light};
+  line-height: 0;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0.2rem;
+
+  :hover {
+    background-color: ${theme.colors.blue.dark};
+    transition: 0.2s;
+    cursor: pointer;
+  }
 `;
 
 export const Pass = styled.div`
   margin-left: 8rem;
-  margin-top: -6rem;
+  margin-top: -2rem;
 `;

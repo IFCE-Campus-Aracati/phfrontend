@@ -37,7 +37,7 @@ export function SignUp() {
           <Input label="E-mail" variant="form" placeholder="meumelhoremail@gmail.com" ></Input>
           <Input password={true} label="Senha" variant="form" placeholder={""}  ></Input>
           <Input password={true} label="Confirmar Senha" variant="form" placeholder={""} ></Input>
-          <Button size="xlarge" variant="fill" title="Cadastrar" />
+          <Button size="xlarge" variant="fill" title="Cadastrar" onClick={() => navigate("/client/my_prints")} />
           <TextContainer>
             <Text>Já possui uma conta?</Text>
             <SmallLinkButton to={"/signin"}>
