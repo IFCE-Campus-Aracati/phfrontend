@@ -42,6 +42,25 @@ export const Description = styled.p`
   margin-top: 0.2rem;
 `;
 
+export const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
 export const ButtonFile = styled.button`
+  display: flex;
   background-color: ${theme.colors.blue.dark};
+  padding: 0.5rem;
+  color: ${theme.colors.white};
+  gap: 0.625rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  align-items: center;
+  cursor: pointer;
+  
+  :hover {
+    background-color: ${theme.colors.blue.light};
+  }
 `;

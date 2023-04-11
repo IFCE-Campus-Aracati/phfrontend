@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Close, Content, Portal, Root, Trigger, Title } from "../styles";
-import { ButtonClose, ButtonText, Header, Body, TextInfo, Text, Description } from './styles';
-import { X } from "@phosphor-icons/react";
+import { ButtonClose, ButtonText, Header, Body, TextInfo, Text, Description, ButtonFile, ButtonWrapper } from './styles';
+import { Download, X } from "@phosphor-icons/react";
 import { theme } from "../../../styles/theme";
 
 
@@ -42,8 +42,13 @@ export function DetailsAnonymous({ children, title } : DetailsAnonymousProps) {
                   </Description>
                 </TextInfo>
                 <TextInfo>
+                  <ButtonWrapper>
                   <Text>Arquivo Anexado: </Text>
-                  
+                  <ButtonFile onClick={() => console.log('clicou')}>
+                    <Download size={20}/>
+                    arquivo.stl
+                  </ButtonFile>
+                  </ButtonWrapper>
                 </TextInfo>
                 <TextInfo>
                 <Text>Tipo do Material:</Text> ABS
