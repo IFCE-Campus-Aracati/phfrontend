@@ -36,7 +36,10 @@ export const Title = styled(Dialog.Title)`
   font-size: 1.5rem;
 `;
 
-export const Description = styled(Dialog.Description)``;
+export const Description = styled(Dialog.Description)`
+  color: ${theme.colors.white};
+  margin-top: 0.2rem;
+`;
 
 export const Header = styled.div`
   line-height: 0;
