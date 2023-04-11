@@ -13,7 +13,7 @@ import {
   Close,
 } from "../styles";
 
-import { TextInfo, Text, Body, ButtonArea, StatusArea } from "./styles";
+
 
 interface DetailsPrintersProps {
   children: React.ReactNode;
@@ -24,6 +24,8 @@ import { X, PencilSimpleLine } from "@phosphor-icons/react";
 import { theme } from "../../../styles/theme";
 import { Button } from "../../Button";
 import { Status } from "../../Status";
+import { Body, ButtonArea, StatusArea, Text, TextInfo } from "./styles";
+
 
 export function DetailsPrinters({ children, tilte }: DetailsPrintersProps) {
   return (
