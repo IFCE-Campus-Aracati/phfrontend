@@ -6,6 +6,7 @@ export const Body = styled.div`
   flex-direction: column;
   margin-top: 1rem;
   height: 100%;
+  gap: 0.5rem;
 `;
 
 export const TextInfo = styled.span`
@@ -19,3 +20,19 @@ export const Text = styled.span`
 `;
 
 export const ButtonArea = styled.div``;
+
+export const StatusArea = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: first baseline;
+  width: 100%;
+  gap: 0.5rem;
+  color: #fff;
+`;
+
+export const RowTextInfo = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: baseline;
+`;

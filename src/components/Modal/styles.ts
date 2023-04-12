@@ -21,7 +21,7 @@ export const Overlay = styled(Dialog.Overlay)`
 
 export const Content = styled(Dialog.Content)`
   background-color: ${theme.colors.background.secondary};
-  min-height: 25vh;
+  min-height: 20vh;
   min-width: 25vw;
   position: fixed;
   top: 50%;
@@ -59,6 +59,7 @@ export const ButtonClose = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 `;
 
 export const Close = styled(Dialog.Close)`

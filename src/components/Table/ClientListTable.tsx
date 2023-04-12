@@ -20,6 +20,7 @@ import {
   Trash,
 } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../Modal";
 
 export interface ClientListTableDataProps {
   id: string;
@@ -67,12 +68,20 @@ export function ClientListTable({
                 <TableData>
                   <RowIcons>
                     {isView && (
-                      <ButtonIcon onClick={() => alert("FOI")}>
-                        <MagnifyingGlass size={"1rem"} color={"#FFF"} />
-                      </ButtonIcon>
+                      <Modal
+                        title="Detalhes"
+                        variant="detailsPrint"
+                        route={"/client/my_prints/edit_print"}
+                      >
+                        <ButtonIcon>
+                          <MagnifyingGlass size={"1rem"} color={"#FFF"} />
+                        </ButtonIcon>
+                      </Modal>
                     )}
                     {isEdit && (
-                      <ButtonIcon onClick={() => navigate("/client/my_prints/edit_print")}>
+                      <ButtonIcon
+                        onClick={() => navigate("/client/my_prints/edit_print")}
+                      >
                         <PencilSimpleLine size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}
