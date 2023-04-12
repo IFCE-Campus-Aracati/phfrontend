@@ -20,6 +20,7 @@ import {
   Trash,
 } from "@phosphor-icons/react";
 import { Modal } from "../Modal";
+import { useNavigate } from "react-router-dom";
 
 export interface PrintersTableDataProps {
   id: string;
@@ -44,6 +45,7 @@ export function PrintersTable({
   isDelete = false,
   isEdit = false,
 }: TableProps) {
+  const navigate = useNavigate();
   return (
     <Container>
       <TableContainer>
@@ -75,7 +77,7 @@ export function PrintersTable({
                       </Modal>
                     )}
                     {isEdit && (
-                      <ButtonIcon onClick={() => alert("FOI")}>
+                      <ButtonIcon onClick={() => navigate("/admin/list_printers/edit_printer")}>
                         <PencilSimpleLine size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}

@@ -1,11 +1,11 @@
 import { Button } from "../../../../components/Button";
 import { InputFile } from "../../../../components/InputFile";
 import { PrintFormInput } from "../../../../components/PrintFormInput";
+import { RadioGroup } from "../../../../components/RadioGroup";
 import { SelectInput } from "../../../../components/Select";
 import { TextArea } from "../../../../components/TextArea";
-import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachments } from "./styles";
+import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachments, TextAttachments, InputDate, InputText, StatusContainer } from "./styles";
 import { useNavigate } from "react-router-dom";
-import { SideBar } from "../../../../components/SideBar";
 
 const options = [
   { value: "option1", text: "ABS" },
@@ -13,43 +13,45 @@ const options = [
   { value: "option3", text: "PETG" },
 ];
 
-export function EditPrint() {
+export function RegisterListPrint() {
   const navigate = useNavigate();
 
   return (
     <Container>
       <Content>
-        <Title>Editar Impressão</Title>
+        <Title>Adicionar Impressão</Title>
 
         <FormContainer>
-          <TitleInput style={{marginTop: "0"}}>Título</TitleInput>
+          <TitleInput style={{ marginTop: "0" }}>Título</TitleInput>
           <PrintFormInput placeholder="Título da sua impressão" />
 
           <TitleInput>Descrição</TitleInput>
           <TextArea placeholder="Informe alguma informação sobre o que você deseja imprimir" />
 
           <TitleInput>Arquivo para impressão</TitleInput>
+          <InputFile label={"Anexar"} />
+          <TitleInput>Dados da Impressão</TitleInput>
           <Attachments>
-            <InputFile label={"Anexar"} />
-            <Button
-              size="medium"
-              variant="fill"
-              title="arquivo.stl x"
-            />
+            <TextAttachments>Data para início:</TextAttachments>
+            <InputDate type="date" />
+            <TextAttachments>Duração:</TextAttachments>
+            <InputText defaultValue={"40"} type="text" />
           </Attachments>
           <TitleInput>Material para Impressão</TitleInput>
           <SelectInput placeholder="Selecione o Material" open={true} options={options} />
+
           <Footer>
             <Button
               title="cancelar"
               variant="outline"
               size="small"
-              onClick={() => navigate("/client/my_prints")}
+              onClick={() => navigate("/admin/list_prints")}
             />
             <Button
-              title="ATUALIZAR"
+              title="SALVAR"
               variant="fill"
               size="small"
+              onClick={() => navigate("/admin/list_prints")}
             />
           </Footer>
         </FormContainer>

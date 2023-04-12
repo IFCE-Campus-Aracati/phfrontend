@@ -4,6 +4,7 @@ import { Input } from "../../../components/Input";
 import { Plus } from "@phosphor-icons/react";
 import { Table } from "../../../components/Table";
 import { PrintersTableDataProps } from "../../../components/Table/PrintersTable";
+import { useNavigate } from "react-router-dom";
 
 const list: PrintersTableDataProps[] = [
   {
@@ -32,6 +33,7 @@ const list: PrintersTableDataProps[] = [
 const header = ["Nome", "Tipo", "Material", "Status", "Detalhes"];
 
 export function ListPrinters() {
+  const navigate = useNavigate();
   return (
     <Container>
       <Title>Lista de Impressoras</Title>
@@ -41,7 +43,12 @@ export function ListPrinters() {
           placeholder="Buscar impressora"
           style={{ maxWidth: "20%" }}
         />
-        <Button size="medium" title="Adicionar impressora" variant="outline">
+        <Button 
+        size="medium" 
+        title="Adicionar impressora" 
+        variant="outline"
+        onClick={() => navigate("/admin/list_printers/register_printer")}
+        >
           <Plus size={"1.5rem"} color={"#FFF"} />
         </Button>
       </Row>

@@ -19,7 +19,7 @@ const header = ["Título", "Data", "Status", "Detalhes"];
 
 export function MyPrints() {
   const navigate = useNavigate();
-  return(
+  return (
     <Container>
       <Title>Minhas Impressões</Title>
       <Row>
@@ -28,7 +28,12 @@ export function MyPrints() {
           placeholder="Buscar pedido de impressão"
           style={{ maxWidth: "20%" }}
         />
-        <Button size="medium" title="Adicionar impressão" variant="outline" onClick={() => navigate("/client/create_print")} >
+        <Button
+          size="medium"
+          title="Adicionar impressão"
+          variant="outline"
+          onClick={() => navigate("/client/my_prints/create_print")}
+        >
           <Plus size={"1.5rem"} color={"#FFF"} />
         </Button>
       </Row>

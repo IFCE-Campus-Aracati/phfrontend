@@ -72,7 +72,7 @@ export function ClientListTable({
                       </ButtonIcon>
                     )}
                     {isEdit && (
-                      <ButtonIcon onClick={() => navigate("/client/edit_print")}>
+                      <ButtonIcon onClick={() => navigate("/client/my_prints/edit_print")}>
                         <PencilSimpleLine size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}

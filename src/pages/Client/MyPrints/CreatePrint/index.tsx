@@ -31,7 +31,7 @@ export function CreatePrint() {
           <TitleInput>Arquivo para impressão</TitleInput>
             <InputFile label={"Anexar"} />
           <TitleInput>Material para Impressão</TitleInput>
-          <SelectInput open={true} options={options} />
+          <SelectInput placeholder="Selecione o Material" open={true} options={options} />
           <Footer>
             <Button
               title="cancelar"
@@ -40,7 +40,7 @@ export function CreatePrint() {
               onClick={() => navigate("/client/my_prints")}
             />
             <Button
-              title="ENVIAR"
+              title="SALVAR"
               variant="fill"
               size="small"
             />
