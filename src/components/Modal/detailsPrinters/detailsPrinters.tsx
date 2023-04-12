@@ -25,9 +25,11 @@ import { theme } from "../../../styles/theme";
 import { Button } from "../../Button";
 import { Status } from "../../Status";
 import { Body, ButtonArea, StatusArea, Text, TextInfo } from "./styles";
+import { useNavigate } from "react-router-dom";
 
 
 export function DetailsPrinters({ children, tilte }: DetailsPrintersProps) {
+  const navigate = useNavigate();
   return (
     <Root>
       <Trigger>{children}</Trigger>
@@ -70,7 +72,12 @@ export function DetailsPrinters({ children, tilte }: DetailsPrintersProps) {
             </TextInfo>
           </Body>
           <ButtonArea>
-            <Button size="medium" variant="fill" title="Editar">
+            <Button 
+            size="medium" 
+            variant="fill" 
+            title="Editar"
+            onClick={() => navigate("/admin/list_printers/edit_printer")}
+            >
               <PencilSimpleLine size={"1.25rem"} color={theme.colors.white} />
             </Button>
           </ButtonArea>

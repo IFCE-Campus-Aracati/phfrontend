@@ -4,6 +4,7 @@ import { Input } from "../../../components/Input";
 import { Plus } from "@phosphor-icons/react";
 import { Table } from "../../../components/Table";
 import { ListTableDataProps } from "../../../components/Table/ListTable";
+import { useNavigate } from "react-router-dom";
 
 const list: ListTableDataProps[] = [
   {
@@ -46,6 +47,7 @@ const list: ListTableDataProps[] = [
 const header = ["Título", "Emissor", "Data", "Status", "Detalhes"];
 
 export function ListPrints() {
+  const navigate = useNavigate();
   return (
     <Container>
       <Title>Lista de Impressões</Title>
@@ -55,7 +57,12 @@ export function ListPrints() {
           placeholder="Buscar pedido de impressão"
           style={{ maxWidth: "20%" }}
         />
-        <Button size="medium" title="Adicionar impressão" variant="outline">
+        <Button
+          size="medium"
+          title="Adicionar impressão"
+          variant="outline"
+          onClick={() => navigate("/admin/list_prints/register_print")}
+        >
           <Plus size={"1.5rem"} color={"#FFF"} />
         </Button>
       </Row>

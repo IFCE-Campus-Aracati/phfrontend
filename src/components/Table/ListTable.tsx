@@ -19,6 +19,7 @@ import {
   PencilSimpleLine,
   Trash,
 } from "@phosphor-icons/react";
+import { useNavigate } from "react-router-dom";
 
 export interface ListTableDataProps {
   id: string;
@@ -43,6 +44,7 @@ export function ListTable({
   isDelete = false,
   isEdit = false,
 }: TableProps) {
+  const navigate = useNavigate();
   return (
     <Container>
       <TableContainer>
@@ -72,7 +74,7 @@ export function ListTable({
                       </ButtonIcon>
                     )}
                     {isEdit && (
-                      <ButtonIcon onClick={() => alert("FOI")}>
+                      <ButtonIcon onClick={() => navigate("/admin/list_prints/edit_print")}>
                         <PencilSimpleLine size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}

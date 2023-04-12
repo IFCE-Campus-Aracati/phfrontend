@@ -11,11 +11,12 @@ interface Options {
 }
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement>{
+  placeholder: string;
   options: Options[];
   open?: boolean;
 }
 
-export function SelectInput({open,options, ...props} : SelectProps ) {
+export function SelectInput({placeholder, open, options, ...props} : SelectProps ) {
   const [openSelect, isOpenSelect] = useState(open);
  
   const [value, setValue] = useState<string>("");
@@ -24,8 +25,8 @@ export function SelectInput({open,options, ...props} : SelectProps ) {
     <Container>
       <RootContainer onOpenChange={isOpenSelect} value={value} onValueChange={(text) => setValue(text)}>
         <TriggerContainer aria-label="Food" value={"oi"}>
-          <SelectValue placeholder="Selecione o Material">
-            { value ? value : "Selecione o Material"}
+          <SelectValue placeholder={placeholder}>
+            { value ? value : placeholder}
           </SelectValue>
           <IconContainer className="SelectIcon">
             <CaretDown size={20} />

@@ -26,11 +26,8 @@ export function Home() {
           <LinkButton to={"/signin"}>
             <TextLink>Login</TextLink>
           </LinkButton>
-          <LinkButton to={"/anonymous/search_print"}>
-            <TextLink>Buscar impressão</TextLink>
-          </LinkButton>
-          <LinkButton to={"/anonymous/request_print"}>
-            <TextLink>Solicitar impressão</TextLink>
+          <LinkButton to={"/signup"}>
+            <TextLink>Cadastre-se</TextLink>
           </LinkButton>
         </HeaderNavigation>
 

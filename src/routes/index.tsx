@@ -17,6 +17,11 @@ import { ListUsers } from "../pages/Admin/ListUsers";
 import { ListPrinters } from "../pages/Admin/ListPrinters";
 import { CreatePrint } from "../pages/Client/MyPrints/CreatePrint";
 import { MyPrints } from "../pages/Client/MyPrints";
+import { EditListPrint } from "../pages/Admin/ListPrints/EditListPrint";
+import { RegisterListPrint } from "../pages/Admin/ListPrints/RegisterListPrint";
+import { EditPrinter } from "../pages/Admin/ListPrinters/EditPrinter";
+import { RegisterPrinter } from "../pages/Admin/ListPrinters/RegisterPrinter";
+import { EditUser } from "../pages/Admin/ListUsers/EditUser";
 
 export function RoutesApp() {
   return (
@@ -28,8 +33,7 @@ export function RoutesApp() {
       <Route path="/client" element={<SideBar variant="client" />}>
         <Route path="/client/profile" element={<Profile />} />
         <Route path="/client/my_prints/create_print" element={<CreatePrint />} />
-        <Route path="/client/edit_print" element={<EditPrint />} />
-        <Route path="/client/create_print" element={<CreatePrint />} />
+        <Route path="/client/my_prints/edit_print" element={<EditPrint />} />
         <Route path="/client/my_prints" element={<MyPrints />} />
       </Route>
 
@@ -38,8 +42,13 @@ export function RoutesApp() {
 
       <Route path="/admin" element={<SideBar variant="admin" />}>
         <Route path="/admin/list_prints" element={<ListPrints />} />
+        <Route path="/admin/list_prints/edit_print" element={<EditListPrint />} />
+        <Route path="/admin/list_prints/register_print" element={<RegisterListPrint />} />
         <Route path="/admin/list_users" element={<ListUsers />} />
+        <Route path="/admin/list_users/edit_user" element={<EditUser />} />
         <Route path="/admin/list_printers" element={<ListPrinters />} />
+        <Route path="/admin/list_printers/edit_printer" element={<EditPrinter />} />
+        <Route path="/admin/list_printers/register_printer" element={<RegisterPrinter />} />
         <Route path="/admin/my_prints" element={<MyPrints />} />
       </Route>
     </Routes>

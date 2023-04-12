@@ -23,8 +23,10 @@ interface DetailsUserProps {
 import { X, PencilSimpleLine } from "@phosphor-icons/react";
 import { theme } from "../../../styles/theme";
 import { Button } from "../../Button";
+import { useNavigate } from "react-router-dom";
 
 export function DetailsUser({ children, tilte }: DetailsUserProps) {
+  const navigate = useNavigate();
   return (
     <Root>
       <Trigger>{children}</Trigger>
@@ -42,17 +44,22 @@ export function DetailsUser({ children, tilte }: DetailsUserProps) {
           <Title>{tilte}</Title>
           <Body>
             <TextInfo>
-              Email: <Text>gabriel@teste.com</Text>
+              Email: <Text>mairon.santana.nascimento60@aluno.ifce.edu.br</Text>
             </TextInfo>
             <TextInfo>
-              Nome: <Text>Gabriel</Text>
+              Nome: <Text>Mairon S. Nascimento</Text>
             </TextInfo>
             <TextInfo>
-              Cargo: <Text>Bolsista</Text>
+              Cargo: <Text>Aluno</Text>
             </TextInfo>
           </Body>
           <ButtonArea>
-            <Button size="medium" variant="fill" title="Editar">
+            <Button 
+            size="medium" 
+            variant="fill" 
+            title="Editar"
+            onClick={() => navigate("/admin/list_users/edit_user")}
+            >
               <PencilSimpleLine size={"1.25rem"} color={theme.colors.white} />
             </Button>
           </ButtonArea>

@@ -18,6 +18,7 @@ import {
   Trash,
 } from "@phosphor-icons/react";
 import { Modal } from "../Modal";
+import { useNavigate } from "react-router-dom";
 
 export interface UserTableDataProps {
   id: string;
@@ -41,6 +42,7 @@ export function UserTable({
   isDelete = false,
   isEdit = false,
 }: UserTableProps) {
+  const navigate = useNavigate();
   return (
     <Container>
       <TableContainer>
@@ -70,7 +72,7 @@ export function UserTable({
                       </Modal>
                     )}
                     {isEdit && (
-                      <ButtonIcon onClick={() => alert("FOI")}>
+                      <ButtonIcon onClick={() => navigate("/admin/list_users/edit_user")}>
                         <PencilSimpleLine size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}

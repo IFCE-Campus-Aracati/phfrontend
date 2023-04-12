@@ -7,35 +7,36 @@ const header = ["Id", "Nome", "Email", "Cargo", "Detalhes"];
 
 const data: UserTableDataProps[] = [
   {
-    id: 'string',
-    name: 'string',
-    email: 'string',
-    role: 'string',
+    id: '1',
+    name: 'Mairon S. Nascimento',
+    email: 'mairon.santana.nascimento60@aluno.ifce.edu.br',
+    role: 'Aluno',
   },
   {
-    id: 'string',
-    name: 'string',
-    email: 'string',
-    role: 'string',
+    id: '1',
+    name: 'Mairon S. Nascimento',
+    email: 'mairon.santana.nascimento60@aluno.ifce.edu.br',
+    role: 'Aluno',
   },
   {
-    id: 'string',
-    name: 'string',
-    email: 'string',
-    role: 'string',
+    id: '1',
+    name: 'Mairon S. Nascimento',
+    email: 'mairon.santana.nascimento60@aluno.ifce.edu.br',
+    role: 'Aluno',
   },
   {
-    id: 'string',
-    name: 'string',
-    email: 'string',
-    role: 'string',
+    id: '1',
+    name: 'Mairon S. Nascimento',
+    email: 'mairon.santana.nascimento60@aluno.ifce.edu.br',
+    role: 'Aluno',
   },
   {
-    id: 'string',
-    name: 'string',
-    email: 'string',
-    role: 'string',
-  }
+    id: '1',
+    name: 'Mairon S. Nascimento',
+    email: 'mairon.santana.nascimento60@aluno.ifce.edu.br',
+    role: 'Aluno',
+  },
+  
 ]
 
 export function ListUsers(){

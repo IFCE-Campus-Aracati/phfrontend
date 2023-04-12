@@ -38,7 +38,7 @@ export function RequestPrinting() {
           <InputFile label={"Anexar"}/>
 
           <TitleInput>Material para Impressão</TitleInput>
-          <SelectInput options={options}/>
+          <SelectInput placeholder="Selecione o Material" options={options}/>
         </FormContainer>
       </Content>
       <Footer>
