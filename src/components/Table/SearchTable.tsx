@@ -17,6 +17,7 @@ import {
   PencilSimpleLine,
   Trash,
 } from "@phosphor-icons/react";
+import { Modal } from "../Modal";
 
 export interface SearchTableDataProps {
   id: string;
@@ -64,9 +65,11 @@ export function SearchTable({
                 </TableData>
                 <TableData>
                   {isView && (
-                    <ButtonIcon onClick={() => alert("FOI")}>
-                      <MagnifyingGlass size={"1rem"} color={"#FFF"} />
-                    </ButtonIcon>
+                    <Modal title={"Detalhes da impressão"} variant="detailsAnonymous">
+                        <ButtonIcon>
+                          <MagnifyingGlass size={"1rem"} color={"#FFF"} />
+                        </ButtonIcon>
+                    </Modal>
                   )}
                   {isEdit && (
                     <ButtonIcon onClick={() => alert("FOI")}>

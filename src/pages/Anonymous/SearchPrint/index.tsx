@@ -1,5 +1,5 @@
 import { ArrowLeft } from "@phosphor-icons/react";
-import { ButtonBack, InputSearchContainer, InputTitle, Container, Content, Header, Title, TitleContainer } from "./styles";
+import { ButtonBack, InputTitle, Container, Content, Header, Title, TitleContainer, InputWrapper, InputContainer } from "./styles";
 import { Table } from "../../../components/Table";
 import { SearchTableDataProps } from "../../../components/Table/SearchTable";
 import { Input } from "../../../components/Input";
@@ -25,21 +25,24 @@ export function SearchPrint() {
       <Header>
         <TitleContainer>
           <ButtonBack onClick={() => navigate("/")}>
-            <ArrowLeft size={26} weight="bold" />
+            <ArrowLeft size={20} weight="bold" />
           </ButtonBack>
           <Title>Buscar Impressões</Title>
         </TitleContainer>
         
-        <InputSearchContainer>
+        <InputWrapper>
           <InputTitle>Informe o identificador de busca</InputTitle>
-          <Input
-            placeholder="Buscar pedido de impressão"
-            variant="search"
-           />
-          </InputSearchContainer>
+          <InputContainer>
+            <Input
+              placeholder="Buscar pedido de impressão"
+              variant="search"
+            />
+          </InputContainer>
+         
+          </InputWrapper>
       </Header>
       <Content>
-        <Table variant="search" data={data} header={header} />
+        <Table variant="search" data={data} header={header}/>
       </Content>
     </Container>
   );

@@ -1,9 +1,10 @@
+import { ArrowLeft } from "@phosphor-icons/react";
 import { Button } from "../../../components/Button";
 import { InputFile } from "../../../components/InputFile";
 import { PrintFormInput } from "../../../components/PrintFormInput";
 import { SelectInput } from "../../../components/Select";
 import { TextArea } from "../../../components/TextArea";
-import { Container, Content, Footer, FormContainer, Title, TitleInput } from "./styles";
+import { ButtonBack, Container, Content, Footer, FormContainer, Header, Title, TitleInput } from "./styles";
 import { useNavigate } from "react-router-dom";
 
 export function RequestPrinting() {
@@ -18,7 +19,13 @@ export function RequestPrinting() {
   return (
     <Container>
       <Content>
+        <Header>
+        <ButtonBack onClick={() => navigate("/")}>
+            <ArrowLeft size={20} weight="bold" />
+          </ButtonBack>
         <Title>Solicitar Impressão</Title>
+        </Header>
+        
 
         <FormContainer>
           <TitleInput>Título</TitleInput>

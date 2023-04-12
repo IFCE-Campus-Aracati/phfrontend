@@ -2,19 +2,23 @@ import styled from "styled-components";
 import { theme } from "../../../styles/theme";
 
 export const Container = styled.div`
-  padding: 1.5rem 3rem;
+  padding: 1.5rem;
 `;
 
 export const Header = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 30rem;
+
 `;
 
-export const InputSearchContainer = styled.div`
+export const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 1.5rem;
+`;
+
+export const InputContainer = styled.div`
+  max-width: 20%;
 `;
 
 export const TitleContainer = styled.div`
