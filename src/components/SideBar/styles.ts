@@ -35,6 +35,7 @@ export const Root = styled(Avatar.Root)`
   width: 3rem;
   border-radius: 100%;
   background-color: ${theme.colors.white};
+  cursor: pointer;
 `;
 
 export const Image = styled(Avatar.Image)`

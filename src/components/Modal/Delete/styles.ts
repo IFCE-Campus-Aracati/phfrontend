@@ -5,7 +5,7 @@ export const Body = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
-  height: 100%;
+  height: 8rem;
 `;
 
 export const TextInfo = styled.span`
@@ -16,6 +16,10 @@ export const TextInfo = styled.span`
 
 export const Text = styled.span`
   font-weight: normal;
+  color: ${theme.colors.white};
 `;
 
-export const ButtonArea = styled.div``;
+export const ButtonArea = styled.div`
+  display: flex;
+  gap: 1rem;
+`;

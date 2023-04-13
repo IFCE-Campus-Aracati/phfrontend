@@ -107,7 +107,7 @@ export function SideBar({ variant }: SideBarProps) {
   return (
     <Container>
       <NavContainer>
-        <Root onClick={() => navigate("/client/profile")} >
+        <Root onClick={() => navigate("/client/profile")}>
           <Image src="" alt="Foto de perfil" />
           <Fallback delayMs={1000}>GM</Fallback>
         </Root>
@@ -137,7 +137,7 @@ export function SideBar({ variant }: SideBarProps) {
                 </Button>
               );
             })}
-        <ButtonSignout onClick={() => navigate("/")} >
+        <ButtonSignout onClick={() => navigate("/")}>
           <SignOut color={"#FFF"} size={"1.5rem"} />
         </ButtonSignout>
       </NavContainer>

@@ -11,10 +11,11 @@ export const Body = styled.div`
 export const TextInfo = styled.span`
   color: ${theme.colors.white};
   margin-bottom: 1rem;
+  font-weight: bold;
 `;
 
 export const Text = styled.span`
-  font-weight: bold;
+  font-weight: normal;
 `;
 
 export const ButtonArea = styled.div``;

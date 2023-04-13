@@ -77,14 +77,20 @@ export function PrintersTable({
                       </Modal>
                     )}
                     {isEdit && (
-                      <ButtonIcon onClick={() => navigate("/admin/list_printers/edit_printer")}>
+                      <ButtonIcon
+                        onClick={() =>
+                          navigate("/admin/list_printers/edit_printer")
+                        }
+                      >
                         <PencilSimpleLine size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}
                     {isDelete && (
-                      <ButtonIcon onClick={() => alert("FOI")}>
-                        <Trash size={"1rem"} color={"#FFF"} />
-                      </ButtonIcon>
+                      <Modal title="Você deseja excluir?" variant="delete">
+                        <ButtonIcon>
+                          <Trash size={"1rem"} color={"#FFF"} />
+                        </ButtonIcon>
+                      </Modal>
                     )}
                   </RowIcons>
                 </TableData>

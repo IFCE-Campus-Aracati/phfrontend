@@ -20,6 +20,7 @@ import {
   Trash,
 } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../Modal";
 
 export interface ListTableDataProps {
   id: string;
@@ -69,12 +70,22 @@ export function ListTable({
                 <TableData>
                   <RowIcons>
                     {isView && (
-                      <ButtonIcon onClick={() => alert("FOI")}>
-                        <MagnifyingGlass size={"1rem"} color={"#FFF"} />
-                      </ButtonIcon>
+                      <Modal
+                        title="Deatalhes"
+                        variant="detailsPrint"
+                        route={"/admin/list_prints/edit_print"}
+                      >
+                        <ButtonIcon>
+                          <MagnifyingGlass size={"1rem"} color={"#FFF"} />
+                        </ButtonIcon>
+                      </Modal>
                     )}
                     {isEdit && (
-                      <ButtonIcon onClick={() => navigate("/admin/list_prints/edit_print")}>
+                      <ButtonIcon
+                        onClick={() =>
+                          navigate("/admin/list_prints/edit_print")
+                        }
+                      >
                         <PencilSimpleLine size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}
