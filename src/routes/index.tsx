@@ -22,6 +22,7 @@ import { RegisterListPrint } from "../pages/Admin/ListPrints/RegisterListPrint";
 import { EditPrinter } from "../pages/Admin/ListPrinters/EditPrinter";
 import { RegisterPrinter } from "../pages/Admin/ListPrinters/RegisterPrinter";
 import { EditUser } from "../pages/Admin/ListUsers/EditUser";
+import { Dashboard } from "../pages/Admin/Dashboard";
 
 export function RoutesApp() {
   return (
@@ -50,6 +51,7 @@ export function RoutesApp() {
         <Route path="/admin/list_printers/edit_printer" element={<EditPrinter />} />
         <Route path="/admin/list_printers/register_printer" element={<RegisterPrinter />} />
         <Route path="/admin/my_prints" element={<MyPrints />} />
+        <Route path="/admin/dashboard" element={<Dashboard />} />
       </Route>
     </Routes>
   );

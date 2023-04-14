@@ -65,7 +65,7 @@ export function SideBar({ variant }: SideBarProps) {
               weight={pathname === "/" ? "fill" : "regular"}
             />
           ),
-          to: "/",
+          to: "/admin/dashboard",
         },
         {
           label: "Users",
@@ -116,27 +116,27 @@ export function SideBar({ variant }: SideBarProps) {
 
         {variant === "admin"
           ? icons[0].admin.map((item) => {
-              return (
-                <Button
-                  key={item.label}
-                  onClick={() => navigate(item.to)}
-                  isFocus={pathname === item.to}
-                >
-                  {item.icon}
-                </Button>
-              );
-            })
+            return (
+              <Button
+                key={item.label}
+                onClick={() => navigate(item.to)}
+                isFocus={pathname === item.to}
+              >
+                {item.icon}
+              </Button>
+            );
+          })
           : icons[0].client.map((item) => {
-              return (
-                <Button
-                  key={item.label}
-                  onClick={() => navigate(item.to)}
-                  isFocus={pathname === item.to}
-                >
-                  {item.icon}
-                </Button>
-              );
-            })}
+            return (
+              <Button
+                key={item.label}
+                onClick={() => navigate(item.to)}
+                isFocus={pathname === item.to}
+              >
+                {item.icon}
+              </Button>
+            );
+          })}
         <ButtonSignout onClick={() => navigate("/")}>
           <SignOut color={"#FFF"} size={"1.5rem"} />
         </ButtonSignout>

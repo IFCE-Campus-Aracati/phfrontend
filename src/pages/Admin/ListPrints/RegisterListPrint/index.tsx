@@ -1,16 +1,15 @@
 import { Button } from "../../../../components/Button";
 import { InputFile } from "../../../../components/InputFile";
 import { PrintFormInput } from "../../../../components/PrintFormInput";
-import { RadioGroup } from "../../../../components/RadioGroup";
 import { SelectInput } from "../../../../components/Select";
 import { TextArea } from "../../../../components/TextArea";
 import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachments, TextAttachments, InputDate, InputText, StatusContainer } from "./styles";
 import { useNavigate } from "react-router-dom";
 
 const options = [
-  { value: "option1", text: "ABS" },
-  { value: "option2", text: "PLA" },
-  { value: "option3", text: "PETG" },
+  { value: "ABS", text: "ABS" },
+  { value: "PLA", text: "PLA" },
+  { value: "PETG", text: "PETG" },
 ];
 
 export function RegisterListPrint() {

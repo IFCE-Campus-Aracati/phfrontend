@@ -2,7 +2,7 @@ import { Container, IconContainer, RootContainer, SelectContent, SelectItem, Sel
 import * as Select from '@radix-ui/react-select';
 import { CaretDown, CaretUp, Check } from "@phosphor-icons/react";
 import classnames from 'classnames';
-import React, { SelectHTMLAttributes, useState, forwardRef, useRef} from "react";
+import React, { SelectHTMLAttributes, useState, forwardRef, useRef } from "react";
 
 
 interface Options {
@@ -10,23 +10,23 @@ interface Options {
   text: string;
 }
 
-interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement>{
+interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   placeholder: string;
   options: Options[];
   open?: boolean;
 }
 
-export function SelectInput({placeholder, open, options, ...props} : SelectProps ) {
+export function SelectInput({ placeholder, open, options, ...props }: SelectProps) {
   const [openSelect, isOpenSelect] = useState(open);
- 
+
   const [value, setValue] = useState<string>("");
 
   return (
     <Container>
       <RootContainer onOpenChange={isOpenSelect} value={value} onValueChange={(text) => setValue(text)}>
-        <TriggerContainer aria-label="Food" value={"oi"}>
+        <TriggerContainer aria-label="Opções" value={"oi"}>
           <SelectValue placeholder={placeholder}>
-            { value ? value : placeholder}
+            {value ? value : placeholder}
           </SelectValue>
           <IconContainer className="SelectIcon">
             <CaretDown size={20} />
@@ -39,9 +39,9 @@ export function SelectInput({placeholder, open, options, ...props} : SelectProps
               <Select.Group >
                 <SelectLabel className="SelectLabel">Materiais Disponíveis</SelectLabel>
                 {options.map((option) => (
-                     <SelectItem className="SelectItem" value={option.value}>
-                     <TextItem>{option.text}</TextItem>
-                   </SelectItem>
+                  <SelectItem className="SelectItem" value={option.value}>
+                    <TextItem>{option.text}</TextItem>
+                  </SelectItem>
                 ))}
               </Select.Group>
             </SelectViewPort>
