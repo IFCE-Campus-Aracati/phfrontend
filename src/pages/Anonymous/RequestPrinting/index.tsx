@@ -11,48 +11,48 @@ export function RequestPrinting() {
   const navigate = useNavigate();
 
   const options = [
-    {value: "ABS", text: "ABS"},
-    {value: "exemplo1", text: "exemplo1"},
-    {value: "exemplo2", text: "exemplo2"},
+    { value: "ABS", text: "ABS" },
+    { value: "PETG", text: "PETG" },
+    { value: "PLA", text: "PLA" },
   ];
 
   return (
     <Container>
       <Content>
         <Header>
-        <ButtonBack onClick={() => navigate("/")}>
+          <ButtonBack onClick={() => navigate("/")}>
             <ArrowLeft size={20} weight="bold" />
           </ButtonBack>
-        <Title>Solicitar Impressão</Title>
+          <Title>Solicitar Impressão</Title>
         </Header>
-        
+
 
         <FormContainer>
           <TitleInput>Título</TitleInput>
-          <PrintFormInput placeholder="Título da sua impressão"/>
+          <PrintFormInput placeholder="Título da sua impressão" />
 
           <TitleInput>Descrição</TitleInput>
-          <TextArea placeholder="Informe alguma informação sobre o que você deseja imprimir"/>
+          <TextArea placeholder="Informe alguma informação sobre o que você deseja imprimir" />
 
           <TitleInput>Arquivo para impressão</TitleInput>
-          <InputFile label={"Anexar"}/>
+          <InputFile label={"Anexar"} />
 
           <TitleInput>Material para Impressão</TitleInput>
-          <SelectInput placeholder="Selecione o Material" options={options}/>
+          <SelectInput placeholder="Selecione o Material" options={options} />
         </FormContainer>
       </Content>
       <Footer>
-        <Button 
-          title="Cancelar" 
-          variant="outline" 
-          size="small" 
+        <Button
+          title="Cancelar"
+          variant="outline"
+          size="small"
           onClick={() => navigate("/")}
-          />
-        <Button 
-          title="ENVIAR" 
-          variant="fill" 
-          size="small" 
-          />
+        />
+        <Button
+          title="ENVIAR"
+          variant="fill"
+          size="small"
+        />
       </Footer>
     </Container>
   );

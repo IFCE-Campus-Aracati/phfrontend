@@ -6,19 +6,19 @@ import { TextArea } from "../../../../components/TextArea";
 import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachments, TextAttachments, InputDate, InputText, StatusContainer } from "./styles";
 import { useNavigate } from "react-router-dom";
 
-const options1 = [
-  { value: "option1", text: "ABS" },
-  { value: "option2", text: "PLA" },
-  { value: "option3", text: "PETG" },
-];
-
-const options2 = [
-  { value: "option1", text: "3D" },
-  { value: "option2", text: "Corte" },
-];
-
 export function RegisterPrinter() {
   const navigate = useNavigate();
+
+  const options1 = [
+    { value: "ABS", text: "ABS" },
+    { value: "PLA", text: "PLA" },
+    { value: "PETG", text: "PETG" },
+  ];
+
+  const options2 = [
+    { value: "3D", text: "3D" },
+    { value: "Corte", text: "Corte" },
+  ];
 
   return (
     <Container>

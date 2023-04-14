@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { SideBar } from "../../../../components/SideBar";
 
 const options = [
-  { value: "option1", text: "ABS" },
-  { value: "option2", text: "PLA" },
-  { value: "option3", text: "PETG" },
+  { value: "ABS", text: "ABS" },
+  { value: "PLA", text: "PLA" },
+  { value: "PETG", text: "PETG" },
 ];
 
 export function CreatePrint() {
@@ -22,14 +22,14 @@ export function CreatePrint() {
         <Title>Solicitar Impressão</Title>
 
         <FormContainer>
-          <TitleInput style={{marginTop: "0"}}>Título</TitleInput>
+          <TitleInput style={{ marginTop: "0" }}>Título</TitleInput>
           <PrintFormInput placeholder="Título da sua impressão" />
 
           <TitleInput>Descrição</TitleInput>
           <TextArea placeholder="Informe alguma informação sobre o que você deseja imprimir" />
 
           <TitleInput>Arquivo para impressão</TitleInput>
-            <InputFile label={"Anexar"} />
+          <InputFile label={"Anexar"} />
           <TitleInput>Material para Impressão</TitleInput>
           <SelectInput placeholder="Selecione o Material" open={true} options={options} />
           <Footer>
