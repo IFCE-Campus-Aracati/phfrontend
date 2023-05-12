@@ -17,9 +17,26 @@ import {
 import HomeImage from "../../assets/home-image.png";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
+import { useState } from "react";
+import { useAuth } from "../../hooks/auth";
 
 export function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { signIn } = useAuth();
+
   const navigate = useNavigate();
+
+  function handleSignIn() {
+    try {
+      signIn(email, password);
+      navigate("/client/my_prints");
+    } catch (error) {
+      console.log(error);
+      return alert('Não foi possível realizar cadastro.')
+    }
+  }
 
   return (
     <Container>
@@ -32,12 +49,23 @@ export function SignIn() {
         <FormContainer>
           <Title>Printer Hub</Title>
           <SubTitle>Login</SubTitle>
-          <Input label="E-mail" variant="form" placeholder="meumelhoremail@gmail.com" ></Input>
-          <Input password={true} label="Senha" variant="form" placeholder={""}  ></Input>
+          <Input
+            label="E-mail"
+            variant="form"
+            placeholder="meumelhoremail@gmail.com"
+            onChange={e => setEmail(e.target.value)}
+          />
+          <Input
+            password={true}
+            label="Senha"
+            variant="form"
+            placeholder={""}
+            onChange={e => setPassword(e.target.value)}
+          />
           <SmallLinkButton to={"/"}>
             <TextLink>Esqueceu a senha?</TextLink>
           </SmallLinkButton>
-          <Button size="xlarge" variant="fill" title="Entrar" onClick={() => navigate("/admin/list_prints")} />
+          <Button size="xlarge" variant="fill" title="Entrar" onClick={() => handleSignIn()} />
           <TextContainer>
             <Text>Não possui uma conta ainda?</Text>
             <SmallLinkButton to={"/signup"}>
