@@ -20,12 +20,15 @@ import {
   Button,
   ButtonSignout,
 } from "./styles";
+import { useAuth } from "../../hooks/auth";
 
 interface SideBarProps {
   variant: "admin" | "client";
 }
 
 export function SideBar({ variant }: SideBarProps) {
+  const { signOut } = useAuth();
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -104,6 +107,11 @@ export function SideBar({ variant }: SideBarProps) {
     },
   ];
 
+  function handleSignOut() {
+    signOut();
+    navigate("/");
+  }
+
   return (
     <Container>
       <NavContainer>
@@ -137,7 +145,7 @@ export function SideBar({ variant }: SideBarProps) {
               </Button>
             );
           })}
-        <ButtonSignout onClick={() => navigate("/")}>
+        <ButtonSignout onClick={handleSignOut}>
           <SignOut color={"#FFF"} size={"1.5rem"} />
         </ButtonSignout>
       </NavContainer>

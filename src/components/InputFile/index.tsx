@@ -7,7 +7,6 @@ interface InputFileProps {
   label: string;
 }
 
-//TODO: Fazer aparecer o nome do arquivo!
 export function InputFile({ label, ...rest }: InputFileProps) {
   const [documentName, setDocumentName] = useState();
 

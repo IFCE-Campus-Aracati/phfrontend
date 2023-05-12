@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { Logo } from "../Home/styles";
 import {
   Body,
   Container,
@@ -18,9 +17,42 @@ import {
 import HomeImage from "../../assets/home-image.png";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
+import { useState } from "react";
+import { useAuth } from "../../hooks/auth";
+
+interface IUser {
+  name: string;
+  email: string;
+  password: string;
+}
+
 
 export function SignUp() {
+  const { signUp } = useAuth();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   const navigate = useNavigate();
+
+  function handleSignUp() {
+    try {
+      if (!password || !confirmPassword) {
+        return alert('Informe a senha');
+      }
+      if (password != confirmPassword) {
+        return alert('As senhas são diferentes');
+      }
+      signUp(email, name, password,);
+      navigate("/");
+
+    } catch (error) {
+      console.log(error);
+      return alert('Não foi possível realizar cadastro.')
+    }
+  }
 
   return (
     <Container>
@@ -31,13 +63,47 @@ export function SignUp() {
           </LinkButton>
         </HeaderNavigation>
         <FormContainer>
-            <Title>Printer Hub</Title>
-            <SubTitle>Cadastre-se</SubTitle>
-          <Input label="Nome" variant="form" placeholder="Fulano da Silva" ></Input>
-          <Input label="E-mail" variant="form" placeholder="meumelhoremail@gmail.com" ></Input>
-          <Input password={true} label="Senha" variant="form" placeholder={""}  ></Input>
-          <Input password={true} label="Confirmar Senha" variant="form" placeholder={""} ></Input>
-          <Button size="xlarge" variant="fill" title="Cadastrar" onClick={() => navigate("/client/my_prints")} />
+          <Title>Printer Hub</Title>
+          <SubTitle>Cadastre-se</SubTitle>
+          <Input
+            label="Nome"
+            variant="form"
+            value={name}
+            placeholder="Digite seu nome"
+            onChange={e => setName(e.target.value)}
+          />
+          <Input
+            label="E-mail"
+            variant="form"
+            value={email}
+            placeholder="meuemail@gmail.com"
+            onChange={e => setEmail(e.target.value)}
+          />
+          <Input
+            password={true}
+            label="Senha"
+            variant="form"
+            placeholder={"Informe sua senha"}
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+          />
+          <Input
+            password={true}
+            label="Confirmar Senha"
+            variant="form"
+            placeholder={"Repita sua senha"}
+            value={confirmPassword}
+            onChange={event => setConfirmPassword(event.target.value)}
+          />
+
+          <Button
+            size="xlarge"
+            variant="fill"
+            title="Cadastrar"
+            onClick={
+              () => handleSignUp()
+            }
+          />
           <TextContainer>
             <Text>Já possui uma conta?</Text>
             <SmallLinkButton to={"/signin"}>

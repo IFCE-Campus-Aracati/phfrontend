@@ -12,11 +12,14 @@ import {
 import { Eye, EyeSlash, MagnifyingGlass } from "@phosphor-icons/react";
 import { theme } from "../../styles/theme";
 
+
 interface InputProps extends React.HTMLAttributes<HTMLInputElement> {
   label?: string;
   placeholder: string;
   variant: "search" | "form";
   password?: boolean;
+  onChange?: (e: any) => void;
+  value?: string;
 }
 
 export function Input({
@@ -62,5 +65,6 @@ export function Input({
           </ContainerInput>
         </Container>
       );
+
   }
 }
