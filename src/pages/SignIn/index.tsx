@@ -17,27 +17,35 @@ import {
 import HomeImage from "../../assets/home-image.png";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/auth";
 
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { signIn } = useAuth();
+  const { signIn, userRole } = useAuth();
 
   const navigate = useNavigate();
 
-  function handleSignIn() {
+  async function handleSignIn() {
     try {
-      signIn(email, password);
-      navigate("/client/my_prints");
+      await signIn(email, password);
+
+      if (userRole) {
+        if (userRole === 'client') {
+          navigate('/client/my_prints');
+        } else if (userRole === 'admin') {
+          navigate('/admin/list_prints');
+        } else {
+          navigate('/');
+        }
+      }
     } catch (error) {
       console.log(error);
-      return alert('Não foi possível realizar cadastro.')
+      alert('Não foi possível realizar o login.');
     }
   }
-
   return (
     <Container>
       <Body>

@@ -1,40 +1,55 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import api from "../server/api";
+import { useNavigate } from "react-router";
 
 interface IUser {
+  id: string;
   name: string;
   email: string;
-  role: string;
+  role: 'client' | 'admin';
   profile_photo: string;
-  created_At: Date;
-  update_At: Date;
   token: string;
 }
 
+
 interface AuthContextData {
   signUp: (name: string, email: string, password: string) => void,
-  signIn: (email: string, password: string) => void;
-  signOut: () => void,
+  signIn: (email: string, password: string) => Promise<IUser | void>;
+  signOut: () => void;
+  checkRole: (role: 'client' | 'admin') => boolean;
+  userRole: string | null;
   user: IUser | null;
+  loading: boolean
+  isAuthenticated: boolean;
 }
-
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-const AuthContext = createContext({} as AuthContextData);
+export const AuthContext = createContext({} as AuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<IUser | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [roleUser, isRoleUser] = useState("");
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const isAuthenticated = !!user;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadStorage() {
       const userStorage = await localStorage.getItem("@printHub:user");
 
       if (userStorage) {
-        setUser(JSON.parse(userStorage));
+        const userData = JSON.parse(userStorage) as IUser;
+        setUser(userData)
+        setUserRole(userData.role);
+
       }
+
+
+      setLoading(false);
     }
 
     loadStorage();
@@ -59,32 +74,51 @@ function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function signIn(email: string, password: string) {
-    const response = await api.post('/signIn', {
-      email: email,
-      password: password,
-    }).then((response) => {
-      const isUser = response.data;
+    try {
+      const response = await api.post('/signIn', {
+        email: email,
+        password: password,
+      });
 
-      let data = {
-        id: isUser.id,
-        name: isUser.name,
-        email: isUser.email,
-        role: isUser.role,
-        profile_photo: isUser.profile_photo,
-        created_At: isUser.created_at,
-        update_At: isUser.update_at,
-        token: isUser.token
+      if (response.status === 200) {
+        const userData = response.data as IUser;
+
+        let data = {
+          id: userData.id,
+          name: userData.name,
+          email: userData.email,
+          role: userData.role,
+          token: userData.token,
+          profile_photo: userData.profile_photo,
+        }
+
+        api.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
+
+        setUser(data);
+        userStorage(data);
+        setUserRole(data.role);
+
+        return data;
       }
-
-      userStorage(data);
-      setUser(data);
-    }).catch((err) => console.log(err));
+    } catch (err) {
+      console.log(err);
+      throw new Error("Não foi possível realizar o login.");
+    }
   }
 
   async function signOut() {
     await localStorage.clear();
-    setUser(null);
+    setUser({} as IUser);
   }
+
+  function checkRole(role: 'client' | 'admin'): boolean {
+    console.log(user?.role)
+    return user?.role === role;
+
+  }
+
+  console.log(user)
+  console.log(userRole);
 
   return (
     <AuthContext.Provider
@@ -92,7 +126,11 @@ function AuthProvider({ children }: AuthProviderProps) {
         signUp,
         signIn,
         user,
+        userRole,
+        checkRole,
         signOut,
+        loading,
+        isAuthenticated
       }}
     >
       {children}
