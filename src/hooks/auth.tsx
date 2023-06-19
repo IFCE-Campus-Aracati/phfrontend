@@ -1,26 +1,24 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import api from "../server/api";
-import { useNavigate } from "react-router";
 
 interface IUser {
   id: string;
   name: string;
   email: string;
-  role: 'client' | 'admin';
+  role: "client" | "admin";
   profile_photo: string;
   token: string;
 }
 
-
 interface AuthContextData {
-  signUp: (name: string, email: string, password: string) => void,
-  signIn: (email: string, password: string) => Promise<IUser | void>;
+  signUp: (name: string, email: string, password: string) => void;
+  signIn: (email: string, password: string) => void;
   signOut: () => void;
-  checkRole: (role: 'client' | 'admin') => boolean;
-  userRole: string | null;
   user: IUser | null;
-  loading: boolean
-  isAuthenticated: boolean;
+  loading: boolean;
+  signed: boolean;
 }
 interface AuthProviderProps {
   children: ReactNode;
@@ -29,11 +27,9 @@ interface AuthProviderProps {
 export const AuthContext = createContext({} as AuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<IUser | null>(null);
+  const [user, setUser] = useState<IUser>({} as IUser);
   const [loading, setLoading] = useState(true);
-  const [roleUser, isRoleUser] = useState("");
   const [userRole, setUserRole] = useState<string | null>(null);
-  const isAuthenticated = !!user;
 
   const navigate = useNavigate();
 
@@ -43,11 +39,17 @@ function AuthProvider({ children }: AuthProviderProps) {
 
       if (userStorage) {
         const userData = JSON.parse(userStorage) as IUser;
-        setUser(userData)
+        setUser(userData);
         setUserRole(userData.role);
 
+        if (userData.role === "admin") {
+          navigate("/admin/list_prints");
+          toast.success(`Sejá bem-vindo, ${userData.name}`);
+        } else if (userData.role === "client") {
+          navigate("/client/my_prints");
+          toast.success(`Sejá bem-vindo, ${userData.name}`);
+        }
       }
-
 
       setLoading(false);
     }
@@ -61,21 +63,8 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   async function signUp(name: string, email: string, password: string) {
     try {
-      const response = await api.post('/signUp', {
+      const response = await api.post("/signUp", {
         name: name,
-        email: email,
-        password: password
-      });
-
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function signIn(email: string, password: string) {
-    try {
-      const response = await api.post('/signIn', {
         email: email,
         password: password,
       });
@@ -90,7 +79,7 @@ function AuthProvider({ children }: AuthProviderProps) {
           role: userData.role,
           token: userData.token,
           profile_photo: userData.profile_photo,
-        }
+        };
 
         api.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
 
@@ -98,44 +87,77 @@ function AuthProvider({ children }: AuthProviderProps) {
         userStorage(data);
         setUserRole(data.role);
 
-        return data;
+        if (data.role === "admin") {
+          navigate("/admin/list_prints");
+          toast.success(`Sejá bem-vindo, ${userData.name}`);
+        } else if (data.role === "client") {
+          navigate("/client/my_prints");
+          toast.success(`Sejá bem-vindo, ${userData.name}`);
+        }
+      }
+    } catch (error) {
+      return toast.error("Usuário ou senha inválida");
+    }
+  }
+
+  async function signIn(email: string, password: string) {
+    try {
+      const response = await api.post("/signIn", {
+        email: email,
+        password: password,
+      });
+
+      if (response.status === 200) {
+        const userData = response.data as IUser;
+
+        let data = {
+          id: userData.id,
+          name: userData.name,
+          email: userData.email,
+          role: userData.role,
+          token: userData.token,
+          profile_photo: userData.profile_photo,
+        };
+
+        api.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
+
+        setUser(data);
+        userStorage(data);
+        setUserRole(data.role);
+
+        if (data.role === "admin") {
+          navigate("/admin/list_prints");
+          return toast.success(`Sejá bem-vindo, ${userData.name}`);
+        } else if (data.role === "client") {
+          navigate("/client/my_prints");
+          return toast.success(`Sejá bem-vindo, ${userData.name}`);
+        }
       }
     } catch (err) {
-      console.log(err);
-      throw new Error("Não foi possível realizar o login.");
+      return toast.error("Usuário ou senha inválida");
     }
   }
 
   async function signOut() {
     await localStorage.clear();
     setUser({} as IUser);
+    navigate("/");
   }
-
-  function checkRole(role: 'client' | 'admin'): boolean {
-    console.log(user?.role)
-    return user?.role === role;
-
-  }
-
-  console.log(user)
-  console.log(userRole);
 
   return (
     <AuthContext.Provider
       value={{
+        signed: !!user?.token,
         signUp,
         signIn,
         user,
-        userRole,
-        checkRole,
         signOut,
         loading,
-        isAuthenticated
       }}
     >
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
 
 function useAuth(): AuthContextData {

@@ -1,25 +1,21 @@
-import { Route, Navigate, RouteProps, RouterProps, useLocation } from 'react-router-dom';
-import { useAuth } from '../hooks/auth';
-import { useEffect } from 'react';
+import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../hooks/auth";
+interface PrivateRouteProps {
+  role: "client" | "admin";
+}
 
-export type ProtectedRouteProps = {
-  isAuthenticated: boolean;
-  authenticationPath: string;
-  outlet: JSX.Element;
-  role: 'client' | 'admin';
-};
+export function PrivateRoute({ role }: PrivateRouteProps) {
+  const { user, signed } = useAuth();
 
-export function PrivateRoute({ isAuthenticated, authenticationPath, outlet, role }: ProtectedRouteProps) {
-  const { user } = useAuth();
+  const checkUserPermission = role === user?.role;
 
-  const userString = user;
-  const isUserAuthenticated = isAuthenticated || (userString !== null);
-  const storedUser = userString ? userString : null;
-
-
-  if (isUserAuthenticated && storedUser?.role === role) {
-    return outlet;
-  } else {
-    return <Navigate to={{ pathname: authenticationPath }} />;
+  if (!signed) {
+    return <Navigate to={"/"} />;
   }
-};
+
+  if (!checkUserPermission) {
+    return user?.role === "admin" ? <Navigate to={"/admin/list_prints"} /> : <Navigate to={"/client/my_prints"} />;
+  }
+
+  return <Outlet />;
+}

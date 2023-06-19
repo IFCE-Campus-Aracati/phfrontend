@@ -17,33 +17,21 @@ import {
 import HomeImage from "../../assets/home-image.png";
 import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../hooks/auth";
+import { toast } from "react-toastify";
 
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { signIn, userRole } = useAuth();
-
-  const navigate = useNavigate();
+  const { signIn } = useAuth();
 
   async function handleSignIn() {
     try {
       await signIn(email, password);
-
-      if (userRole) {
-        if (userRole === 'client') {
-          navigate('/client/my_prints');
-        } else if (userRole === 'admin') {
-          navigate('/admin/list_prints');
-        } else {
-          navigate('/');
-        }
-      }
     } catch (error) {
-      console.log(error);
-      alert('Não foi possível realizar o login.');
+      return toast.error("Não foi possível realizar o login.");
     }
   }
   return (
@@ -61,14 +49,14 @@ export function SignIn() {
             label="E-mail"
             variant="form"
             placeholder="meumelhoremail@gmail.com"
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Input
             password={true}
             label="Senha"
             variant="form"
             placeholder={""}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <SmallLinkButton to={"/"}>
             <TextLink>Esqueceu a senha?</TextLink>
