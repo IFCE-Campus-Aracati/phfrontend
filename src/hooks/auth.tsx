@@ -44,10 +44,8 @@ function AuthProvider({ children }: AuthProviderProps) {
 
         if (userData.role === "admin") {
           navigate("/admin/list_prints");
-          toast.success(`Sejá bem-vindo, ${userData.name}`);
         } else if (userData.role === "client") {
           navigate("/client/my_prints");
-          toast.success(`Sejá bem-vindo, ${userData.name}`);
         }
       }
 
