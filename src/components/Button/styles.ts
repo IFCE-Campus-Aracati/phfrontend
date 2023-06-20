@@ -6,16 +6,19 @@ interface ButtonProps {
 }
 
 export const Container = styled.button<ButtonProps>`
-  background-color: ${(props) =>
-    props.variant === "fill" ? theme.colors.blue.light : "transparent"};
-  border: ${(props) =>
-    props.variant === "fill" ? "none" : `1px solid ${theme.colors.blue.light}`};
+  background-color: ${(props) => (props.variant === "fill" ? theme.colors.blue.light : "transparent")};
+  border: ${(props) => (props.variant === "fill" ? "none" : `1px solid ${theme.colors.blue.light}`)};
   border-radius: 4px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+  transition: 0.3s ease;
+
+  :hover {
+    background-color: ${(props) => (props.variant === "fill" ? theme.colors.blue.dark : "transparent")};
+  }
 `;
 
 export const Title = styled.p`
