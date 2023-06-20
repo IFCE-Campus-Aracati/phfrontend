@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import {
   Body,
   Container,
@@ -19,13 +18,7 @@ import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { useState } from "react";
 import { useAuth } from "../../hooks/auth";
-
-interface IUser {
-  name: string;
-  email: string;
-  password: string;
-}
-
+import { toast } from "react-toastify";
 
 export function SignUp() {
   const { signUp } = useAuth();
@@ -35,22 +28,18 @@ export function SignUp() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const navigate = useNavigate();
-
   function handleSignUp() {
     try {
       if (!password || !confirmPassword) {
-        return alert('Informe a senha');
+        return toast.warning("Informa a senha");
       }
       if (password != confirmPassword) {
-        return alert('As senhas são diferentes');
+        return toast.warning("As senhas são diferentes");
       }
-      signUp(email, name, password,);
-      navigate("/");
 
+      signUp(email, name, password);
     } catch (error) {
-      console.log(error);
-      return alert('Não foi possível realizar cadastro.')
+      return toast.error("Não foi possível realizar o cadastro.");
     }
   }
 
@@ -70,14 +59,14 @@ export function SignUp() {
             variant="form"
             value={name}
             placeholder="Digite seu nome"
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
           />
           <Input
             label="E-mail"
             variant="form"
             value={email}
             placeholder="meuemail@gmail.com"
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Input
             password={true}
@@ -85,7 +74,7 @@ export function SignUp() {
             variant="form"
             placeholder={"Informe sua senha"}
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <Input
             password={true}
@@ -93,17 +82,10 @@ export function SignUp() {
             variant="form"
             placeholder={"Repita sua senha"}
             value={confirmPassword}
-            onChange={event => setConfirmPassword(event.target.value)}
+            onChange={(event) => setConfirmPassword(event.target.value)}
           />
 
-          <Button
-            size="xlarge"
-            variant="fill"
-            title="Cadastrar"
-            onClick={
-              () => handleSignUp()
-            }
-          />
+          <Button size="xlarge" variant="fill" title="Cadastrar" onClick={() => handleSignUp()} />
           <TextContainer>
             <Text>Já possui uma conta?</Text>
             <SmallLinkButton to={"/signin"}>

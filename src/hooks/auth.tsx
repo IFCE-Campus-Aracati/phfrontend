@@ -1,40 +1,57 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import api from "../server/api";
 
 interface IUser {
+  id: string;
   name: string;
   email: string;
-  role: string;
+  role: "client" | "admin";
   profile_photo: string;
-  created_At: Date;
-  update_At: Date;
   token: string;
 }
 
 interface AuthContextData {
-  signUp: (name: string, email: string, password: string) => void,
+  signUp: (name: string, email: string, password: string) => void;
   signIn: (email: string, password: string) => void;
-  signOut: () => void,
+  signOut: () => void;
   user: IUser | null;
+  loading: boolean;
+  signed: boolean;
 }
-
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-const AuthContext = createContext({} as AuthContextData);
+export const AuthContext = createContext({} as AuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<IUser | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<IUser>({} as IUser);
+  const [loading, setLoading] = useState(true);
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadStorage() {
       const userStorage = await localStorage.getItem("@printHub:user");
 
       if (userStorage) {
-        setUser(JSON.parse(userStorage));
+        const userData = JSON.parse(userStorage) as IUser;
+        setUser(userData);
+        setUserRole(userData.role);
+
+        if (userData.role === "admin") {
+          navigate("/admin/list_prints");
+          toast.success(`Sejá bem-vindo, ${userData.name}`);
+        } else if (userData.role === "client") {
+          navigate("/client/my_prints");
+          toast.success(`Sejá bem-vindo, ${userData.name}`);
+        }
       }
+
+      setLoading(false);
     }
 
     loadStorage();
@@ -46,58 +63,101 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   async function signUp(name: string, email: string, password: string) {
     try {
-      const response = await api.post('/signUp', {
+      const response = await api.post("/signUp", {
         name: name,
         email: email,
-        password: password
+        password: password,
       });
 
-      return response.data;
+      if (response.status === 200) {
+        const userData = response.data as IUser;
+
+        let data = {
+          id: userData.id,
+          name: userData.name,
+          email: userData.email,
+          role: userData.role,
+          token: userData.token,
+          profile_photo: userData.profile_photo,
+        };
+
+        api.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
+
+        setUser(data);
+        userStorage(data);
+        setUserRole(data.role);
+
+        if (data.role === "admin") {
+          navigate("/admin/list_prints");
+          toast.success(`Sejá bem-vindo, ${userData.name}`);
+        } else if (data.role === "client") {
+          navigate("/client/my_prints");
+          toast.success(`Sejá bem-vindo, ${userData.name}`);
+        }
+      }
     } catch (error) {
-      console.log(error);
+      return toast.error("Usuário ou senha inválida");
     }
   }
 
   async function signIn(email: string, password: string) {
-    const response = await api.post('/signIn', {
-      email: email,
-      password: password,
-    }).then((response) => {
-      const isUser = response.data;
+    try {
+      const response = await api.post("/signIn", {
+        email: email,
+        password: password,
+      });
 
-      let data = {
-        id: isUser.id,
-        name: isUser.name,
-        email: isUser.email,
-        role: isUser.role,
-        profile_photo: isUser.profile_photo,
-        created_At: isUser.created_at,
-        update_At: isUser.update_at,
-        token: isUser.token
+      if (response.status === 200) {
+        const userData = response.data as IUser;
+
+        let data = {
+          id: userData.id,
+          name: userData.name,
+          email: userData.email,
+          role: userData.role,
+          token: userData.token,
+          profile_photo: userData.profile_photo,
+        };
+
+        api.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
+
+        setUser(data);
+        userStorage(data);
+        setUserRole(data.role);
+
+        if (data.role === "admin") {
+          navigate("/admin/list_prints");
+          return toast.success(`Sejá bem-vindo, ${userData.name}`);
+        } else if (data.role === "client") {
+          navigate("/client/my_prints");
+          return toast.success(`Sejá bem-vindo, ${userData.name}`);
+        }
       }
-
-      userStorage(data);
-      setUser(data);
-    }).catch((err) => console.log(err));
+    } catch (err) {
+      return toast.error("Usuário ou senha inválida");
+    }
   }
 
   async function signOut() {
     await localStorage.clear();
-    setUser(null);
+    setUser({} as IUser);
+    navigate("/");
   }
 
   return (
     <AuthContext.Provider
       value={{
+        signed: !!user?.token,
         signUp,
         signIn,
         user,
         signOut,
+        loading,
       }}
     >
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
 
 function useAuth(): AuthContextData {

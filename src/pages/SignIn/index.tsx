@@ -19,6 +19,7 @@ import { Input } from "../../components/Input";
 import { Button } from "../../components/Button";
 import { useState } from "react";
 import { useAuth } from "../../hooks/auth";
+import { toast } from "react-toastify";
 
 export function SignIn() {
   const [email, setEmail] = useState("");
@@ -26,18 +27,13 @@ export function SignIn() {
 
   const { signIn } = useAuth();
 
-  const navigate = useNavigate();
-
-  function handleSignIn() {
+  async function handleSignIn() {
     try {
-      signIn(email, password);
-      navigate("/client/my_prints");
+      await signIn(email, password);
     } catch (error) {
-      console.log(error);
-      return alert('Não foi possível realizar cadastro.')
+      return toast.error("Não foi possível realizar o login.");
     }
   }
-
   return (
     <Container>
       <Body>
@@ -53,14 +49,14 @@ export function SignIn() {
             label="E-mail"
             variant="form"
             placeholder="meumelhoremail@gmail.com"
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Input
             password={true}
             label="Senha"
             variant="form"
             placeholder={""}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <SmallLinkButton to={"/"}>
             <TextLink>Esqueceu a senha?</TextLink>

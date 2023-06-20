@@ -1,23 +1,17 @@
-import React from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { Button } from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 
-import {
-  Container,
-  Body,
-  HeaderNavigation,
-  ImageSide,
-  LinkButton,
-  TextLink,
-  Logo,
-  RowButtons,
-} from "./styles";
+import { Container, Body, HeaderNavigation, ImageSide, LinkButton, TextLink, Logo, RowButtons } from "./styles";
 
 import HomeImage from "../../assets/home-image.png";
 import LogoImage from "../../assets/logo-image.svg";
+import { useAuth } from "../../hooks/auth";
 
 export function Home() {
   const navigate = useNavigate();
+
+  const { userRole, isAuthenticated } = useAuth();
 
   return (
     <Container>

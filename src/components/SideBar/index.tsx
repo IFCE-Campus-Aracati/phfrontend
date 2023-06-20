@@ -1,25 +1,8 @@
-import React, { ReactNode } from "react";
-import {
-  ListChecks,
-  ChartPieSlice,
-  Users,
-  Printer,
-  ClipboardText,
-  SignOut,
-} from "@phosphor-icons/react";
+import { useLayoutEffect, useEffect, useState } from "react";
+import { ListChecks, ChartPieSlice, Users, Printer, ClipboardText, SignOut } from "@phosphor-icons/react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
-import {
-  Container,
-  NavContainer,
-  Root,
-  Image,
-  Fallback,
-  Body,
-  Divider,
-  Button,
-  ButtonSignout,
-} from "./styles";
+import { Container, NavContainer, Root, Image, Fallback, Body, Divider, Button, ButtonSignout } from "./styles";
 import { useAuth } from "../../hooks/auth";
 
 interface SideBarProps {
@@ -27,10 +10,28 @@ interface SideBarProps {
 }
 
 export function SideBar({ variant }: SideBarProps) {
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
+  const [nameUser, setNameUser] = useState("");
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    function empytPhotoName(name: string | undefined) {
+      const nomes = name?.split(" ");
+
+      if (nomes?.length === 2) {
+        const firstName = nomes[0][0].toUpperCase();
+        const lastName = nomes[1][0].toUpperCase();
+
+        setNameUser(`${firstName}${lastName}`);
+      } else if (nomes?.length === 1) {
+        setNameUser(`${nomes[0][0].toUpperCase()}`);
+      }
+    }
+
+    empytPhotoName(user?.name);
+  }, []);
 
   const icons = [
     {
@@ -65,7 +66,7 @@ export function SideBar({ variant }: SideBarProps) {
             <ChartPieSlice
               color={"#FFF"}
               size={"1.5rem"}
-              weight={pathname === "/" ? "fill" : "regular"}
+              weight={pathname === "/admin/dashboard" ? "fill" : "regular"}
             />
           ),
           to: "/admin/dashboard",
@@ -73,11 +74,7 @@ export function SideBar({ variant }: SideBarProps) {
         {
           label: "Users",
           icon: (
-            <Users
-              color={"#FFF"}
-              size={"1.5rem"}
-              weight={pathname === "/admin/list_users" ? "fill" : "regular"}
-            />
+            <Users color={"#FFF"} size={"1.5rem"} weight={pathname === "/admin/list_users" ? "fill" : "regular"} />
           ),
           to: "/admin/list_users",
         },
@@ -109,42 +106,33 @@ export function SideBar({ variant }: SideBarProps) {
 
   function handleSignOut() {
     signOut();
-    navigate("/");
   }
 
   return (
     <Container>
       <NavContainer>
-        <Root onClick={() => navigate("/client/profile")}>
+        <Root onClick={() => navigate(`/${user?.role}/profile`)}>
           <Image src="" alt="Foto de perfil" />
-          <Fallback delayMs={1000}>GM</Fallback>
+          <Fallback delayMs={1000}>{nameUser}</Fallback>
         </Root>
 
         <Divider />
 
         {variant === "admin"
           ? icons[0].admin.map((item) => {
-            return (
-              <Button
-                key={item.label}
-                onClick={() => navigate(item.to)}
-                isFocus={pathname === item.to}
-              >
-                {item.icon}
-              </Button>
-            );
-          })
+              return (
+                <Button key={item.label} onClick={() => navigate(item.to)} isFocus={pathname === item.to}>
+                  {item.icon}
+                </Button>
+              );
+            })
           : icons[0].client.map((item) => {
-            return (
-              <Button
-                key={item.label}
-                onClick={() => navigate(item.to)}
-                isFocus={pathname === item.to}
-              >
-                {item.icon}
-              </Button>
-            );
-          })}
+              return (
+                <Button key={item.label} onClick={() => navigate(item.to)} isFocus={pathname === item.to}>
+                  {item.icon}
+                </Button>
+              );
+            })}
         <ButtonSignout onClick={handleSignOut}>
           <SignOut color={"#FFF"} size={"1.5rem"} />
         </ButtonSignout>
