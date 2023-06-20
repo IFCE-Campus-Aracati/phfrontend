@@ -5,49 +5,35 @@ import { Plus } from "@phosphor-icons/react";
 import { Table } from "../../../components/Table";
 import { ListTableDataProps } from "../../../components/Table/ListTable";
 import { useNavigate } from "react-router-dom";
-
-const list: ListTableDataProps[] = [
-  {
-    id: "1",
-    title: "Peça de xadrez",
-    owner: "Gabriel C Moura",
-    date: "30/03/2023",
-    status: "pending",
-  },
-  {
-    id: "2",
-    title: "Peça de xadrez",
-    owner: "Gabriel C Moura",
-    date: "30/03/2023",
-    status: "pending",
-  },
-  {
-    id: "3",
-    title: "Peça de xadrez",
-    owner: "Gabriel C Moura",
-    date: "30/03/2023",
-    status: "pending",
-  },
-  {
-    id: "4",
-    title: "Peça de xadrez",
-    owner: "Gabriel C Moura",
-    date: "30/03/2023",
-    status: "pending",
-  },
-  {
-    id: "5",
-    title: "Peça de xadrez",
-    owner: "Gabriel C Moura",
-    date: "30/03/2023",
-    status: "pending",
-  },
-];
+import { useAuth } from "../../../hooks/auth";
+import { useEffect, useState } from "react";
+import api from "../../../server/api";
 
 const header = ["Título", "Emissor", "Data", "Status", "Detalhes"];
 
 export function ListPrints() {
+  const { user } = useAuth();
   const navigate = useNavigate();
+
+  const [printsData, setPrintsData] = useState<ListTableDataProps[]>([]);
+
+  useEffect(() => {
+    async function getPrints() {
+      try {
+        const response = await api.get<ListTableDataProps[]>("/getAllPrints", {
+          headers: { Authorization: `$Bearer ${user?.token}` }
+        });
+
+        setPrintsData(response.data);
+      } catch(err) {
+        console.log(err);
+      }
+    }
+
+    getPrints();   
+
+  }, []);
+
   return (
     <Container>
       <Title>Lista de Impressões</Title>
@@ -67,7 +53,7 @@ export function ListPrints() {
         </Button>
       </Row>
 
-      <Table data={list} header={header} variant="list" />
+      <Table data={printsData} header={header} variant="list" />
     </Container>
   );
 }

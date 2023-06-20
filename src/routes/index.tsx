@@ -50,7 +50,7 @@ export function RoutesApp() {
           <Route path="list_prints/edit_print" element={<EditListPrint />} />
           <Route path="list_prints/register_print" element={<RegisterListPrint />} />
           <Route path="list_users" element={<ListUsers />} />
-          <Route path="list_users/edit_user" element={<EditUser />} />
+          <Route path="list_users/edit_user/:id" element={<EditUser />} />
           <Route path="list_printers" element={<ListPrinters />} />
           <Route path="list_printers/edit_printer" element={<EditPrinter />} />
           <Route path="list_printers/register_printer" element={<RegisterPrinter />} />

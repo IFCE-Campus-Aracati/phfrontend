@@ -25,6 +25,7 @@ export interface UserTableDataProps {
   name: string;
   email: string;
   role: string;
+  profile_photo: string;
 }
 
 interface UserTableProps {
@@ -57,22 +58,21 @@ export function UserTable({
         <Body>
           {data.map((item) => {
             return (
-              <Row>
-                <TableData>{item.id}</TableData>
+              <Row key={item.id}>
                 <TableData>{item.name}</TableData>
                 <TableData>{item.email}</TableData>
                 <TableData>{item.role}</TableData>
                 <TableData>
                   <RowIcons>
                     {isView && (
-                      <Modal title="Detalhes" variant="detailsUser">
+                      <Modal title="Detalhes" variant="detailsUser" route="">
                         <ButtonIcon>
                           <MagnifyingGlass size={"1rem"} color={"#FFF"} />
                         </ButtonIcon>
                       </Modal>
                     )}
                     {isEdit && (
-                      <ButtonIcon onClick={() => navigate("/admin/list_users/edit_user")}>
+                      <ButtonIcon onClick={() => navigate(`/admin/list_users/edit_user/${item.id}`)}>
                         <PencilSimpleLine size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}

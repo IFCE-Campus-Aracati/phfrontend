@@ -1,11 +1,14 @@
 import { Button } from "../../../../components/Button";
 import { RadioGroup } from "../../../../components/RadioGroup";
 import { Container, Content, Footer, FormContainer, Title, TitleInput, StatusContainer, ProfileContent, ImageContent, ImageSide, Subtitle } from "./styles";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DefaultProfile from "../../../../assets/default-profile.jpeg"
 
 export function EditUser() {
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  console.log(id);
 
   return (
     <Container>
