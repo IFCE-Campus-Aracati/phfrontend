@@ -4,11 +4,45 @@ import { Table } from "../../../components/Table";
 import { UserTableDataProps } from "../../../components/Table/UserTable";
 import { useAuth } from "../../../hooks/auth";
 // import { getUsers, useUsers } from "../../../hooks/fetchData/useUsers";
-import api from "../../../server/api";
+
 import { Container, Content, Header, InputContainer, Title } from "./styles";
+import api from "../../../server/api";
 
-const header = ["Nome", "Email", "Cargo", "Detalhes"];
+const header = ["Id", "Nome", "Email", "Cargo", "Detalhes"];
 
+const data: UserTableDataProps[] = [
+  {
+    id: '1',
+    name: 'Mairon S. Nascimento',
+    email: 'mairon.santana.nascimento60@aluno.ifce.edu.br',
+    role: 'Aluno',
+  },
+  {
+    id: '1',
+    name: 'Mairon S. Nascimento',
+    email: 'mairon.santana.nascimento60@aluno.ifce.edu.br',
+    role: 'Aluno',
+  },
+  {
+    id: '1',
+    name: 'Mairon S. Nascimento',
+    email: 'mairon.santana.nascimento60@aluno.ifce.edu.br',
+    role: 'Aluno',
+  },
+  {
+    id: '1',
+    name: 'Mairon S. Nascimento',
+    email: 'mairon.santana.nascimento60@aluno.ifce.edu.br',
+    role: 'Aluno',
+  },
+  {
+    id: '1',
+    name: 'Mairon S. Nascimento',
+    email: 'mairon.santana.nascimento60@aluno.ifce.edu.br',
+    role: 'Aluno',
+  },
+
+]
 export function ListUsers() {
   const { user } = useAuth();
   const [usersData, setUsersData] = useState<UserTableDataProps[]>([]);
@@ -21,12 +55,12 @@ export function ListUsers() {
         });
 
         setUsersData(response.data);
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     }
 
-    getUsers();   
+    getUsers();
 
   }, []);
 

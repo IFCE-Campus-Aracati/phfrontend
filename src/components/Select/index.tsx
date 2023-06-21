@@ -3,6 +3,7 @@ import * as Select from '@radix-ui/react-select';
 import { CaretDown, CaretUp, Check } from "@phosphor-icons/react";
 import classnames from 'classnames';
 import React, { SelectHTMLAttributes, useState, forwardRef, useRef } from "react";
+import { SelectProps } from '@radix-ui/react-select'
 
 
 interface Options {
@@ -10,21 +11,26 @@ interface Options {
   text: string;
 }
 
-interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectRadixProps extends SelectProps {
   placeholder: string;
   options: Options[];
   open?: boolean;
+  onValueChange: (value: string) => void;
 }
 
-export function SelectInput({ placeholder, open, options, ...props }: SelectProps) {
+export function SelectInput({ placeholder, open, options, onValueChange, ...props }: SelectRadixProps) {
   const [openSelect, isOpenSelect] = useState(open);
-
   const [value, setValue] = useState<string>("");
+
+  const handleValueChange = (text: string) => {
+    onValueChange(text);
+    setValue(text);
+  };
 
   return (
     <Container>
-      <RootContainer onOpenChange={isOpenSelect} value={value} onValueChange={(text) => setValue(text)}>
-        <TriggerContainer aria-label="Opções" value={"oi"}>
+      <RootContainer onOpenChange={isOpenSelect} value={value} onValueChange={handleValueChange}>
+        <TriggerContainer {...props} aria-label="Opções" value={value}>
           <SelectValue placeholder={placeholder}>
             {value ? value : placeholder}
           </SelectValue>

@@ -11,8 +11,6 @@ import { useAuth } from "../../hooks/auth";
 export function Home() {
   const navigate = useNavigate();
 
-  const { userRole, isAuthenticated } = useAuth();
-
   return (
     <Container>
       <Body>

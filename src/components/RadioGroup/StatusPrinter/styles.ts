@@ -9,7 +9,6 @@ export const RadioContainer = styled.div`
   align-items: center;
 `;
 
-
 export const Root = styled(RadioGroup.Root)`
   display: flex;
   flex-direction: row;
@@ -27,7 +26,7 @@ export const Item = styled(RadioGroup.Item)`
   }
 `;
 
-export const Indicatior = styled(RadioGroup.Indicator)`
+export const Indicator = styled(RadioGroup.Indicator)`
   display: flex;
   align-items: center;
   justify-content: center;

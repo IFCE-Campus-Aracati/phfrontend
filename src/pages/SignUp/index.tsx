@@ -19,6 +19,7 @@ import { Button } from "../../components/Button";
 import { useState } from "react";
 import { useAuth } from "../../hooks/auth";
 import { toast } from "react-toastify";
+import { object, string, ref, ValidationError } from "yup";
 
 export function SignUp() {
   const { signUp } = useAuth();
@@ -28,17 +29,24 @@ export function SignUp() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  function handleSignUp() {
+  async function handleSignUp() {
     try {
-      if (!password || !confirmPassword) {
-        return toast.warning("Informa a senha");
-      }
-      if (password != confirmPassword) {
-        return toast.warning("As senhas são diferentes");
-      }
+      const schema = object().shape({
+        name: string().required('Nome é obrigatório.'),
+        email: string()
+          .required('Email é obrigatório.')
+          .email('Digite um email válido.'),
+        password: string().required('Senha é obrigatória.'),
+        confirmPassword: string().oneOf([ref('password')], 'As senha são diferentes.').required('É necessário confirmar a senha.')
+      })
 
-      signUp(email, name, password);
+      await schema.validate({ name, email, password, confirmPassword });
+
+      await signUp(email, name, password);
     } catch (error) {
+      if (error instanceof ValidationError) {
+        return toast.error(error.message);
+      }
       return toast.error("Não foi possível realizar o cadastro.");
     }
   }

@@ -3,6 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../server/api";
 
+interface Printers {
+  title: string;
+  description: string;
+  type: string;
+  material: string;
+}
+
 interface IUser {
   id: string;
   name: string;
@@ -12,6 +19,10 @@ interface IUser {
   token: string;
 }
 
+interface Printer {
+  id: string;
+}
+
 interface AuthContextData {
   signUp: (name: string, email: string, password: string) => void;
   signIn: (email: string, password: string) => void;
@@ -19,6 +30,7 @@ interface AuthContextData {
   user: IUser | null;
   loading: boolean;
   signed: boolean;
+  createPrinter: ({ title, type, material, description }: Printers) => void;
 }
 interface AuthProviderProps {
   children: ReactNode;
@@ -30,6 +42,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<IUser>({} as IUser);
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState<string | null>(null);
+  const [printers, setPrinters] = useState<Printers[]>([])
 
   const navigate = useNavigate();
 
@@ -87,10 +100,10 @@ function AuthProvider({ children }: AuthProviderProps) {
 
         if (data.role === "admin") {
           navigate("/admin/list_prints");
-          toast.success(`Sejá bem-vindo, ${userData.name}`);
+          toast.success(`Seja bem-vindo, ${userData.name}`);
         } else if (data.role === "client") {
           navigate("/client/my_prints");
-          toast.success(`Sejá bem-vindo, ${userData.name}`);
+          toast.success(`Seja bem-vindo, ${userData.name}`);
         }
       }
     } catch (error) {
@@ -142,6 +155,27 @@ function AuthProvider({ children }: AuthProviderProps) {
     navigate("/");
   }
 
+
+  async function createPrinter({ type, title, description, material }: Printers) {
+    try {
+      const response = await api.post('/createPrinter', { title, description, type, material }, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      })
+
+      if (response) {
+        const printer = response.data;
+        setPrinters((oldValue) => [...oldValue, response.data]);
+        toast.success('Impressora foi Criada com sucesso!')
+      }
+
+    } catch (error) {
+      console.log(error)
+      toast.success('Não possível criar uma nova impressora!')
+    }
+  }
+
+
+
   return (
     <AuthContext.Provider
       value={{
@@ -151,6 +185,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         user,
         signOut,
         loading,
+        createPrinter
       }}
     >
       {children}

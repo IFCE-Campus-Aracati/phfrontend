@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "../../../../components/Button";
 import { PrintFormInput } from "../../../../components/PrintFormInput";
 import { RadioGroup } from "../../../../components/RadioGroup";
@@ -5,20 +6,59 @@ import { SelectInput } from "../../../../components/Select";
 import { TextArea } from "../../../../components/TextArea";
 import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachments, TextAttachments, InputDate, InputText, StatusContainer } from "./styles";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { object, string } from "yup";
+import { useAuth } from "../../../../hooks/auth";
+
+
+const materialOptions = [
+  { value: "ABS", text: "ABS" },
+  { value: "PLA", text: "PLA" },
+  { value: "PETG", text: "PETG" },
+];
+
+const typeOptions = [
+  { value: "3D", text: "3D" },
+  { value: "Corte", text: "Corte" },
+];
+
+const statusOptions = [
+  { value: "available", text: "Disponível" },
+  { value: "unavailable", text: "Indisponível" },
+]
 
 export function RegisterPrinter() {
   const navigate = useNavigate();
+  const { createPrinter } = useAuth();
 
-  const options1 = [
-    { value: "ABS", text: "ABS" },
-    { value: "PLA", text: "PLA" },
-    { value: "PETG", text: "PETG" },
-  ];
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('');
+  const [type, setType] = useState('');
+  const [material, setMaterial] = useState('');
+  const [availability, setAvailability] = useState<string>('');
+  const [reason, setReason] = useState('');
 
-  const options2 = [
-    { value: "3D", text: "3D" },
-    { value: "Corte", text: "Corte" },
-  ];
+  async function handleCreatePrinter(event: any) {
+    try {
+      event.preventDefault();
+
+      const schema = object().shape({
+        title: string().required('É necessário dar um nome.'),
+        description: string().required('É necessário dar uma descrição a impressora'),
+        type: string().required('É necessário informar o tipo da impressora.'),
+        material: string().required('É necessário informar o material da impressora.'),
+      })
+
+      await schema.validate({ title, description, type, material });
+      await createPrinter({ title, description, type, material });
+      navigate("/admin/list_printers")
+
+    } catch (error) {
+      toast.error('Não foi possível cadastrar uma impressora');
+
+      console.log(error)
+    }
+  }
 
   return (
     <Container>
@@ -27,19 +67,49 @@ export function RegisterPrinter() {
 
         <FormContainer>
           <TitleInput style={{ marginTop: "0" }}>Título</TitleInput>
-          <PrintFormInput placeholder="Nome da Impressora" />
+          <PrintFormInput
+            value={title}
+            placeholder="Nome da Impressora"
+            onChange={(e) => setTitle(e.target.value)}
+          />
 
           <TitleInput>Descrição</TitleInput>
-          <TextArea placeholder="Adicione alguma informação sobre a impressora que deseja cadastrar" />
+          <TextArea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Adicione alguma informação sobre a impressora que deseja cadastrar"
+          />
 
           <TitleInput>Tipo da Impressora</TitleInput>
-          <SelectInput placeholder="Selecione o Tipo" open={true} options={options2} />
+          <SelectInput
+            placeholder="Selecione o Tipo"
+            open={true}
+            options={typeOptions}
+            value={type}
+            onValueChange={setType}
+          />
           <TitleInput>Material Trabalhado</TitleInput>
-          <SelectInput placeholder="Selecione o Material" open={true} options={options1} />
+          <SelectInput
+            placeholder="Selecione o Material"
+            open={true}
+            options={materialOptions}
+            value={material}
+            onValueChange={setMaterial}
+          />
           <TitleInput>Status</TitleInput>
           <StatusContainer>
-            <RadioGroup variant="StatusPrinter" />
-            <PrintFormInput placeholder="Motivo da Indisponibilidade" />
+            <RadioGroup
+              options={statusOptions}
+              value={availability}
+              onValueChange={setAvailability}
+            />
+            {availability === 'unavailable' &&
+              <PrintFormInput
+                placeholder="Motivo da Indisponibilidade"
+                value={reason}
+                onChange={setReason}
+              />
+            }
           </StatusContainer>
 
           <Footer>
@@ -53,7 +123,7 @@ export function RegisterPrinter() {
               title="SALVAR"
               variant="fill"
               size="small"
-              onClick={() => navigate("/admin/list_printers")}
+              onClick={handleCreatePrinter}
             />
           </Footer>
         </FormContainer>

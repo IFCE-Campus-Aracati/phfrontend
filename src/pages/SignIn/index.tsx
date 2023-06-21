@@ -20,6 +20,7 @@ import { Button } from "../../components/Button";
 import { useState } from "react";
 import { useAuth } from "../../hooks/auth";
 import { toast } from "react-toastify";
+import { object, string, ValidationError } from 'yup';
 
 export function SignIn() {
   const [email, setEmail] = useState("");
@@ -29,8 +30,20 @@ export function SignIn() {
 
   async function handleSignIn() {
     try {
+      const schema = object().shape({
+        email: string()
+          .required('Email é obrigatório')
+          .email('Digite um email válido'),
+        password: string().required('Senha é obrigatória')
+      })
+
+      await schema.validate({ email, password });
       await signIn(email, password);
+
     } catch (error) {
+      if (error instanceof ValidationError) {
+        return toast.error(error.message);
+      }
       return toast.error("Não foi possível realizar o login.");
     }
   }
@@ -48,7 +61,7 @@ export function SignIn() {
           <Input
             label="E-mail"
             variant="form"
-            placeholder="meumelhoremail@gmail.com"
+            placeholder="seuEmail@email.com"
             onChange={(e) => setEmail(e.target.value)}
           />
           <Input

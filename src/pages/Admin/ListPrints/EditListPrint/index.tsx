@@ -5,8 +5,15 @@ import { TextArea } from "../../../../components/TextArea";
 import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachments, TextAttachments, InputDate, InputText, StatusContainer } from "./styles";
 import { useNavigate } from "react-router-dom";
 
+const statusOptions = [
+  { text: 'Pendente', value: 'pending' },
+  { text: 'Aprovado', value: 'approved' },
+  { text: 'Recusado', value: 'denied' }
+]
+
 export function EditListPrint() {
   const navigate = useNavigate();
+
 
   return (
     <Container>
@@ -35,7 +42,10 @@ export function EditListPrint() {
           </Attachments>
           <TitleInput>Status</TitleInput>
           <StatusContainer>
-            <RadioGroup variant="StatusPrint" />
+            {/* <RadioGroup
+              options={statusOptions}
+              onValueChange={ }
+            /> */}
             <PrintFormInput placeholder="Motivo da Recusa" />
           </StatusContainer>
 

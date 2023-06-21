@@ -43,11 +43,11 @@ export function ListPrinters() {
           placeholder="Buscar impressora"
           style={{ maxWidth: "20%" }}
         />
-        <Button 
-        size="medium" 
-        title="Adicionar impressora" 
-        variant="outline"
-        onClick={() => navigate("/admin/list_printers/register_printer")}
+        <Button
+          size="medium"
+          title="Adicionar impressora"
+          variant="outline"
+          onClick={() => navigate("/admin/list_printers/register_printer")}
         >
           <Plus size={"1.5rem"} color={"#FFF"} />
         </Button>

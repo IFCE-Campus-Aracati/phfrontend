@@ -7,12 +7,12 @@ import { DetailsAnonymous } from "./detailsAnonymous/detailsAnonymous";
 
 interface ModalProps {
   variant:
-    | "changePassword"
-    | "detailsAnonymous"
-    | "detailsPrint"
-    | "detailsPrinters"
-    | "detailsUser"
-    | "delete";
+  | "changePassword"
+  | "detailsAnonymous"
+  | "detailsPrint"
+  | "detailsPrinters"
+  | "detailsUser"
+  | "delete";
   children: React.ReactNode;
   title: string;
   route: string;
