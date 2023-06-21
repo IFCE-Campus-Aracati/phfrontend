@@ -6,10 +6,10 @@ import { TextArea } from "../../../../components/TextArea";
 
 import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachments, TextAttachments, InputDate, InputText, StatusContainer } from "./styles";
 import { useNavigate, useParams } from "react-router-dom";
-import  api  from '../../../../server/api'
+import api from '../../../../server/api'
 import { useState, useEffect } from 'react';
 import { PrintersTableDataProps } from "../../../../components/Table/PrintersTable";
-import { useAuth } from '../../../../hooks/auth'
+import { Printers, useAuth } from '../../../../hooks/auth'
 
 const statusOptions = [
   { value: 'pending', text: 'Pendente' },
@@ -40,26 +40,37 @@ export function EditPrinter() {
   const [material, setMaterial] = useState('');
   const [status, setStatus] = useState('');
   const [reason, setReason] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [printerData, setPrinterData] = useState<PrintersTableDataProps>();
+  const [printerData, setPrinterData] = useState<Printers>();
 
   useEffect(() => {
     async function getPrinter() {
       try {
-        const response = await api.get<PrintersTableDataProps>("/detailsPrinter", {
-          headers: { Authorization: `$Bearer ${user?.token}` }
+        const response = await api.get("/detailsPrinter", {
+          headers: { Authorization: `$Bearer ${user?.token}` },
+          data: { id: id }
         });
 
         setPrinterData(response.data);
+        console.log('data', response.data);
+
       } catch (err) {
         console.log(err);
+      } finally {
+        setIsLoading(false);
       }
     }
 
     getPrinter();
   }, []);
 
-  console.log(printerData)
+
+  if (isLoading) {
+    return (
+      <div>carregando</div>
+    )
+  }
 
   return (
     <Container>
@@ -68,18 +79,18 @@ export function EditPrinter() {
 
         <FormContainer>
           <TitleInput style={{ marginTop: "0" }}>Título</TitleInput>
-          <PrintFormInput 
+          <PrintFormInput
             placeholder="Nome da Impressora"
             value={printerData?.title}
-            onChange={setTitle} 
+            onChange={setTitle}
           />
 
           <TitleInput>Descrição</TitleInput>
-          <TextArea 
-            placeholder="Adicione alguma informação sobre a impressora que deseja cadastrar" 
+          <TextArea
+            placeholder="Adicione alguma informação sobre a impressora que deseja cadastrar"
             value={printerData?.description}
             onChange={setDescription}
-            />
+          />
 
           <TitleInput>Tipo da Impressora</TitleInput>
           <SelectInput
@@ -104,9 +115,9 @@ export function EditPrinter() {
               value={printerData?.status}
               onValueChange={setStatus}
             />
-            <PrintFormInput 
-              placeholder="Motivo da Indisponibilidade" 
-              />
+            <PrintFormInput
+              placeholder="Motivo da Indisponibilidade"
+            />
           </StatusContainer>
 
           <Footer>

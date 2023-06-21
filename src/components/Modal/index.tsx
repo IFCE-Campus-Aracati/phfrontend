@@ -4,9 +4,12 @@ import { DetailsPrinters } from "./detailsPrinters/detailsPrinters";
 import { DetailsUser } from "./DetailsUser/detailsUser";
 import { ChangePassword } from "./changePassword/changePassword";
 import { DetailsAnonymous } from "./detailsAnonymous/detailsAnonymous";
+import { PrintersTableDataProps } from "../Table/PrintersTable";
+import { Printers } from "../../hooks/auth";
+
 
 interface ModalProps {
-  id: string;
+  data: Printers;
   variant:
   | "changePassword"
   | "detailsAnonymous"
@@ -19,7 +22,7 @@ interface ModalProps {
   route: string;
 }
 
-export function Modal({ id, variant, children, title, route }: ModalProps) {
+export function Modal({ data, variant, children, title, route }: ModalProps) {
   switch (variant) {
     case "changePassword":
       return <ChangePassword tilte={title}>{children}</ChangePassword>;
@@ -32,10 +35,10 @@ export function Modal({ id, variant, children, title, route }: ModalProps) {
         </DetailsPrint>
       );
     case "detailsPrinters":
-      return <DetailsPrinters printerId={id} tilte={title}>{children}</DetailsPrinters>;
+      return <DetailsPrinters data={data} tilte={title}>{children}</DetailsPrinters>;
     case "detailsUser":
       return <DetailsUser tilte={title}>{children}</DetailsUser>;
     case "delete":
-      return <Delete id={id} tilte={title}>{children}</Delete>;
+      return <Delete id={data.id} tilte={title}>{children}</Delete>;
   }
 }

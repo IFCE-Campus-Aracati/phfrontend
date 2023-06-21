@@ -12,19 +12,12 @@ import {
   TextButton,
   Close,
 } from "../styles";
-
-interface DetailsPrintersProps {
-  printerId: string;
-  children: React.ReactNode;
-  tilte: string;
-}
-
 import { X, PencilSimpleLine } from "@phosphor-icons/react";
 import { theme } from "../../../styles/theme";
 import { Button } from "../../Button";
 import { Status } from "../../Status";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../hooks/auth";
+import { Printers, useAuth } from "../../../hooks/auth";
 import { PrintersTableDataProps } from "../../Table/PrintersTable";
 import api from "../../../server/api";
 import { 
@@ -36,28 +29,14 @@ import {
 } from "./styles";
 
 
-export function DetailsPrinters({ printerId, children, tilte }: DetailsPrintersProps) {
-  const { user } = useAuth();
+interface DetailsPrintersProps {
+  data: Printers;
+  children: React.ReactNode;
+  tilte: string;
+}
+
+export function DetailsPrinters({ data, children, tilte }: DetailsPrintersProps) {
   const navigate = useNavigate();
-
-  const [printerData, setPrinterData] = useState<PrintersTableDataProps>();
-
-  useEffect(() => {
-    async function getPrinter() {
-      try {
-        const response = await api.get<PrintersTableDataProps>("/detailsPrinter", {
-          headers: { Authorization: `$Bearer ${user?.token}` }
-        });
-
-        setPrinterData(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    getPrinter();
-
-  }, []);
   
   return (
     <Root>
@@ -76,28 +55,28 @@ export function DetailsPrinters({ printerId, children, tilte }: DetailsPrintersP
           <Title>{tilte}</Title>
           <Body>
             <TextInfo>
-              Nome: <Text>{printerData?.title}</Text>
+              Nome: <Text>{data?.title}</Text>
             </TextInfo>
             <TextInfo>
-              Tipo: <Text>{printerData?.type}</Text>
+              Tipo: <Text>{data?.type}</Text>
             </TextInfo>
             <TextInfo>
-              Material: <Text>{printerData?.material}</Text>
+              Material: <Text>{data?.material}</Text>
             </TextInfo>
             <StatusArea>
               <TextInfo>Status:</TextInfo>
-              <Status variant={printerData?.status} />
+              <Status variant={data?.status} />
             </StatusArea>
             <TextInfo>
               Descrição:{" "}
               <Text>
-                {printerData?.description}
+                {data?.description}
               </Text>
             </TextInfo>
           </Body>
           <ButtonArea>
             <Button
-            id={printerData?.id}
+            id={data?.id}
             size="medium" 
             variant="fill" 
             title="Editar"

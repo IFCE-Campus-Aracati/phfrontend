@@ -26,24 +26,23 @@ interface DeleteProps {
   tilte: string;
 }
 
-export function Delete({ id, children, tilte }: DeleteProps) {
-  const { user } = useAuth();
+export function Delete({ id,  children, tilte }: DeleteProps) {
+  const { deletePrinter } = useAuth();
 
-  async function deletePrinter() {
-    try {
-      const response = await api.delete("/deletePrinter", {
-        headers: { Authorization: `$Bearer ${user?.token}` },
-        data: { id: id }
-      });
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    } catch (err) {
+  async function handleDelete() {
+    try{
+      await deletePrinter(id);
+      setIsOpen(false);
+    } catch(err){
       console.log(err);
     }
   }
 
 
   return (
-    <Root>
+    <Root onOpenChange={setIsOpen} open={isOpen}>
       <Trigger>{children}</Trigger>
       <Portal>
         <Overlay />
@@ -68,7 +67,7 @@ export function Delete({ id, children, tilte }: DeleteProps) {
               size="medium"
               variant="outline"
               title="CONFIRMAR"
-              onClick={() => deletePrinter()}
+              onClick={() => handleDelete()}
             />
           </ButtonArea>
         </Content>

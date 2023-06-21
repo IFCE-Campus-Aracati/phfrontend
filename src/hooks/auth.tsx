@@ -2,12 +2,15 @@ import { ReactNode, createContext, useContext, useEffect, useState } from "react
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../server/api";
+import { PrintersTableDataProps } from "../components/Table/PrintersTable";
 
-interface Printers {
+export interface Printers {
+  id: string;
   title: string;
   description: string;
   type: string;
   material: string;
+  status?: "pending" | "approved" | "decline" | "available" | "unavailable" | undefined;
 }
 
 interface IUser {
@@ -19,10 +22,6 @@ interface IUser {
   token: string;
 }
 
-interface Printer {
-  id: string;
-}
-
 interface AuthContextData {
   signUp: (name: string, email: string, password: string) => void;
   signIn: (email: string, password: string) => void;
@@ -31,6 +30,9 @@ interface AuthContextData {
   loading: boolean;
   signed: boolean;
   createPrinter: ({ title, type, material, description }: Printers) => void;
+  deletePrinter: (id:string) => void;
+  getPrinters: () => void;
+  printers: Printers[];
 }
 interface AuthProviderProps {
   children: ReactNode;
@@ -155,6 +157,18 @@ function AuthProvider({ children }: AuthProviderProps) {
     navigate("/");
   }
 
+  async function getPrinters() {
+    try {
+      const response = await api.get<PrintersTableDataProps[]>("/printers", {
+        headers: { Authorization: `$Bearer ${user?.token}` }
+      });
+
+      setPrinters(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async function createPrinter({ type, title, description, material }: Printers) {
     try {
       const response = await api.post('/createPrinter', { title, description, type, material }, {
@@ -171,6 +185,23 @@ function AuthProvider({ children }: AuthProviderProps) {
       toast.success('Não possível criar uma nova impressora!')
     }
   }
+
+  async function deletePrinter(id: string) {
+    try {
+      const response = await api.delete("/deletePrinter", {
+        headers: { Authorization: `$Bearer ${user?.token}` },
+        data: { id: id }
+      });
+      if (response) {
+        const filteredPrinters = printers.filter(printer => id !== printer.id);
+        setPrinters(filteredPrinters);        
+        toast.success('Impressora foi deletada com sucesso!')
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -180,7 +211,10 @@ function AuthProvider({ children }: AuthProviderProps) {
         user,
         signOut,
         loading,
-        createPrinter
+        createPrinter,
+        deletePrinter,
+        getPrinters,
+        printers
       }}
     >
       {children}
