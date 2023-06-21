@@ -24,7 +24,8 @@ import { useNavigate } from "react-router-dom";
 
 export interface PrintersTableDataProps {
   id: string;
-  name: string;
+  title: string;
+  description: string;
   type: string;
   material: string;
   status: "available" | "unavailable";
@@ -61,7 +62,7 @@ export function PrintersTable({
           {data.map((item) => {
             return (
               <Row>
-                <TableData>{item.name}</TableData>
+                <TableData>{item.title}</TableData>
                 <TableData>{item.type}</TableData>
                 <TableData>{item.material}</TableData>
                 <TableData>
@@ -70,7 +71,7 @@ export function PrintersTable({
                 <TableData>
                   <RowIcons>
                     {isView && (
-                      <Modal title="Detalhes" variant="detailsPrinters">
+                      <Modal title="Detalhes" variant="detailsPrinters" route="">
                         <ButtonIcon>
                           <MagnifyingGlass size={"1rem"} color={"#FFF"} />
                         </ButtonIcon>
@@ -86,7 +87,7 @@ export function PrintersTable({
                       </ButtonIcon>
                     )}
                     {isDelete && (
-                      <Modal title="Você deseja excluir?" variant="delete">
+                      <Modal title="Você deseja excluir?" variant="delete" route="">
                         <ButtonIcon>
                           <Trash size={"1rem"} color={"#FFF"} />
                         </ButtonIcon>

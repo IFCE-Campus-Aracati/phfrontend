@@ -5,20 +5,35 @@ import { Container, Row, Title } from "./styles";
 import { Table } from "../../../components/Table";
 import { ClientListTableDataProps } from "../../../components/Table/ClientListTable";
 import { useNavigate } from "react-router";
-
-const list: ClientListTableDataProps[] = [
-  {
-    id: "1",
-    title: "Peça de xadrez",
-    date: "30/03/2023",
-    status: "pending",
-  },
-];
+import { useAuth } from "../../../hooks/auth";
+import { useEffect, useState } from "react";
+import api from "../../../server/api";
 
 const header = ["Título", "Data", "Status", "Detalhes"];
 
 export function MyPrints() {
+  const { user } = useAuth();
   const navigate = useNavigate();
+
+  const [myPrintsData, setMyPrintsData] = useState<ClientListTableDataProps[]>([]);
+
+  useEffect(() => {
+    async function getMyPrints() {
+      try {
+        const response = await api.get<ClientListTableDataProps[]>("/getUserPrint", {
+          headers: { Authorization: `$Bearer ${user?.token}` }
+        });
+
+        setMyPrintsData(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    getMyPrints();
+
+  }, []);
+
   return (
     <Container>
       <Title>Minhas Impressões</Title>
@@ -38,7 +53,7 @@ export function MyPrints() {
         </Button>
       </Row>
 
-      <Table data={list} header={header} variant="client" />
+      <Table data={myPrintsData} header={header} variant="client" />
     </Container>
   );
 }

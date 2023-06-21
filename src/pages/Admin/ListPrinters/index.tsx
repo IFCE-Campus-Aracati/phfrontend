@@ -5,35 +5,35 @@ import { Plus } from "@phosphor-icons/react";
 import { Table } from "../../../components/Table";
 import { PrintersTableDataProps } from "../../../components/Table/PrintersTable";
 import { useNavigate } from "react-router-dom";
-
-const list: PrintersTableDataProps[] = [
-  {
-    id: "1",
-    name: "Impressora 1",
-    type: "Impressora 3D",
-    material: "ABS",
-    status: "available",
-  },
-  {
-    id: "2",
-    name: "Impressora 2",
-    type: "Impressora 3D",
-    material: "PLA",
-    status: "available",
-  },
-  {
-    id: "3",
-    name: "Impressora 3",
-    type: "Corte",
-    material: "Madeira",
-    status: "available",
-  },
-];
+import { useAuth } from "../../../hooks/auth";
+import { useEffect, useState } from "react";
+import api from "../../../server/api";
 
 const header = ["Nome", "Tipo", "Material", "Status", "Detalhes"];
 
 export function ListPrinters() {
+  const { user } = useAuth();
   const navigate = useNavigate();
+
+  const [printersData, setPrintersData] = useState<PrintersTableDataProps[]>([]);
+
+  useEffect(() => {
+    async function getPrinters() {
+      try {
+        const response = await api.get<PrintersTableDataProps[]>("/printers", {
+          headers: { Authorization: `$Bearer ${user?.token}` }
+        });
+
+        setPrintersData(response.data);
+      } catch(err) {
+        console.log(err);
+      }
+    }
+
+    getPrinters();   
+
+  }, []);
+
   return (
     <Container>
       <Title>Lista de Impressoras</Title>
@@ -53,7 +53,7 @@ export function ListPrinters() {
         </Button>
       </Row>
 
-      <Table data={list} header={header} variant="printers" />
+      <Table data={printersData} header={header} variant="printers" />
     </Container>
   );
 }
