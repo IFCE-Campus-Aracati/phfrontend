@@ -25,12 +25,12 @@ export function ListPrinters() {
         });
 
         setPrintersData(response.data);
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     }
 
-    getPrinters();   
+    getPrinters();
 
   }, []);
 

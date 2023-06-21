@@ -35,8 +35,6 @@ export function RegisterPrinter() {
   const [description, setDescription] = useState('');
   const [type, setType] = useState('');
   const [material, setMaterial] = useState('');
-  const [availability, setAvailability] = useState<string>('');
-  const [reason, setReason] = useState('');
 
   async function handleCreatePrinter(event: any) {
     try {
@@ -96,21 +94,7 @@ export function RegisterPrinter() {
             value={material}
             onValueChange={setMaterial}
           />
-          <TitleInput>Status</TitleInput>
-          <StatusContainer>
-            <RadioGroup
-              options={statusOptions}
-              value={availability}
-              onValueChange={setAvailability}
-            />
-            {availability === 'unavailable' &&
-              <PrintFormInput
-                placeholder="Motivo da Indisponibilidade"
-                value={reason}
-                onChange={setReason}
-              />
-            }
-          </StatusContainer>
+
 
           <Footer>
             <Button

@@ -42,7 +42,7 @@ export function SelectInput({ placeholder, open, options, onValueChange, ...prop
         <SelectPortal>
           <SelectContent className="SelectContent" position="popper">
             <SelectViewPort className="SelectViewport">
-              <Select.Group >
+              <Select.Group>
                 <SelectLabel className="SelectLabel">Materiais Disponíveis</SelectLabel>
                 {options.map((option) => (
                   <SelectItem className="SelectItem" value={option.value}>

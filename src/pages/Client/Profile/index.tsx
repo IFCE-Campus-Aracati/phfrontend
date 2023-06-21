@@ -43,7 +43,7 @@ export function Profile() {
             <Subtitle>************</Subtitle>
 
             <ButtonEdit>
-              <Modal title="Alterar senha" variant="changePassword">
+              <Modal route="" title="Alterar senha" variant="changePassword">
                 <span>alterar senha</span>
               </Modal>
             </ButtonEdit>

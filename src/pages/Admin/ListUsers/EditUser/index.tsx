@@ -4,6 +4,11 @@ import { Container, Content, Footer, FormContainer, Title, TitleInput, StatusCon
 import { useNavigate, useParams } from "react-router-dom";
 import DefaultProfile from "../../../../assets/default-profile.jpeg"
 
+const userRole = [
+  { value: 'admin', text: 'Administrador' },
+  { value: 'client', text: 'Estudante' },
+]
+
 export function EditUser() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -24,7 +29,10 @@ export function EditUser() {
             <Subtitle>gabriel.moura22@aluno.ifce.edu.br</Subtitle>
             <TitleInput>Cargo</TitleInput>
             <StatusContainer>
-              <RadioGroup variant="UserRole" />
+              <RadioGroup
+                options={userRole}
+                onValueChange={() => { }}
+              />
             </StatusContainer>
             <Footer>
               <Button

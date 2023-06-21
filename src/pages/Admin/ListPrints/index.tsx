@@ -25,12 +25,13 @@ export function ListPrints() {
         });
 
         setPrintsData(response.data);
-      } catch(err) {
+        console.log(response.data);
+      } catch (err) {
         console.log(err);
       }
     }
 
-    getPrints();   
+    getPrints();
 
   }, []);
 
