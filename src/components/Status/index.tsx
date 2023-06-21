@@ -1,7 +1,7 @@
 import { Container, Content, StatusText } from "./styles";
 
 export interface StatusProps {
-  variant: "pending" | "approved" | "decline" | "available" | "unavailable";
+  variant: "pending" | "approved" | "decline" | "available" | "unavailable" | undefined;
 }
 
 export function Status({ variant }: StatusProps) {

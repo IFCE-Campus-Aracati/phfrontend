@@ -28,7 +28,7 @@ export interface PrintersTableDataProps {
   description: string;
   type: string;
   material: string;
-  status: "available" | "unavailable";
+  status: "pending" | "approved" | "decline" | "available" | "unavailable" | undefined;
 }
 
 interface TableProps {
@@ -71,7 +71,7 @@ export function PrintersTable({
                 <TableData>
                   <RowIcons>
                     {isView && (
-                      <Modal title="Detalhes" variant="detailsPrinters" route="">
+                      <Modal id={item.id} title="Detalhes" variant="detailsPrinters" route="">
                         <ButtonIcon>
                           <MagnifyingGlass size={"1rem"} color={"#FFF"} />
                         </ButtonIcon>
@@ -80,14 +80,14 @@ export function PrintersTable({
                     {isEdit && (
                       <ButtonIcon
                         onClick={() =>
-                          navigate("/admin/list_printers/edit_printer")
+                          navigate(`/admin/list_printers/edit_printer/${item.id}`)
                         }
                       >
                         <PencilSimpleLine size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}
                     {isDelete && (
-                      <Modal title="Você deseja excluir?" variant="delete" route="">
+                      <Modal id={item.id} title="Você deseja excluir?" variant="delete" route="">
                         <ButtonIcon>
                           <Trash size={"1rem"} color={"#FFF"} />
                         </ButtonIcon>

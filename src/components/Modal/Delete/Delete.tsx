@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Root,
@@ -12,19 +12,36 @@ import {
   TextButton,
   Close,
 } from "../styles";
-
-import { Text, Body, ButtonArea } from "./styles";
-
-interface DeleteProps {
-  children: React.ReactNode;
-  tilte: string;
-}
-
 import { X, PencilSimpleLine } from "@phosphor-icons/react";
 import { theme } from "../../../styles/theme";
 import { Button } from "../../Button";
 
-export function Delete({ children, tilte }: DeleteProps) {
+import { Text, Body, ButtonArea } from "./styles";
+import { useAuth } from "../../../hooks/auth";
+import api from "../../../server/api";
+
+interface DeleteProps {
+  id: string;
+  children: React.ReactNode;
+  tilte: string;
+}
+
+export function Delete({ id, children, tilte }: DeleteProps) {
+  const { user } = useAuth();
+
+  async function deletePrinter() {
+    try {
+      const response = await api.delete("/deletePrinter", {
+        headers: { Authorization: `$Bearer ${user?.token}` },
+        data: { id: id }
+      });
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
   return (
     <Root>
       <Trigger>{children}</Trigger>
@@ -51,7 +68,7 @@ export function Delete({ children, tilte }: DeleteProps) {
               size="medium"
               variant="outline"
               title="CONFIRMAR"
-              onClick={() => alert("Função indisponível")}
+              onClick={() => deletePrinter()}
             />
           </ButtonArea>
         </Content>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Root,
@@ -13,9 +13,8 @@ import {
   Close,
 } from "../styles";
 
-
-
 interface DetailsPrintersProps {
+  printerId: string;
   children: React.ReactNode;
   tilte: string;
 }
@@ -24,12 +23,42 @@ import { X, PencilSimpleLine } from "@phosphor-icons/react";
 import { theme } from "../../../styles/theme";
 import { Button } from "../../Button";
 import { Status } from "../../Status";
-import { Body, ButtonArea, StatusArea, Text, TextInfo } from "./styles";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../hooks/auth";
+import { PrintersTableDataProps } from "../../Table/PrintersTable";
+import api from "../../../server/api";
+import { 
+  Body, 
+  TextInfo,
+  Text,
+  StatusArea,
+  ButtonArea
+} from "./styles";
 
 
-export function DetailsPrinters({ children, tilte }: DetailsPrintersProps) {
+export function DetailsPrinters({ printerId, children, tilte }: DetailsPrintersProps) {
+  const { user } = useAuth();
   const navigate = useNavigate();
+
+  const [printerData, setPrinterData] = useState<PrintersTableDataProps>();
+
+  useEffect(() => {
+    async function getPrinter() {
+      try {
+        const response = await api.get<PrintersTableDataProps>("/detailsPrinter", {
+          headers: { Authorization: `$Bearer ${user?.token}` }
+        });
+
+        setPrinterData(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    getPrinter();
+
+  }, []);
+  
   return (
     <Root>
       <Trigger>{children}</Trigger>
@@ -47,32 +76,28 @@ export function DetailsPrinters({ children, tilte }: DetailsPrintersProps) {
           <Title>{tilte}</Title>
           <Body>
             <TextInfo>
-              Nome: <Text>Impressora 1</Text>
+              Nome: <Text>{printerData?.title}</Text>
             </TextInfo>
             <TextInfo>
-              Tipo: <Text>Impressora 3D</Text>
+              Tipo: <Text>{printerData?.type}</Text>
             </TextInfo>
             <TextInfo>
-              Material: <Text>ABS</Text>
+              Material: <Text>{printerData?.material}</Text>
             </TextInfo>
             <StatusArea>
               <TextInfo>Status:</TextInfo>
-              <Status variant="approved" />
+              <Status variant={printerData?.status} />
             </StatusArea>
             <TextInfo>
               Descrição:{" "}
               <Text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In quis
-                bibendum augue, id sodales nunc. Orci varius natoque penatibus
-                et magnis dis parturient montes, nascetur ridiculus mus. Etiam
-                consectetur pulvinar nisi, ac malesuada tortor lobortis quis.
-                Nunc non tellus eu est vulputate pellentesque. Cras turpis
-                lorem, fringilla quis libero eget.
+                {printerData?.description}
               </Text>
             </TextInfo>
           </Body>
           <ButtonArea>
-            <Button 
+            <Button
+            id={printerData?.id}
             size="medium" 
             variant="fill" 
             title="Editar"

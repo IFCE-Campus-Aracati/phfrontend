@@ -52,7 +52,7 @@ export function RoutesApp() {
           <Route path="list_users" element={<ListUsers />} />
           <Route path="list_users/edit_user/:id" element={<EditUser />} />
           <Route path="list_printers" element={<ListPrinters />} />
-          <Route path="list_printers/edit_printer" element={<EditPrinter />} />
+          <Route path="list_printers/edit_printer/:id" element={<EditPrinter />} />
           <Route path="list_printers/register_printer" element={<RegisterPrinter />} />
           <Route path="my_prints" element={<MyPrints />} />
           <Route path="dashboard" element={<Dashboard />} />
