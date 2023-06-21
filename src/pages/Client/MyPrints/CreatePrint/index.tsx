@@ -31,7 +31,12 @@ export function CreatePrint() {
           <TitleInput>Arquivo para impressão</TitleInput>
           <InputFile label={"Anexar"} />
           <TitleInput>Material para Impressão</TitleInput>
-          <SelectInput placeholder="Selecione o Material" open={true} options={options} />
+          <SelectInput
+            placeholder="Selecione o Material"
+            open={true}
+            options={options}
+            onValueChange={() => { }}
+          />
           <Footer>
             <Button
               title="cancelar"

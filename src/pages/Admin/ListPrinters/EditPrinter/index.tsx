@@ -9,13 +9,19 @@ import { useNavigate } from "react-router-dom";
 export function EditPrinter() {
   const navigate = useNavigate();
 
-  const options1 = [
+  const statusOptions = [
+    { value: 'pending', text: 'Pendente' },
+    { value: 'approved', text: 'Aprovado' },
+    { value: 'denied', text: 'Recusado' }
+  ]
+
+  const materialOptions = [
     { value: "ABS", text: "ABS" },
     { value: "PLA", text: "PLA" },
     { value: "PETG", text: "PETG" },
   ];
 
-  const options2 = [
+  const typeOptions = [
     { value: "3D", text: "3D" },
     { value: "Corte", text: "Corte" },
   ];
@@ -33,12 +39,25 @@ export function EditPrinter() {
           <TextArea placeholder="Adicione alguma informação sobre a impressora que deseja cadastrar" />
 
           <TitleInput>Tipo da Impressora</TitleInput>
-          <SelectInput placeholder="Selecione o Tipo" open={true} options={options2} />
+          <SelectInput
+            placeholder="Selecione o Tipo"
+            open={true}
+            options={typeOptions}
+            onValueChange={() => { }}
+          />
           <TitleInput>Material Trabalhado</TitleInput>
-          <SelectInput placeholder="Selecione o Material" open={true} options={options1} />
+          <SelectInput
+            placeholder="Selecione o Material"
+            open={true}
+            options={materialOptions}
+            onValueChange={() => { }}
+          />
           <TitleInput>Status</TitleInput>
           <StatusContainer>
-            <RadioGroup variant="StatusPrinter" />
+            <RadioGroup
+              options={statusOptions}
+              onValueChange={() => { }}
+            />
             <PrintFormInput placeholder="Motivo da Indisponibilidade" />
           </StatusContainer>
 

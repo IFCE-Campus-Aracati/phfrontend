@@ -155,7 +155,6 @@ function AuthProvider({ children }: AuthProviderProps) {
     navigate("/");
   }
 
-
   async function createPrinter({ type, title, description, material }: Printers) {
     try {
       const response = await api.post('/createPrinter', { title, description, type, material }, {
@@ -164,18 +163,14 @@ function AuthProvider({ children }: AuthProviderProps) {
 
       if (response) {
         const printer = response.data;
-        setPrinters((oldValue) => [...oldValue, response.data]);
+        setPrinters((oldValue) => [...oldValue, printer]);
         toast.success('Impressora foi Criada com sucesso!')
       }
-
     } catch (error) {
       console.log(error)
       toast.success('Não possível criar uma nova impressora!')
     }
   }
-
-
-
   return (
     <AuthContext.Provider
       value={{

@@ -37,7 +37,12 @@ export function RegisterListPrint() {
             <InputText defaultValue={"40"} type="text" />
           </Attachments>
           <TitleInput>Material para Impressão</TitleInput>
-          <SelectInput placeholder="Selecione o Material" open={true} options={options} />
+          <SelectInput
+            placeholder="Selecione o Material"
+            open={true}
+            options={options}
+            onValueChange={() => { }}
+          />
 
           <Footer>
             <Button

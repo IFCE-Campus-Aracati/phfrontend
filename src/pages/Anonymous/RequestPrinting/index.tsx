@@ -38,7 +38,7 @@ export function RequestPrinting() {
           <InputFile label={"Anexar"} />
 
           <TitleInput>Material para Impressão</TitleInput>
-          <SelectInput placeholder="Selecione o Material" options={options} />
+          <SelectInput placeholder="Selecione o Material" options={options} onValueChange={() => { }} />
         </FormContainer>
       </Content>
       <Footer>

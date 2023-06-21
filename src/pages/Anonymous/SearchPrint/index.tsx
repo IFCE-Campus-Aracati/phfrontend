@@ -19,7 +19,7 @@ const data: SearchTableDataProps[] = [
 
 export function SearchPrint() {
   const navigate = useNavigate();
-  
+
   return (
     <Container>
       <Header>
@@ -29,7 +29,7 @@ export function SearchPrint() {
           </ButtonBack>
           <Title>Buscar Impressões</Title>
         </TitleContainer>
-        
+
         <InputWrapper>
           <InputTitle>Informe o identificador de busca</InputTitle>
           <InputContainer>
@@ -38,11 +38,11 @@ export function SearchPrint() {
               variant="search"
             />
           </InputContainer>
-         
-          </InputWrapper>
+
+        </InputWrapper>
       </Header>
       <Content>
-        <Table variant="search" data={data} header={header}/>
+        <Table variant="search" data={data} header={header} />
       </Content>
     </Container>
   );

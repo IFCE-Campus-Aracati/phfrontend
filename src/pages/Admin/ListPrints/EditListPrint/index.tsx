@@ -42,10 +42,10 @@ export function EditListPrint() {
           </Attachments>
           <TitleInput>Status</TitleInput>
           <StatusContainer>
-            {/* <RadioGroup
+            <RadioGroup
               options={statusOptions}
-              onValueChange={ }
-            /> */}
+              onValueChange={() => { }}
+            />
             <PrintFormInput placeholder="Motivo da Recusa" />
           </StatusContainer>
 
