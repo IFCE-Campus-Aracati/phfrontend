@@ -1,11 +1,10 @@
 import { Button } from "../../../../components/Button";
-import { InputFile } from "../../../../components/InputFile";
+import { FileUploader } from "../../../../components/FileUploader"
 import { PrintFormInput } from "../../../../components/PrintFormInput";
 import { SelectInput } from "../../../../components/Select";
 import { TextArea } from "../../../../components/TextArea";
-import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachments } from "./styles";
+import { Container, Content, Footer, FormContainer, Title, TitleInput, ButtonFile} from "./styles";
 import { useNavigate } from "react-router-dom";
-import { SideBar } from "../../../../components/SideBar";
 
 const options = [
   { value: "ABS", text: "ABS" },
@@ -29,7 +28,9 @@ export function CreatePrint() {
           <TextArea placeholder="Informe alguma informação sobre o que você deseja imprimir" />
 
           <TitleInput>Arquivo para impressão</TitleInput>
-          <InputFile label={"Anexar"} />
+          <ButtonFile>
+            <FileUploader/>
+          </ButtonFile>
           <TitleInput>Material para Impressão</TitleInput>
           <SelectInput
             placeholder="Selecione o Material"

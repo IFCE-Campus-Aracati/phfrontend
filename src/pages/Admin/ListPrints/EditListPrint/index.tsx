@@ -1,5 +1,6 @@
 import { Button } from "../../../../components/Button";
 import { PrintFormInput } from "../../../../components/PrintFormInput";
+import { FileUploader } from "../../../../components/FileUploader"
 import { RadioGroup } from "../../../../components/RadioGroup";
 import { TextArea } from "../../../../components/TextArea";
 import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachments, TextAttachments, InputDate, InputText, StatusContainer } from "./styles";
@@ -28,12 +29,9 @@ export function EditListPrint() {
           <TextArea placeholder="Informe alguma informação sobre o que você deseja imprimir" />
 
           <TitleInput>Arquivo para impressão</TitleInput>
-          <Button
-            size="medium"
-            variant="fill"
-            title="arquivo.stl"
-          />
+            <FileUploader/>
           <TitleInput>Dados da Impressão</TitleInput>
+          
           <Attachments>
             <TextAttachments>Data para início:</TextAttachments>
             <InputDate type="date" />

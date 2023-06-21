@@ -1,5 +1,6 @@
 import { Button } from "../../../../components/Button";
 import { InputFile } from "../../../../components/InputFile";
+import { FileUploader } from "../../../../components/FileUploader"
 import { PrintFormInput } from "../../../../components/PrintFormInput";
 import { SelectInput } from "../../../../components/Select";
 import { TextArea } from "../../../../components/TextArea";
@@ -28,14 +29,16 @@ export function RegisterListPrint() {
           <TextArea placeholder="Informe alguma informação sobre o que você deseja imprimir" />
 
           <TitleInput>Arquivo para impressão</TitleInput>
-          <InputFile label={"Anexar"} />
+            <FileUploader/>
           <TitleInput>Dados da Impressão</TitleInput>
+
           <Attachments>
             <TextAttachments>Data para início:</TextAttachments>
             <InputDate type="date" />
             <TextAttachments>Duração:</TextAttachments>
             <InputText defaultValue={"40"} type="text" />
           </Attachments>
+          
           <TitleInput>Material para Impressão</TitleInput>
           <SelectInput
             placeholder="Selecione o Material"

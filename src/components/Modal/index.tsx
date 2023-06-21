@@ -1,6 +1,6 @@
 import { Delete } from "./Delete/Delete";
-import { DetailsPrint } from "./DetailsPrint/DetailsPrint";
-import { DetailsPrinters } from "./DetailsPrinters/DetailsPrinters";
+import { DetailsPrint } from "./detailsPrint/detailsPrint";
+import { DetailsPrinters } from "./detailsPrinters/detailsPrinters";
 import { DetailsUser } from "./DetailsUser/detailsUser";
 import { ChangePassword } from "./changePassword/changePassword";
 import { DetailsAnonymous } from "./detailsAnonymous/detailsAnonymous";
