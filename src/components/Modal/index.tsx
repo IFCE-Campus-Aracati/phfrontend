@@ -9,7 +9,7 @@ import { Printers } from "../../hooks/auth";
 
 
 interface ModalProps {
-  data: Printers;
+  data: Printers | undefined;
   variant:
   | "changePassword"
   | "detailsAnonymous"
@@ -35,7 +35,7 @@ export function Modal({ data, variant, children, title, route }: ModalProps) {
         </DetailsPrint>
       );
     case "detailsPrinters":
-      return <DetailsPrinters data={data} tilte={title}>{children}</DetailsPrinters>;
+      return <DetailsPrinters data={data as Printers} tilte={title}>{children}</DetailsPrinters>;
     case "detailsUser":
       return <DetailsUser tilte={title}>{children}</DetailsUser>;
     case "delete":

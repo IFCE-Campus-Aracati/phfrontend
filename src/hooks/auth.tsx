@@ -2,6 +2,7 @@ import { ReactNode, createContext, useContext, useEffect, useState } from "react
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../server/api";
+import request from 'axios';
 import { PrintersTableDataProps } from "../components/Table/PrintersTable";
 
 export interface Printers {
@@ -11,6 +12,11 @@ export interface Printers {
   type: string;
   material: string;
   status?: "pending" | "approved" | "decline" | "available" | "unavailable" | undefined;
+}
+
+export interface ChangePasswordProps {
+  oldPassword: string;
+  password: string;
 }
 
 interface IUser {
@@ -30,8 +36,9 @@ interface AuthContextData {
   loading: boolean;
   signed: boolean;
   createPrinter: ({ title, type, material, description }: Printers) => void;
-  deletePrinter: (id:string) => void;
+  deletePrinter: (id: string) => void;
   getPrinters: () => void;
+  changePassword:({oldPassword, password}: ChangePasswordProps) => void,
   printers: Printers[];
 }
 interface AuthProviderProps {
@@ -194,11 +201,31 @@ function AuthProvider({ children }: AuthProviderProps) {
       });
       if (response) {
         const filteredPrinters = printers.filter(printer => id !== printer.id);
-        setPrinters(filteredPrinters);        
+        setPrinters(filteredPrinters);
         toast.success('Impressora foi deletada com sucesso!')
       }
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  async function changePassword({ oldPassword, password }: ChangePasswordProps) {
+    try {
+      const response = await api.put("/resetPassword", { oldPassword, password }, {
+        headers: { Authorization: `$Bearer ${user?.token}` },
+      });
+
+      if (response) {
+        toast.success('Senha atualizada com sucesso!');
+      }
+      if (response.status === 400) {
+        console.log('oi');
+      }
+    } catch (err) {
+      if(request.isAxiosError(err)){
+        console.log(err.response?.data);
+        toast.error(err.response?.data.message);
+      }
     }
   }
 
@@ -214,7 +241,8 @@ function AuthProvider({ children }: AuthProviderProps) {
         createPrinter,
         deletePrinter,
         getPrinters,
-        printers
+        printers,
+        changePassword
       }}
     >
       {children}
