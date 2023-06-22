@@ -1,19 +1,18 @@
-import { Placeholder } from "@phosphor-icons/react";
 import { Container, InputContainer } from "./styles";
 
 
-interface PrintFormInputProps extends React.HTMLAttributes<HTMLInputElement> {
+interface PrintFormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   placeholder: string;
-  onChange?: (e: any) => void;
-  value?: string | number | readonly string[] | undefined;
+  value?: string;
 }
 
-export function PrintFormInput({ placeholder, ...rest }: PrintFormInputProps) {
+export function PrintFormInput({ placeholder, value, ...rest }: PrintFormInputProps) {
   return (
     <Container>
       <InputContainer
-        {...rest}
         placeholder={placeholder}
+        value={value}
+        {...rest}
       />
     </Container>
   );

@@ -7,14 +7,15 @@ import { TextArea } from "../../../../components/TextArea";
 import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachments, TextAttachments, InputDate, InputText, StatusContainer } from "./styles";
 import { useNavigate, useParams } from "react-router-dom";
 import api from '../../../../server/api'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import { PrintersTableDataProps } from "../../../../components/Table/PrintersTable";
 import { Printers, useAuth } from '../../../../hooks/auth'
+import { toast } from "react-toastify";
+import { object, string } from "yup";
 
 const statusOptions = [
-  { value: 'pending', text: 'Pendente' },
-  { value: 'approved', text: 'Aprovado' },
-  { value: 'denied', text: 'Recusado' }
+  { value: "available", text: "Disponível" },
+  { value: "unavailable", text: "Indisponível" },
 ]
 
 const materialOptions = [
@@ -32,13 +33,13 @@ export function EditPrinter() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { user } = useAuth();
+  const { user, editPrinter } = useAuth();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState('');
   const [material, setMaterial] = useState('');
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState<any>('');
   const [reason, setReason] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -47,13 +48,18 @@ export function EditPrinter() {
   useEffect(() => {
     async function getPrinter() {
       try {
-        const response = await api.get("/detailsPrinter", {
+        setIsLoading(true);
+        const response = await api.get(`/detailsPrinter/${id}`, {
           headers: { Authorization: `$Bearer ${user?.token}` },
-          data: { id: id }
         });
 
         setPrinterData(response.data);
-        console.log('data', response.data);
+        setTitle(response.data.title)
+        setMaterial(response.data.material)
+        setType(response.data.type)
+        setStatus(response.data.status)
+
+        setIsLoading(false)
 
       } catch (err) {
         console.log(err);
@@ -65,6 +71,28 @@ export function EditPrinter() {
     getPrinter();
   }, []);
 
+  async function handleEditPrinter(event: any) {
+    try {
+      event.preventDefault();
+
+      const schema = object().shape({
+        title: string().required('É necessário dar um nome.'),
+        description: string().required('É necessário dar uma descrição a impressora'),
+        type: string().required('É necessário informar o tipo da impressora.'),
+        material: string().required('É necessário informar o material da impressora.'),
+        status: string().required('É necessário informar o status da impressora.')
+      })
+
+      await schema.validate({ title, description, type, material, status });
+
+      const id = printerData?.id;
+
+      await editPrinter({ title, description, status, type, material, id });
+      navigate("/admin/list_printers")
+    } catch (error) {
+      toast.error('Não foi possível editar.')
+    }
+  }
 
   if (isLoading) {
     return (
@@ -81,15 +109,15 @@ export function EditPrinter() {
           <TitleInput style={{ marginTop: "0" }}>Título</TitleInput>
           <PrintFormInput
             placeholder="Nome da Impressora"
-            value={printerData?.title}
-            onChange={setTitle}
+            value={title}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
           />
 
           <TitleInput>Descrição</TitleInput>
           <TextArea
-            placeholder="Adicione alguma informação sobre a impressora que deseja cadastrar"
             value={printerData?.description}
-            onChange={setDescription}
+            placeholder="Adicione alguma informação sobre a impressora que deseja cadastrar"
+            onChange={(e) => setDescription(e.target.value)}
           />
 
           <TitleInput>Tipo da Impressora</TitleInput>
@@ -97,7 +125,7 @@ export function EditPrinter() {
             placeholder="Selecione o Tipo"
             open={true}
             options={typeOptions}
-            value={printerData?.type}
+            value={type}
             onValueChange={setType}
           />
           <TitleInput>Material Trabalhado</TitleInput>
@@ -105,19 +133,19 @@ export function EditPrinter() {
             placeholder="Selecione o Material"
             open={true}
             options={materialOptions}
-            value={printerData?.material}
+            value={material}
             onValueChange={setMaterial}
           />
           <TitleInput>Status</TitleInput>
           <StatusContainer>
             <RadioGroup
               options={statusOptions}
-              value={printerData?.status}
+              value={status}
               onValueChange={setStatus}
             />
-            <PrintFormInput
+            {/* <PrintFormInput
               placeholder="Motivo da Indisponibilidade"
-            />
+            /> */}
           </StatusContainer>
 
           <Footer>
@@ -131,7 +159,7 @@ export function EditPrinter() {
               title="ATUALIZAR"
               variant="fill"
               size="small"
-              onClick={() => navigate("/admin/list_printers")}
+              onClick={handleEditPrinter}
             />
           </Footer>
         </FormContainer>

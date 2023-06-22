@@ -5,8 +5,15 @@ import api from "../server/api";
 import request from 'axios';
 import { PrintersTableDataProps } from "../components/Table/PrintersTable";
 
-export interface Printers {
+export interface Prints {
   id: string;
+  title: string;
+  owner: string;
+  date: string;
+  status: "pending" | "approved" | "decline";
+}
+export interface Printers {
+  id?: string;
   title: string;
   description: string;
   type: string;
@@ -38,8 +45,9 @@ interface AuthContextData {
   createPrinter: ({ title, type, material, description }: Printers) => void;
   deletePrinter: (id: string) => void;
   getPrinters: () => void;
-  changePassword:({oldPassword, password}: ChangePasswordProps) => void,
+  changePassword: ({ oldPassword, password }: ChangePasswordProps) => void,
   printers: Printers[];
+  editPrinter: ({ title, type, material, description, id, status }: Printers) => void;
 }
 interface AuthProviderProps {
   children: ReactNode;
@@ -52,6 +60,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [printers, setPrinters] = useState<Printers[]>([])
+  const [printsData, setPrintsData] = useState();
 
   const navigate = useNavigate();
 
@@ -193,11 +202,24 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function editPrinter({ description, material, title, type, status, id }: Printers) {
+    try {
+      const response = await api.put('/updatePrinter', { description, material, title, type, status, id }, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      })
+
+      if (response) {
+        toast.success('Impressora foi editada com sucesso!')
+      }
+    } catch (error) {
+
+    }
+  }
+
   async function deletePrinter(id: string) {
     try {
-      const response = await api.delete("/deletePrinter", {
+      const response = await api.delete(`/deletePrinter/${id}`, {
         headers: { Authorization: `$Bearer ${user?.token}` },
-        data: { id: id }
       });
       if (response) {
         const filteredPrinters = printers.filter(printer => id !== printer.id);
@@ -222,7 +244,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         console.log('oi');
       }
     } catch (err) {
-      if(request.isAxiosError(err)){
+      if (request.isAxiosError(err)) {
         console.log(err.response?.data);
         toast.error(err.response?.data.message);
       }
@@ -242,7 +264,8 @@ function AuthProvider({ children }: AuthProviderProps) {
         deletePrinter,
         getPrinters,
         printers,
-        changePassword
+        changePassword,
+        editPrinter
       }}
     >
       {children}

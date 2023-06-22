@@ -8,7 +8,6 @@ export function PrivateRoute({ role }: PrivateRouteProps) {
   const { user, signed } = useAuth();
 
   const checkUserPermission = role === user?.role;
-  console.log(checkUserPermission)
 
   if (!signed) {
     return <Navigate to={"/"} />;

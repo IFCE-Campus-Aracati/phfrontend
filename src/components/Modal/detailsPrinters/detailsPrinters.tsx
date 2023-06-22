@@ -20,8 +20,8 @@ import { useNavigate } from "react-router-dom";
 import { Printers, useAuth } from "../../../hooks/auth";
 import { PrintersTableDataProps } from "../../Table/PrintersTable";
 import api from "../../../server/api";
-import { 
-  Body, 
+import {
+  Body,
   TextInfo,
   Text,
   StatusArea,
@@ -37,7 +37,7 @@ interface DetailsPrintersProps {
 
 export function DetailsPrinters({ data, children, tilte }: DetailsPrintersProps) {
   const navigate = useNavigate();
-  
+
   return (
     <Root>
       <Trigger>{children}</Trigger>
@@ -76,11 +76,11 @@ export function DetailsPrinters({ data, children, tilte }: DetailsPrintersProps)
           </Body>
           <ButtonArea>
             <Button
-            id={data?.id}
-            size="medium" 
-            variant="fill" 
-            title="Editar"
-            onClick={() => navigate("/admin/list_printers/edit_printer")}
+              id={data?.id}
+              size="medium"
+              variant="fill"
+              title="Editar"
+              onClick={() => navigate(`/admin/list_printers/edit_printer/${data.id}`)}
             >
               <PencilSimpleLine size={"1.25rem"} color={theme.colors.white} />
             </Button>
