@@ -16,6 +16,7 @@ import {
 import { TextInfo, Text, Body, ButtonArea } from "./styles";
 
 interface DetailsUserProps {
+  data: UsersData;
   children: React.ReactNode;
   tilte: string;
 }
@@ -24,8 +25,9 @@ import { X, PencilSimpleLine } from "@phosphor-icons/react";
 import { theme } from "../../../styles/theme";
 import { Button } from "../../Button";
 import { useNavigate } from "react-router-dom";
+import { UsersData } from "../../../hooks/auth";
 
-export function DetailsUser({ children, tilte }: DetailsUserProps) {
+export function DetailsUser({ data, children, tilte }: DetailsUserProps) {
   const navigate = useNavigate();
   return (
     <Root>
@@ -44,21 +46,23 @@ export function DetailsUser({ children, tilte }: DetailsUserProps) {
           <Title>{tilte}</Title>
           <Body>
             <TextInfo>
-              Email: <Text>mairon.santana.nascimento60@aluno.ifce.edu.br</Text>
+              Nome: <Text>{data.name}</Text>
             </TextInfo>
             <TextInfo>
-              Nome: <Text>Mairon S. Nascimento</Text>
+              Email: <Text>{data.email}</Text>
             </TextInfo>
             <TextInfo>
-              Cargo: <Text>Aluno</Text>
+              Cargo: <Text>{
+                data.role === 'admin' ? ('Administrador') : ('Cliente')
+              }</Text>
             </TextInfo>
           </Body>
           <ButtonArea>
-            <Button 
-            size="medium" 
-            variant="fill" 
-            title="Editar"
-            onClick={() => navigate("/admin/list_users/edit_user")}
+            <Button
+              size="medium"
+              variant="fill"
+              title="Editar"
+              onClick={() => navigate("/admin/list_users/edit_user")}
             >
               <PencilSimpleLine size={"1.25rem"} color={theme.colors.white} />
             </Button>

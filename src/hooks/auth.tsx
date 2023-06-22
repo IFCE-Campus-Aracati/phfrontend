@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import api from "../server/api";
 import request from 'axios';
 import { PrintersTableDataProps } from "../components/Table/PrintersTable";
+import { UserTableDataProps } from "../components/Table/UserTable";
 
 export interface Prints {
   id: string;
@@ -21,9 +22,21 @@ export interface Printers {
   status?: "pending" | "approved" | "decline" | "available" | "unavailable" | undefined;
 }
 
+export interface UsersData {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
 export interface ChangePasswordProps {
   oldPassword: string;
   password: string;
+}
+
+export interface ChangeRoleProps {
+  id: string;
+  role: string;
 }
 
 interface IUser {
@@ -45,9 +58,12 @@ interface AuthContextData {
   createPrinter: ({ title, type, material, description }: Printers) => void;
   deletePrinter: (id: string) => void;
   getPrinters: () => void;
-  changePassword: ({ oldPassword, password }: ChangePasswordProps) => void,
+  getUsersData: () => void;
+  updateRole: ({ id, role }: ChangeRoleProps) => void;
+  changePassword: ({ oldPassword, password }: ChangePasswordProps) => void;
   printers: Printers[];
   editPrinter: ({ title, type, material, description, id, status }: Printers) => void;
+  usersData: UsersData[];
 }
 interface AuthProviderProps {
   children: ReactNode;
@@ -60,6 +76,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [printers, setPrinters] = useState<Printers[]>([])
+  const [usersData, setUsersData] = useState<UsersData[]>([])
   const [printsData, setPrintsData] = useState();
 
   const navigate = useNavigate();
@@ -173,6 +190,33 @@ function AuthProvider({ children }: AuthProviderProps) {
     navigate("/");
   }
 
+  async function getUsersData() {
+    try {
+      const response = await api.get<UserTableDataProps[]>("/users", {
+        headers: { Authorization: `$Bearer ${user?.token}` }
+      });
+
+      setUsersData(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function updateRole({id, role}: ChangeRoleProps) {
+    try {
+      const response = await api.put('/changeRole', { id, role }, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+
+      if (response) {
+        toast.success('Cargo do usuário alterado com sucesso!')
+        navigate('/admin/list_users');
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async function getPrinters() {
     try {
       const response = await api.get<PrintersTableDataProps[]>("/printers", {
@@ -240,9 +284,6 @@ function AuthProvider({ children }: AuthProviderProps) {
       if (response) {
         toast.success('Senha atualizada com sucesso!');
       }
-      if (response.status === 400) {
-        console.log('oi');
-      }
     } catch (err) {
       if (request.isAxiosError(err)) {
         console.log(err.response?.data);
@@ -263,9 +304,12 @@ function AuthProvider({ children }: AuthProviderProps) {
         createPrinter,
         deletePrinter,
         getPrinters,
+        getUsersData,
         printers,
+        usersData,
         changePassword,
-        editPrinter
+        editPrinter,
+        updateRole
       }}
     >
       {children}

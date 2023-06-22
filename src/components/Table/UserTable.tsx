@@ -19,6 +19,7 @@ import {
 } from "@phosphor-icons/react";
 import { Modal } from "../Modal";
 import { useNavigate } from "react-router-dom";
+import { UsersData } from "../../hooks/auth";
 
 export interface UserTableDataProps {
   id: string;
@@ -29,7 +30,7 @@ export interface UserTableDataProps {
 }
 
 interface UserTableProps {
-  data: UserTableDataProps[];
+  data: UsersData[];
   header: string[];
   isView?: boolean;
   isDelete?: boolean;
@@ -37,7 +38,7 @@ interface UserTableProps {
 }
 
 export function UserTable({
-  data = [] as UserTableDataProps[],
+  data = [] as UsersData[],
   header,
   isView = false,
   isDelete = false,
@@ -61,11 +62,13 @@ export function UserTable({
               <Row key={item.id}>
                 <TableData>{item.name}</TableData>
                 <TableData>{item.email}</TableData>
-                <TableData>{item.role}</TableData>
+                <TableData>{
+                  item.role === 'admin' ? ('Administrador') : ('Cliente')
+                }</TableData>
                 <TableData>
                   <RowIcons>
                     {isView && (
-                      <Modal title="Detalhes" variant="detailsUser" route="">
+                      <Modal data={item} title="Detalhes" variant="detailsUser" route="">
                         <ButtonIcon>
                           <MagnifyingGlass size={"1rem"} color={"#FFF"} />
                         </ButtonIcon>

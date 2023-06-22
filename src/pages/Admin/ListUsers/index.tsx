@@ -10,23 +10,10 @@ import { Container, Content, Header, InputContainer, Title } from "./styles";
 const header = ["Nome", "Email", "Cargo", "Detalhes"];
 
 export function ListUsers() {
-  const { user } = useAuth();
-  const [usersData, setUsersData] = useState<UserTableDataProps[]>([]);
+  const { getUsersData, usersData } = useAuth();
 
   useEffect(() => {
-    async function getUsers() {
-      try {
-        const response = await api.get<UserTableDataProps[]>("/users", {
-          headers: { Authorization: `$Bearer ${user?.token}` }
-        });
-
-        setUsersData(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    getUsers();
+    getUsersData();
 
   }, []);
 
