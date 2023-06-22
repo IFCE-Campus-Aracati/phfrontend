@@ -3,6 +3,7 @@ import { InputFile } from "../../../../components/InputFile";
 import { PrintFormInput } from "../../../../components/PrintFormInput";
 import { SelectInput } from "../../../../components/Select";
 import { TextArea } from "../../../../components/TextArea";
+import { FileUploader } from "../../../../components/FileUploader"
 import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachments } from "./styles";
 import { useNavigate } from "react-router-dom";
 import { SideBar } from "../../../../components/SideBar";
@@ -30,15 +31,15 @@ export function EditPrint() {
 
           <TitleInput>Arquivo para impressão</TitleInput>
           <Attachments>
-            <InputFile label={"Anexar"} />
-            <Button
-              size="medium"
-              variant="fill"
-              title="arquivo.stl x"
-            />
+            <FileUploader/>
           </Attachments>
           <TitleInput>Material para Impressão</TitleInput>
-          <SelectInput placeholder="Selecione o Material" open={true} options={options} />
+          <SelectInput
+            placeholder="Selecione o Material"
+            open={true}
+            options={options}
+            onValueChange={() => { }}
+            />
           <Footer>
             <Button
               title="cancelar"

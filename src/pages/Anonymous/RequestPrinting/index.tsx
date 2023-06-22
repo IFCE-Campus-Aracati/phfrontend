@@ -1,6 +1,6 @@
 import { ArrowLeft } from "@phosphor-icons/react";
 import { Button } from "../../../components/Button";
-import { InputFile } from "../../../components/InputFile";
+import { FileUploader } from "../../../components/FileUploader"
 import { PrintFormInput } from "../../../components/PrintFormInput";
 import { SelectInput } from "../../../components/Select";
 import { TextArea } from "../../../components/TextArea";
@@ -26,7 +26,6 @@ export function RequestPrinting() {
           <Title>Solicitar Impressão</Title>
         </Header>
 
-
         <FormContainer>
           <TitleInput>Título</TitleInput>
           <PrintFormInput placeholder="Título da sua impressão" />
@@ -35,8 +34,7 @@ export function RequestPrinting() {
           <TextArea placeholder="Informe alguma informação sobre o que você deseja imprimir" />
 
           <TitleInput>Arquivo para impressão</TitleInput>
-          <InputFile label={"Anexar"} />
-
+            <FileUploader/>
           <TitleInput>Material para Impressão</TitleInput>
           <SelectInput placeholder="Selecione o Material" options={options} onValueChange={() => { }} />
         </FormContainer>

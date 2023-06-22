@@ -8,8 +8,7 @@ interface InputFileProps {
 }
 
 export function InputFile({ label, ...rest }: InputFileProps) {
-  const [documentName, setDocumentName] = useState();
-
+  const [documentName, setDocumentName] = useState('');
   return (
     <Container>
       <Paperclip
