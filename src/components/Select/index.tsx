@@ -20,7 +20,7 @@ interface SelectRadixProps extends SelectProps {
 
 export function SelectInput({ placeholder, open, options, onValueChange, ...props }: SelectRadixProps) {
   const [openSelect, isOpenSelect] = useState(open);
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState(props.value || "");
 
   const handleValueChange = (text: string) => {
     onValueChange(text);

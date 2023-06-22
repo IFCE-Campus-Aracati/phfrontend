@@ -2,12 +2,41 @@ import { ReactNode, createContext, useContext, useEffect, useState } from "react
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../server/api";
+import request from 'axios';
+import { PrintersTableDataProps } from "../components/Table/PrintersTable";
+import { UserTableDataProps } from "../components/Table/UserTable";
 
-interface Printers {
+export interface Prints {
+  id: string;
+  title: string;
+  owner: string;
+  date: string;
+  status: "pending" | "approved" | "decline";
+}
+export interface Printers {
+  id?: string;
   title: string;
   description: string;
   type: string;
   material: string;
+  status?: "pending" | "approved" | "decline" | "available" | "unavailable" | undefined;
+}
+
+export interface UsersData {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
+export interface ChangePasswordProps {
+  oldPassword: string;
+  password: string;
+}
+
+export interface ChangeRoleProps {
+  id: string;
+  role: string;
 }
 
 interface IUser {
@@ -19,10 +48,6 @@ interface IUser {
   token: string;
 }
 
-interface Printer {
-  id: string;
-}
-
 interface AuthContextData {
   signUp: (name: string, email: string, password: string) => void;
   signIn: (email: string, password: string) => void;
@@ -31,6 +56,14 @@ interface AuthContextData {
   loading: boolean;
   signed: boolean;
   createPrinter: ({ title, type, material, description }: Printers) => void;
+  deletePrinter: (id: string) => void;
+  getPrinters: () => void;
+  getUsersData: () => void;
+  updateRole: ({ id, role }: ChangeRoleProps) => void;
+  changePassword: ({ oldPassword, password }: ChangePasswordProps) => void;
+  printers: Printers[];
+  editPrinter: ({ title, type, material, description, id, status }: Printers) => void;
+  usersData: UsersData[];
 }
 interface AuthProviderProps {
   children: ReactNode;
@@ -43,6 +76,8 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [printers, setPrinters] = useState<Printers[]>([])
+  const [usersData, setUsersData] = useState<UsersData[]>([])
+  const [printsData, setPrintsData] = useState();
 
   const navigate = useNavigate();
 
@@ -155,6 +190,45 @@ function AuthProvider({ children }: AuthProviderProps) {
     navigate("/");
   }
 
+  async function getUsersData() {
+    try {
+      const response = await api.get<UserTableDataProps[]>("/users", {
+        headers: { Authorization: `$Bearer ${user?.token}` }
+      });
+
+      setUsersData(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function updateRole({id, role}: ChangeRoleProps) {
+    try {
+      const response = await api.put('/changeRole', { id, role }, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+
+      if (response) {
+        toast.success('Cargo do usuário alterado com sucesso!')
+        navigate('/admin/list_users');
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async function getPrinters() {
+    try {
+      const response = await api.get<PrintersTableDataProps[]>("/printers", {
+        headers: { Authorization: `$Bearer ${user?.token}` }
+      });
+
+      setPrinters(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async function createPrinter({ type, title, description, material }: Printers) {
     try {
       const response = await api.post('/createPrinter', { title, description, type, material }, {
@@ -171,6 +245,53 @@ function AuthProvider({ children }: AuthProviderProps) {
       toast.success('Não possível criar uma nova impressora!')
     }
   }
+
+  async function editPrinter({ description, material, title, type, status, id }: Printers) {
+    try {
+      const response = await api.put('/updatePrinter', { description, material, title, type, status, id }, {
+        headers: { Authorization: `Bearer ${user.token}` }
+      })
+
+      if (response) {
+        toast.success('Impressora foi editada com sucesso!')
+      }
+    } catch (error) {
+
+    }
+  }
+
+  async function deletePrinter(id: string) {
+    try {
+      const response = await api.delete(`/deletePrinter/${id}`, {
+        headers: { Authorization: `$Bearer ${user?.token}` },
+      });
+      if (response) {
+        const filteredPrinters = printers.filter(printer => id !== printer.id);
+        setPrinters(filteredPrinters);
+        toast.success('Impressora foi deletada com sucesso!')
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function changePassword({ oldPassword, password }: ChangePasswordProps) {
+    try {
+      const response = await api.put("/resetPassword", { oldPassword, password }, {
+        headers: { Authorization: `$Bearer ${user?.token}` },
+      });
+
+      if (response) {
+        toast.success('Senha atualizada com sucesso!');
+      }
+    } catch (err) {
+      if (request.isAxiosError(err)) {
+        console.log(err.response?.data);
+        toast.error(err.response?.data.message);
+      }
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -180,7 +301,15 @@ function AuthProvider({ children }: AuthProviderProps) {
         user,
         signOut,
         loading,
-        createPrinter
+        createPrinter,
+        deletePrinter,
+        getPrinters,
+        getUsersData,
+        printers,
+        usersData,
+        changePassword,
+        editPrinter,
+        updateRole
       }}
     >
       {children}

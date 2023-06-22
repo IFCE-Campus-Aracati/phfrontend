@@ -1,3 +1,4 @@
+import { Printers, UsersData } from "../../hooks/auth";
 import { ClientListTable, ClientListTableDataProps } from "./ClientListTable";
 import { ListTable, ListTableDataProps } from "./ListTable";
 import { PrintersTable, PrintersTableDataProps } from "./PrintersTable";
@@ -9,9 +10,9 @@ interface TableProp {
   data:
   | ListTableDataProps[]
   | ClientListTableDataProps[]
-  | PrintersTableDataProps[]
+  | Printers[]
   | SearchTableDataProps[]
-  | UserTableDataProps[];
+  | UsersData[];
   header: string[];
 }
 

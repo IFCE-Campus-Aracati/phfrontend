@@ -1,16 +1,17 @@
 import { Container, TextAreaContainer } from "./styles"
 
-interface TextAreaProps extends React.HTMLAttributes<HTMLTextAreaElement> {
+interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   placeholder: string;
-  onChange?: (e: any) => void;
-  value?: string | number | readonly string[] | undefined;
+  value?: string;
 }
 
-export function TextArea({ placeholder, ...rest }: TextAreaProps) {
+export function TextArea({ placeholder, value, ...rest }: TextAreaProps) {
   return (
     <Container>
-      <TextAreaContainer {...rest}
-        placeholder={placeholder} />
+      <TextAreaContainer
+        placeholder={placeholder}
+        {...rest}
+      >{value}</TextAreaContainer>
     </Container>
   )
 }

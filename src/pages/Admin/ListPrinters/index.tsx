@@ -12,26 +12,13 @@ import api from "../../../server/api";
 const header = ["Nome", "Tipo", "Material", "Status", "Detalhes"];
 
 export function ListPrinters() {
-  const { user } = useAuth();
+  const { user, getPrinters, printers } = useAuth();
   const navigate = useNavigate();
 
   const [printersData, setPrintersData] = useState<PrintersTableDataProps[]>([]);
 
   useEffect(() => {
-    async function getPrinters() {
-      try {
-        const response = await api.get<PrintersTableDataProps[]>("/printers", {
-          headers: { Authorization: `$Bearer ${user?.token}` }
-        });
-
-        setPrintersData(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
     getPrinters();
-
   }, []);
 
   return (
@@ -53,7 +40,7 @@ export function ListPrinters() {
         </Button>
       </Row>
 
-      <Table data={printersData} header={header} variant="printers" />
+      <Table data={printers} header={header} variant="printers" />
     </Container>
   );
 }

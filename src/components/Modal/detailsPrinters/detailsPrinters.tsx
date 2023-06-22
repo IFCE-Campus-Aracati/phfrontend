@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Root,
@@ -12,24 +12,32 @@ import {
   TextButton,
   Close,
 } from "../styles";
-
-
-
-interface DetailsPrintersProps {
-  children: React.ReactNode;
-  tilte: string;
-}
-
 import { X, PencilSimpleLine } from "@phosphor-icons/react";
 import { theme } from "../../../styles/theme";
 import { Button } from "../../Button";
 import { Status } from "../../Status";
-import { Body, ButtonArea, StatusArea, Text, TextInfo } from "./styles";
 import { useNavigate } from "react-router-dom";
+import { Printers, useAuth } from "../../../hooks/auth";
+import { PrintersTableDataProps } from "../../Table/PrintersTable";
+import api from "../../../server/api";
+import {
+  Body,
+  TextInfo,
+  Text,
+  StatusArea,
+  ButtonArea
+} from "./styles";
 
 
-export function DetailsPrinters({ children, tilte }: DetailsPrintersProps) {
+interface DetailsPrintersProps {
+  data: Printers;
+  children: React.ReactNode;
+  tilte: string;
+}
+
+export function DetailsPrinters({ data, children, tilte }: DetailsPrintersProps) {
   const navigate = useNavigate();
+
   return (
     <Root>
       <Trigger>{children}</Trigger>
@@ -47,36 +55,32 @@ export function DetailsPrinters({ children, tilte }: DetailsPrintersProps) {
           <Title>{tilte}</Title>
           <Body>
             <TextInfo>
-              Nome: <Text>Impressora 1</Text>
+              Nome: <Text>{data?.title}</Text>
             </TextInfo>
             <TextInfo>
-              Tipo: <Text>Impressora 3D</Text>
+              Tipo: <Text>{data?.type}</Text>
             </TextInfo>
             <TextInfo>
-              Material: <Text>ABS</Text>
+              Material: <Text>{data?.material}</Text>
             </TextInfo>
             <StatusArea>
               <TextInfo>Status:</TextInfo>
-              <Status variant="approved" />
+              <Status variant={data?.status} />
             </StatusArea>
             <TextInfo>
               Descrição:{" "}
               <Text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In quis
-                bibendum augue, id sodales nunc. Orci varius natoque penatibus
-                et magnis dis parturient montes, nascetur ridiculus mus. Etiam
-                consectetur pulvinar nisi, ac malesuada tortor lobortis quis.
-                Nunc non tellus eu est vulputate pellentesque. Cras turpis
-                lorem, fringilla quis libero eget.
+                {data?.description}
               </Text>
             </TextInfo>
           </Body>
           <ButtonArea>
-            <Button 
-            size="medium" 
-            variant="fill" 
-            title="Editar"
-            onClick={() => navigate("/admin/list_printers/edit_printer")}
+            <Button
+              id={data?.id}
+              size="medium"
+              variant="fill"
+              title="Editar"
+              onClick={() => navigate(`/admin/list_printers/edit_printer/${data.id}`)}
             >
               <PencilSimpleLine size={"1.25rem"} color={theme.colors.white} />
             </Button>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Status } from "./../Status";
 
@@ -21,6 +21,8 @@ import {
 } from "@phosphor-icons/react";
 import { Modal } from "../Modal";
 import { useNavigate } from "react-router-dom";
+import api from "../../server/api";
+import { Printers, useAuth } from "../../hooks/auth";
 
 export interface PrintersTableDataProps {
   id: string;
@@ -28,11 +30,11 @@ export interface PrintersTableDataProps {
   description: string;
   type: string;
   material: string;
-  status: "available" | "unavailable";
+  status: "pending" | "approved" | "decline" | "available" | "unavailable" | undefined;
 }
 
 interface TableProps {
-  data: PrintersTableDataProps[];
+  data: Printers[];
   header: string[];
   isView?: boolean;
   isDelete?: boolean;
@@ -40,13 +42,15 @@ interface TableProps {
 }
 
 export function PrintersTable({
-  data = [] as PrintersTableDataProps[],
+  data = [] as Printers[],
   header,
   isView = false,
   isDelete = false,
   isEdit = false,
 }: TableProps) {
+
   const navigate = useNavigate();
+
   return (
     <Container>
       <TableContainer>
@@ -71,7 +75,7 @@ export function PrintersTable({
                 <TableData>
                   <RowIcons>
                     {isView && (
-                      <Modal title="Detalhes" variant="detailsPrinters" route="">
+                      <Modal data={item} title="Detalhes" variant="detailsPrinters" route="">
                         <ButtonIcon>
                           <MagnifyingGlass size={"1rem"} color={"#FFF"} />
                         </ButtonIcon>
@@ -80,14 +84,14 @@ export function PrintersTable({
                     {isEdit && (
                       <ButtonIcon
                         onClick={() =>
-                          navigate("/admin/list_printers/edit_printer")
+                          navigate(`/admin/list_printers/edit_printer/${item.id}`)
                         }
                       >
                         <PencilSimpleLine size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}
                     {isDelete && (
-                      <Modal title="Você deseja excluir?" variant="delete" route="">
+                      <Modal data={item} title="Você deseja excluir?" variant="delete" route="">
                         <ButtonIcon>
                           <Trash size={"1rem"} color={"#FFF"} />
                         </ButtonIcon>
