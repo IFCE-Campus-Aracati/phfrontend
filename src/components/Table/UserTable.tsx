@@ -21,12 +21,16 @@ import { Modal } from "../Modal";
 import { useNavigate } from "react-router-dom";
 import { UsersData } from "../../hooks/auth";
 
-export interface UserTableDataProps {
+export interface UserProps {
   id: string;
   name: string;
   email: string;
   role: string;
   profile_photo: string;
+}
+export interface UserRequestProps {
+  users: UserProps[],
+  totalPage: number
 }
 
 interface UserTableProps {

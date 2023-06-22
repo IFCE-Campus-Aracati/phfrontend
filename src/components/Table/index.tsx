@@ -1,9 +1,9 @@
 import { Printers, UsersData } from "../../hooks/auth";
 import { ClientListTable, ClientListTableDataProps } from "./ClientListTable";
 import { ListTable, ListTableDataProps } from "./ListTable";
-import { PrintersTable, PrintersTableDataProps } from "./PrintersTable";
+import { PrintersProps, PrintersTable } from "./PrintersTable";
 import { SearchTable, SearchTableDataProps } from "./SearchTable";
-import { UserTableDataProps, UserTable } from "./UserTable";
+import { UserTable, UserProps } from "./UserTable";
 
 interface TableProp {
   variant: "users" | "list" | "client" | "printers" | "search";
@@ -41,7 +41,7 @@ export function Table({ variant, data, header }: TableProp) {
     case "printers":
       return (
         <PrintersTable
-          data={data as PrintersTableDataProps[]}
+          data={data as PrintersProps[]}
           header={header}
           isView
           isEdit
@@ -61,7 +61,7 @@ export function Table({ variant, data, header }: TableProp) {
     case "users":
       return (
         <UserTable
-          data={data as UserTableDataProps[]}
+          data={data as UserProps[]}
           header={header}
           isView
           isEdit

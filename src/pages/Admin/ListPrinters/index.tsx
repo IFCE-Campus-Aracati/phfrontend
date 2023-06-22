@@ -3,22 +3,33 @@ import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
 import { Plus } from "@phosphor-icons/react";
 import { Table } from "../../../components/Table";
-import { PrintersTableDataProps } from "../../../components/Table/PrintersTable";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/auth";
 import { useEffect, useState } from "react";
-import api from "../../../server/api";
+import { Pagination } from "../../../components/Pagination";
 
 const header = ["Nome", "Tipo", "Material", "Status", "Detalhes"];
 
 export function ListPrinters() {
-  const { user, getPrinters, printers } = useAuth();
+  const { totalPages, getPrinters, printers } = useAuth();
   const navigate = useNavigate();
 
-  const [printersData, setPrintersData] = useState<PrintersTableDataProps[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  async function handlePreviousPage() {
+    await getPrinters(currentPage - 1).then(() => {
+      setCurrentPage(currentPage - 1);
+    })
+  }
+
+  async function handleNextPage() {
+    await getPrinters(currentPage + 1).then(() => {
+      setCurrentPage(currentPage + 1);
+    });
+  }
 
   useEffect(() => {
-    getPrinters();
+    getPrinters(1);
   }, []);
 
   return (
@@ -41,6 +52,12 @@ export function ListPrinters() {
       </Row>
 
       <Table data={printers} header={header} variant="printers" />
+      <Pagination
+        currentPage={currentPage}
+        finalPage={totalPages}
+        onNextPage={handleNextPage}
+        onPreviousPage={handlePreviousPage}
+      />
     </Container>
   );
 }
