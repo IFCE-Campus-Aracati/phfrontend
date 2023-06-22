@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../server/api";
 import request from 'axios';
-import { PrintersTableDataProps } from "../components/Table/PrintersTable";
-import { UserTableDataProps } from "../components/Table/UserTable";
+import { PrintersProps, PrintersRequestProps } from "../components/Table/PrintersTable";
+import { UserProps, UserRequestProps } from "../components/Table/UserTable";
 
 export interface Prints {
   id: string;
@@ -57,13 +57,14 @@ interface AuthContextData {
   signed: boolean;
   createPrinter: ({ title, type, material, description }: Printers) => void;
   deletePrinter: (id: string) => void;
-  getPrinters: () => void;
-  getUsersData: () => void;
+  getPrinters: (page: number) => Promise<void>;
+  getUsersData: (page: number) => Promise<void>;
   updateRole: ({ id, role }: ChangeRoleProps) => void;
   changePassword: ({ oldPassword, password }: ChangePasswordProps) => void;
   printers: Printers[];
   editPrinter: ({ title, type, material, description, id, status }: Printers) => void;
   usersData: UsersData[];
+  totalPages: number;
 }
 interface AuthProviderProps {
   children: ReactNode;
@@ -75,9 +76,10 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<IUser>({} as IUser);
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState<string | null>(null);
-  const [printers, setPrinters] = useState<Printers[]>([])
-  const [usersData, setUsersData] = useState<UsersData[]>([])
+  const [printers, setPrinters] = useState<PrintersProps[]>([])
+  const [usersData, setUsersData] = useState<UserProps[]>([])
   const [printsData, setPrintsData] = useState();
+  const [totalPages, setTotalPages] = useState<number>(1);
 
   const navigate = useNavigate();
 
@@ -190,19 +192,20 @@ function AuthProvider({ children }: AuthProviderProps) {
     navigate("/");
   }
 
-  async function getUsersData() {
+  async function getUsersData(page: number) {
     try {
-      const response = await api.get<UserTableDataProps[]>("/users", {
+      const response = await api.get<UserRequestProps>(`/users/${page}`, {
         headers: { Authorization: `$Bearer ${user?.token}` }
       });
 
-      setUsersData(response.data);
+      setUsersData(response.data.users);
+      setTotalPages(response.data.totalPage);
     } catch (err) {
       console.log(err);
     }
   }
 
-  async function updateRole({id, role}: ChangeRoleProps) {
+  async function updateRole({ id, role }: ChangeRoleProps) {
     try {
       const response = await api.put('/changeRole', { id, role }, {
         headers: { Authorization: `Bearer ${user.token}` }
@@ -217,13 +220,14 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
-  async function getPrinters() {
+  async function getPrinters( page: number) {
     try {
-      const response = await api.get<PrintersTableDataProps[]>("/printers", {
+      const response = await api.get<PrintersRequestProps>(`/printers/${page}`, {
         headers: { Authorization: `$Bearer ${user?.token}` }
       });
 
-      setPrinters(response.data);
+      setPrinters(response.data.printers);
+      setTotalPages(response.data.totalPage);
     } catch (err) {
       console.log(err);
     }
@@ -309,7 +313,8 @@ function AuthProvider({ children }: AuthProviderProps) {
         usersData,
         changePassword,
         editPrinter,
-        updateRole
+        updateRole,
+        totalPages
       }}
     >
       {children}

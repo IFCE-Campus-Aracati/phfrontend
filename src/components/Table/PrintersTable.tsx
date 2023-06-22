@@ -24,13 +24,18 @@ import { useNavigate } from "react-router-dom";
 import api from "../../server/api";
 import { Printers, useAuth } from "../../hooks/auth";
 
-export interface PrintersTableDataProps {
+export interface PrintersProps {
   id: string;
   title: string;
   description: string;
   type: string;
   material: string;
   status: "pending" | "approved" | "decline" | "available" | "unavailable" | undefined;
+}
+
+export interface PrintersRequestProps {
+  printers: PrintersProps[];
+  totalPage: number;
 }
 
 interface TableProps {
