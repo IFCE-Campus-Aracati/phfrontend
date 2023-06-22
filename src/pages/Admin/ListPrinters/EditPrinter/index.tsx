@@ -76,20 +76,23 @@ export function EditPrinter() {
       event.preventDefault();
 
       const schema = object().shape({
-        title: string().required('É necessário dar um nome.'),
-        description: string().required('É necessário dar uma descrição a impressora'),
-        type: string().required('É necessário informar o tipo da impressora.'),
-        material: string().required('É necessário informar o material da impressora.'),
-        status: string().required('É necessário informar o status da impressora.')
+        title: string(),
+        description: string(),
+        type: string(),
+        material: string(),
+        status: string()
       })
 
       await schema.validate({ title, description, type, material, status });
-
       const id = printerData?.id;
+      console.log(title, description, type, material, status, id)
+
+
 
       await editPrinter({ title, description, status, type, material, id });
       navigate("/admin/list_printers")
     } catch (error) {
+      console.log(error)
       toast.error('Não foi possível editar.')
     }
   }
@@ -140,12 +143,9 @@ export function EditPrinter() {
           <StatusContainer>
             <RadioGroup
               options={statusOptions}
-              value={status}
+              value={printerData?.status}
               onValueChange={setStatus}
             />
-            {/* <PrintFormInput
-              placeholder="Motivo da Indisponibilidade"
-            /> */}
           </StatusContainer>
 
           <Footer>

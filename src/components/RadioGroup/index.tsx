@@ -11,8 +11,8 @@ interface StatusPrinterProps extends RadioGroupProps {
   onValueChange: (value: string) => void;
 }
 
-export function RadioGroup({ onValueChange, options, ...rest }: StatusPrinterProps) {
-  const [value, setValue] = useState('');
+export function RadioGroup({ onValueChange, options, ...props }: StatusPrinterProps) {
+  const [value, setValue] = useState(props.value || "");
 
   const handleValueChange = (text: string) => {
     onValueChange(text);
@@ -21,7 +21,7 @@ export function RadioGroup({ onValueChange, options, ...rest }: StatusPrinterPro
 
   return (
     <Form>
-      <Root defaultValue={value} aria-label="View density" onValueChange={handleValueChange} {...rest} >
+      <Root defaultValue={value} aria-label="View density" onValueChange={handleValueChange} {...props} >
         {options.map((option) => (
           <RadioContainer >
             <Item value={option.value} id="r1">
