@@ -47,7 +47,7 @@ export function RoutesApp() {
         <Route element={<SideBar variant="admin" />}>
           <Route index path="list_prints" element={<ListPrints />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="list_prints/edit_print" element={<EditListPrint />} />
+          <Route path="list_prints/edit_print/:id" element={<EditListPrint />} />
           <Route path="list_prints/register_print" element={<RegisterListPrint />} />
           <Route path="list_users" element={<ListUsers />} />
           <Route path="list_users/edit_user/:id" element={<EditUser />} />

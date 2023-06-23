@@ -8,31 +8,30 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/auth";
 import { useEffect, useState } from "react";
 import api from "../../../server/api";
+import { Pagination } from "../../../components/Pagination";
 
 const header = ["Título", "Emissor", "Data", "Status", "Detalhes"];
 
 export function ListPrints() {
-  const { user } = useAuth();
+  const { getPrints, printsData, totalPages } = useAuth();
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const [printsData, setPrintsData] = useState<ListTableDataProps[]>([]);
+
+  async function handlePreviousPage() {
+    await getPrints(currentPage - 1).then(() => {
+      setCurrentPage(currentPage - 1);
+    })
+  }
+
+  async function handleNextPage() {
+    await getPrints(currentPage + 1).then(() => {
+      setCurrentPage(currentPage + 1);
+    });
+  }
 
   useEffect(() => {
-    async function getPrints() {
-      try {
-        const response = await api.get<ListTableDataProps[]>("/getAllPrints", {
-          headers: { Authorization: `$Bearer ${user?.token}` }
-        });
-
-        setPrintsData(response.data);
-        console.log(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    getPrints();
-
+    getPrints(1);
   }, []);
 
   return (
@@ -54,7 +53,17 @@ export function ListPrints() {
         </Button>
       </Row>
 
-      <Table data={printsData} header={header} variant="list" />
+      <Table
+        data={printsData}
+        header={header}
+        variant="list"
+      />
+      <Pagination
+        currentPage={currentPage}
+        finalPage={totalPages}
+        onNextPage={handleNextPage}
+        onPreviousPage={handlePreviousPage}
+      />
     </Container>
   );
 }

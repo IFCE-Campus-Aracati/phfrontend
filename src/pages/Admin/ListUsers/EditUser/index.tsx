@@ -6,7 +6,7 @@ import DefaultProfile from "../../../../assets/default-profile.jpeg"
 import { useEffect, useState } from "react";
 import api from "../../../../server/api";
 import { useAuth } from "../../../../hooks/auth";
-import { UserTableDataProps } from "../../../../components/Table/UserTable";
+import { UserProps } from "../../../../components/Table/UserTable";
 
 const userRole = [
   { value: 'admin', text: 'Administrador' },
@@ -19,16 +19,16 @@ export function EditUser() {
   const { id } = useParams();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [userData, setUserData] = useState<UserTableDataProps>();
+  const [userData, setUserData] = useState<UserProps>();
   const [userRoleData, setUserRoleData] = useState<string>('');
 
-  
+
   async function handleUpdateRole(event: any) {
-    try{
+    try {
       event.preventDefault();
       const userId = userData?.id;
-      if(userId) {
-        await updateRole({id: userId, role: userRoleData})
+      if (userId) {
+        await updateRole({ id: userId, role: userRoleData })
       }
     } catch (err) {
       console.log(err);

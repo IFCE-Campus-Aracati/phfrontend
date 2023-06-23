@@ -23,11 +23,21 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "../Modal";
 
 export interface ListTableDataProps {
-  id: string;
+  id?: string;
   title: string;
-  owner: string;
-  date: string;
+  identifier?: string;
+  owner_id?: string;
+  owner?: {
+    name?: string;
+  };
+  created_at: string;
   status: "pending" | "approved" | "decline";
+  description?: string;
+  material?: string;
+  archive?: string;
+  printer_id?: string;
+  printing_date?: string;
+  printing_duration?: string;
 }
 
 interface TableProps {
@@ -52,7 +62,7 @@ export function ListTable({
         <Head>
           <Row>
             {header.map((item) => {
-              return <TH>{item}</TH>;
+              return <TH key={item}>{item}</TH>;
             })}
           </Row>
         </Head>
@@ -60,10 +70,10 @@ export function ListTable({
         <Body>
           {data.map((item) => {
             return (
-              <Row>
+              <Row key={item.id}>
                 <TableData>{item.title}</TableData>
-                <TableData>{item.owner}</TableData>
-                <TableData>{item.date}</TableData>
+                <TableData>{item.owner?.name}</TableData>
+                <TableData>{item.created_at}</TableData>
                 <TableData>
                   <Status variant={item.status} />
                 </TableData>
@@ -71,9 +81,10 @@ export function ListTable({
                   <RowIcons>
                     {isView && (
                       <Modal
-                        title="Deatalhes"
+                        data={item}
+                        title="Detalhes"
                         variant="detailsPrint"
-                        route={"/admin/list_prints/edit_print"}
+                        route={`/admin/list_prints/edit_print/${item.identifier}`}
                       >
                         <ButtonIcon>
                           <MagnifyingGlass size={"1rem"} color={"#FFF"} />
@@ -83,7 +94,7 @@ export function ListTable({
                     {isEdit && (
                       <ButtonIcon
                         onClick={() =>
-                          navigate("/admin/list_prints/edit_print")
+                          navigate(`/admin/list_prints/edit_print/${item.identifier}`)
                         }
                       >
                         <PencilSimpleLine size={"1rem"} color={"#FFF"} />

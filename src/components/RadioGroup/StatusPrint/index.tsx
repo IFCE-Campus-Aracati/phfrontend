@@ -21,7 +21,7 @@ export function StatusPrint() {
           </Label>
         </RadioContainer>
         <RadioContainer>
-          <Item value="denied" id="r3">
+          <Item value="decline" id="r3">
             <Indicatior />
           </Item>
           <Label htmlFor="r3">

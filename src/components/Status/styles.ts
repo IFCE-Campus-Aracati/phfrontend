@@ -39,6 +39,11 @@ export const Content = styled.div<StatusProps>`
     css`
       background-color: ${theme.colors.gray[800]};
     `};
+    ${({ variant }) =>
+    variant === "done" &&
+    css`
+      background-color: ${theme.colors.blue.light};
+    `}
 `;
 
 export const StatusText = styled.span`

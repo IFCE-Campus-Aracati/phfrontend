@@ -25,14 +25,16 @@ import { X, PencilSimpleLine } from "@phosphor-icons/react";
 import { Status } from "../../Status";
 import { Button } from "../../Button";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Prints } from "../../../hooks/auth";
 
 interface DetailsPrintsProps {
   children: React.ReactNode;
-  tilte: string;
+  title: string;
   route: string;
+  data: Prints;
 }
 
-export function DetailsPrint({ children, tilte, route }: DetailsPrintsProps) {
+export function DetailsPrint({ children, title, route, data }: DetailsPrintsProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
@@ -54,33 +56,28 @@ export function DetailsPrint({ children, tilte, route }: DetailsPrintsProps) {
               </ButtonClose>
             </Close>
           </Header>
-          <Title>{tilte}</Title>
+          <Title>{title}</Title>
           <Body>
             <RowTextInfo>
               <TextInfo>
-                Emissor: <Text>Gabriel</Text>
+                Emissor: <Text>{data.owner?.name}</Text>
               </TextInfo>
               <TextInfo>
-                Data de emissão: <Text>05/02/2023</Text>
+                Data de emissão: <Text>{data?.created_at}</Text>
               </TextInfo>
             </RowTextInfo>
 
             <TextInfo>
-              Título: <Text>Peça de xadrez</Text>
+              Título: <Text>{data?.title}</Text>
             </TextInfo>
             <StatusArea>
               <TextInfo>Status:</TextInfo>
-              <Status variant="pending" />
+              <Status variant={data?.status} />
             </StatusArea>
             <TextInfo>
               Descrição:{" "}
               <Text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In quis
-                bibendum augue, id sodales nunc. Orci varius natoque penatibus
-                et magnis dis parturient montes, nascetur ridiculus mus. Etiam
-                consectetur pulvinar nisi, ac malesuada tortor lobortis quis.
-                Nunc non tellus eu est vulputate pellentesque. Cras turpis
-                lorem, fringilla quis libero eget.
+                {data?.description}
               </Text>
             </TextInfo>
 
@@ -90,7 +87,7 @@ export function DetailsPrint({ children, tilte, route }: DetailsPrintsProps) {
             </RowTextInfo>
 
             <TextInfo>
-              Tipo de material: <Text>ABS</Text>
+              Tipo de material: <Text>{data?.material}</Text>
             </TextInfo>
           </Body>
           <ButtonArea>

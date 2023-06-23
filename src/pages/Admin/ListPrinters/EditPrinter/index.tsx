@@ -8,7 +8,6 @@ import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachmen
 import { useNavigate, useParams } from "react-router-dom";
 import api from '../../../../server/api'
 import { useState, useEffect, ChangeEvent } from 'react';
-import { PrintersTableDataProps } from "../../../../components/Table/PrintersTable";
 import { Printers, useAuth } from '../../../../hooks/auth'
 import { toast } from "react-toastify";
 import { object, string } from "yup";

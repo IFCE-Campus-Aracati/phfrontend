@@ -5,13 +5,38 @@ import api from "../server/api";
 import request from 'axios';
 import { PrintersProps, PrintersRequestProps } from "../components/Table/PrintersTable";
 import { UserProps, UserRequestProps } from "../components/Table/UserTable";
+import { id, tr } from "date-fns/locale";
+import { ListTableDataProps } from "../components/Table/ListTable";
+import { format } from "date-fns";
+import { date } from "yup";
 
-export interface Prints {
+interface EditPrintProps {
+  status: string;
   id: string;
-  title: string;
-  owner: string;
+  printing_duration: string;
   date: string;
+  printer_id: string;
+}
+interface PrintRequest {
+  prints: Prints[];
+  totalPage: number;
+}
+export interface Prints {
+  id?: string;
+  title: string;
+  identifier?: string;
+  owner?: {
+    name?: string;
+  };
+  owner_id?: string;
+  created_at: string;
   status: "pending" | "approved" | "decline";
+  description?: string;
+  material?: string;
+  archive?: string;
+  printer_id?: string;
+  printing_date?: string;
+  printing_duration?: string;
 }
 export interface Printers {
   id?: string;
@@ -64,7 +89,12 @@ interface AuthContextData {
   printers: Printers[];
   editPrinter: ({ title, type, material, description, id, status }: Printers) => void;
   usersData: UsersData[];
+  getPrints: (page: number) => Promise<void>;
+  printsData: ListTableDataProps[];
   totalPages: number;
+  editPrints: ({ date, id, printer_id, printing_duration, status }: EditPrintProps) => Promise<void>;
+  getPrintDetail: (id: string) => void;
+  print: Prints;
 }
 interface AuthProviderProps {
   children: ReactNode;
@@ -78,8 +108,9 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [userRole, setUserRole] = useState<string | null>(null);
   const [printers, setPrinters] = useState<PrintersProps[]>([])
   const [usersData, setUsersData] = useState<UserProps[]>([])
-  const [printsData, setPrintsData] = useState();
+  const [printsData, setPrintsData] = useState<Prints[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [print, setPrint] = useState<Prints>({} as Prints);
 
   const navigate = useNavigate();
 
@@ -220,7 +251,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
-  async function getPrinters( page: number) {
+  async function getPrinters(page: number) {
     try {
       const response = await api.get<PrintersRequestProps>(`/printers/${page}`, {
         headers: { Authorization: `$Bearer ${user?.token}` }
@@ -296,6 +327,61 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function getPrints(page: number) {
+    try {
+      const response = await api.get<PrintRequest>(`/getAllPrints/${page}`, {
+        headers: { Authorization: `$Bearer ${user?.token}` }
+      });
+      if (response.data) {
+        const prints = response.data.prints;
+        console.log()
+
+        const formattedPrints = prints.map((print) => ({
+          ...print,
+          created_at: format(new Date(print.created_at), 'dd/MM/yyyy')
+        }));
+
+        setPrintsData(formattedPrints);
+        setTotalPages(response.data.totalPage);
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error('Não foi possível carregar suas impressões')
+    }
+  }
+
+  async function editPrints({ date, id, printer_id, printing_duration, status }: EditPrintProps) {
+    try {
+      const response = await api.put('/updatePrint', { status, id, printer_id, date, printing_duration }, {
+        headers: { Authorization: `$Bearer ${user?.token}` }
+      })
+
+      if (response.data) {
+        toast.success('Deu certo')
+      }
+
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+
+  async function getPrintDetail(id: string) {
+    try {
+      const response = await api.get(`/searchByIdPrint/${id}`, {
+        headers: { Authorization: `Bearer ${user?.token}` }
+      })
+
+      if (response) {
+        const print = response.data;
+
+        setPrint(print)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -314,7 +400,12 @@ function AuthProvider({ children }: AuthProviderProps) {
         changePassword,
         editPrinter,
         updateRole,
-        totalPages
+        getPrints,
+        printsData,
+        totalPages,
+        editPrints,
+        getPrintDetail,
+        print
       }}
     >
       {children}

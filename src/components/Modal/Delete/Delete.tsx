@@ -21,7 +21,7 @@ import { useAuth } from "../../../hooks/auth";
 import api from "../../../server/api";
 
 interface DeleteProps {
-  id: string;
+  id?: string;
   children: React.ReactNode;
   tilte: string;
 }
@@ -33,7 +33,7 @@ export function Delete({ id, children, tilte }: DeleteProps) {
 
   async function handleDelete() {
     try {
-      await deletePrinter(id);
+      await deletePrinter(id as string);
       setIsOpen(false);
     } catch (err) {
       console.log(err);
