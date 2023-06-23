@@ -7,9 +7,9 @@ import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachmen
 import { useNavigate, useParams } from "react-router-dom";
 import { Prints, useAuth } from "../../../../hooks/auth";
 import { useEffect, useState } from "react";
-import api from "../../../../server/api";
-import { format } from "date-fns";
-import { EditPrint } from "../../../Client/MyPrints/EditPrint";
+import { toast } from "react-toastify";
+import { date } from "yup";
+import { id } from "date-fns/locale";
 
 const statusOptions = [
   { text: 'Pendente', value: 'pending' },
@@ -18,10 +18,11 @@ const statusOptions = [
   { text: 'Concluído', value: 'done' }
 ]
 
+
 export function EditListPrint() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { user, getPrints, totalPages, printers, editPrints } = useAuth();
+  const { printers, editPrints, getPrintDetail, print } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [printData, setPrintData] = useState<Prints>({} as Prints);
 
@@ -30,46 +31,45 @@ export function EditListPrint() {
     value: printer.id as string,
   }));
 
+  // TODO: FAZER VALIDAÇÃO DO EDIT!
+  // TODO: AJEITAR A FUNÇÃO DO AUTH E USAR ELA!
+
   const [status, setStatus] = useState('');
-  const [date, setDate] = useState('');
   const [duration, setDuration] = useState('');
   const [printerId, setPrinterId] = useState('');
 
-  async function getPrintDetail() {
+  async function printDetail(id: string) {
     try {
       setIsLoading(true);
+      await getPrintDetail(id as string);
 
-      await api.get(`/searchByIdPrint/${id}`, {
-        headers: { Authorization: `Bearer ${user?.token}` }
-      }).then((response) => {
-        setPrintData(response.data);
-        setStatus(response.data.status)
 
-        setDuration(response.data.printing_duration)
-      })
-      setIsLoading(false)
+
+      setIsLoading(false);
     } catch (error) {
-      console.log(error)
+      toast.error('Não foi possível localizar a impressão');
     } finally {
       setIsLoading(false);
     }
   }
 
+
   async function handleEditPrint(event: any) {
     try {
       event.preventDefault();
 
-      const id = printData?.id;
+      const id = print?.id;
+      console.log(id)
 
-      await editPrints({ status, id: id as string, printing_duration: duration, date, printer_id: printerId })
+      await editPrints({ status, id: id as string, printing_duration: duration, printer_id: printerId })
       navigate("/admin/list_prints")
     } catch (error) {
       console.log(error)
+      toast.error('Não foi possível editar')
     }
   }
-
   useEffect(() => {
-    getPrintDetail();
+    printDetail(id as string);
 
   }, []);
 
@@ -81,29 +81,23 @@ export function EditListPrint() {
         <FormContainer>
           <TitleInput style={{ marginTop: "0" }}>Título</TitleInput>
           <PrintFormInput
-            placeholder={printData?.title as string}
+            placeholder={print?.title as string}
             readOnly
           />
-
           <TitleInput>Descrição</TitleInput>
           <TextArea
-            placeholder={printData?.description as string}
-
+            placeholder={print?.description as string}
             readOnly
           />
-
           <TitleInput>Arquivo para impressão</TitleInput>
           <FileUploader
+            onFileChange={() => { }}
+            handleRemoveFile={() => { }}
+            nameFile={print?.archive as string}
           />
           <TitleInput>Dados da Impressão</TitleInput>
 
           <Attachments>
-            <TextAttachments>Data para início:</TextAttachments>
-            <InputDate
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
             <TextAttachments>Duração:</TextAttachments>
             <InputText
               defaultValue={"40"}
@@ -118,7 +112,6 @@ export function EditListPrint() {
               value={status}
               onValueChange={setStatus}
             />
-            <PrintFormInput placeholder="Motivo da Recusa" />
           </StatusContainer>
           <TitleInput>Impressora</TitleInput>
           <StatusContainer>

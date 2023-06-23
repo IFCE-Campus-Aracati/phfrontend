@@ -14,7 +14,7 @@ interface EditPrintProps {
   status: string;
   id: string;
   printing_duration: string;
-  date: string;
+  // printing_date: Date;
   printer_id: string;
 }
 interface PrintRequest {
@@ -44,7 +44,7 @@ export interface Printers {
   description: string;
   type: string;
   material: string;
-  status?: "pending" | "approved" | "decline" | "available" | "unavailable" | undefined;
+  status: "pending" | "approved" | "decline" | "available" | "unavailable" | undefined;
 }
 
 export interface UsersData {
@@ -92,7 +92,7 @@ interface AuthContextData {
   getPrints: (page: number) => Promise<void>;
   printsData: ListTableDataProps[];
   totalPages: number;
-  editPrints: ({ date, id, printer_id, printing_duration, status }: EditPrintProps) => Promise<void>;
+  editPrints: ({ id, printer_id, printing_duration, status }: EditPrintProps) => Promise<void>;
   getPrintDetail: (id: string) => void;
   print: Prints;
 }
@@ -350,19 +350,19 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
-  async function editPrints({ date, id, printer_id, printing_duration, status }: EditPrintProps) {
+  async function editPrints({ id, printer_id, printing_duration, status }: EditPrintProps) {
     try {
-      const response = await api.put('/updatePrint', { status, id, printer_id, date, printing_duration }, {
+      const response = await api.put('/updatePrint', { status, id, printer_id, printing_duration }, {
         headers: { Authorization: `$Bearer ${user?.token}` }
       })
 
       if (response.data) {
+        console.log("AUth", response.data)
         toast.success('Deu certo')
       }
 
     } catch (error) {
       console.log(error);
-
     }
   }
 
@@ -374,6 +374,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
       if (response) {
         const print = response.data;
+        console.log(print)
 
         setPrint(print)
       }

@@ -96,7 +96,11 @@ export function RequestPrinting() {
           />
 
           <TitleInput>Arquivo para impressão</TitleInput>
-          <FileUploader onFileChange={onSubitFile} handleRemoveFile={handleRemoveFile} nameFile={fileName} />
+          <FileUploader
+            onFileChange={onSubitFile}
+            handleRemoveFile={handleRemoveFile}
+            nameFile={fileName}
+          />
 
           <TitleInput>Material para Impressão</TitleInput>
           <SelectInput
