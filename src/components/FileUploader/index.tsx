@@ -30,6 +30,7 @@ export const FileUploader: React.FC = () => {
         <HiddenFileInput
           key={inputKey}
           id="file-upload"
+          accept=".stl"
           onChange={handleFileChange}
         />
         <FileUploadButton htmlFor="file-upload">

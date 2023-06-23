@@ -6,6 +6,7 @@ import api from '../../server/api';
 import { useAuth } from '../../hooks/auth';
 import { contextType } from 'react-modal';
 import { toast } from 'react-toastify';
+
 export const UploadImage: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [inputKey, setInputKey] = useState(Date.now());
@@ -32,7 +33,7 @@ export const UploadImage: React.FC = () => {
     if (file && file === selectedFile) {
       setInputKey(Date.now());
     } else {
-      // setSelectedFile(file);
+      setSelectedFile(file);
       handleUploadPhoto(file);
     }
   };
@@ -54,7 +55,6 @@ export const UploadImage: React.FC = () => {
           type="file"
           id="file-upload"
           accept="image/*"
-
           onChange={handleFileChange}
         />
         <ButtonIcon htmlFor="file-upload">

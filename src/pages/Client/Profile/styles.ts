@@ -59,50 +59,50 @@ export const Subtitle = styled.h3`
 export const Content = styled.main`
 `;
 
-export const ImageSide = styled.img`
-  border: 1px dashed rgba(255, 255, 255, 0.25);
-  border-radius: 0.2rem;
-  height: 18rem;
-  width: 15rem;
-  object-fit: cover;
-`;
+// export const ImageSide = styled.img`
+//   border: 1px dashed rgba(255, 255, 255, 0.25);
+//   border-radius: 0.2rem;
+//   height: 18rem;
+//   width: 15rem;
+//   object-fit: cover;
+// `;
 
-export const Attachments = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  padding: 1rem 1rem 0rem 1rem;
-`;
+// export const Attachments = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: space-evenly;
+//   padding: 1rem 1rem 0rem 1rem;
+// `;
 
-export const ButtonIcon = styled.button`
-  background-color: ${theme.colors.blue.light};
-  border: none;
-  line-height: 0;
-  height: 2rem;
-  width: 2rem;
-  border-radius: 0.2rem;
+// export const ButtonIcon = styled.button`
+//   background-color: ${theme.colors.blue.light};
+//   border: none;
+//   line-height: 0;
+//   height: 2rem;
+//   width: 2rem;
+//   border-radius: 0.2rem;
 
-  :hover {
-    background-color: ${theme.colors.blue.dark};
-    transition: 0.2s;
-    cursor: pointer;
-  }
-`;
+//   :hover {
+//     background-color: ${theme.colors.blue.dark};
+//     transition: 0.2s;
+//     cursor: pointer;
+//   }
+// `;
 
-export const ButtonRemove = styled.button`
-  background-color: transparent;
-  border: 1px solid ${theme.colors.blue.light};
-  line-height: 0;
-  height: 2rem;
-  width: 2rem;
-  border-radius: 0.2rem;
+// export const ButtonRemove = styled.button`
+//   background-color: transparent;
+//   border: 1px solid ${theme.colors.blue.light};
+//   line-height: 0;
+//   height: 2rem;
+//   width: 2rem;
+//   border-radius: 0.2rem;
 
-  :hover {
-    background-color: ${theme.colors.blue.dark};
-    transition: 0.2s;
-    cursor: pointer;
-  }
-`;
+//   :hover {
+//     background-color: ${theme.colors.blue.dark};
+//     transition: 0.2s;
+//     cursor: pointer;
+//   }
+// `;
 
 export const ButtonEdit = styled.div`
   margin-top: 1rem;

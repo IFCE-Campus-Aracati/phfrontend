@@ -57,4 +57,4 @@ export const HiddenUploadImage = styled.input.attrs({
     type: 'file',
   })`
     display: none;
-  `;
+`;

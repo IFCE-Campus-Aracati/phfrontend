@@ -7,28 +7,21 @@ import {
   Title,
   Subtitle,
   TitleInput,
-  ImageSide,
-  Attachments,
   ButtonEdit,
   ProfileContent,
-  ImageContent,
-  ButtonIcon,
-  ButtonRemove
 } from "./styles";
 
-import DefaultProfile from "../../../assets/default-profile.jpeg";
 import { Modal } from "../../../components/Modal";
-import { UploadSimple, X } from "@phosphor-icons/react";
 import { useAuth } from "../../../hooks/auth";
 import { useEffect, useState } from "react";
 import api from "../../../server/api";
-import { UserTableDataProps } from "../../../components/Table/UserTable";
+import { UserProps } from "../../../components/Table/UserTable";
+import UploadImage from "../../../components/UploadImage";
 
 export function Profile() {
   const { user } = useAuth();
   const navigate = useNavigate();
-
-  const [profileData, setProfileData] = useState<UserTableDataProps>();
+  const [profileData, setProfileData] = useState<UserProps>();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -45,13 +38,12 @@ export function Profile() {
         setIsLoading(false);
       }
     }
-
     getProfileData();
   }, [])
 
   if (isLoading) {
     return (
-      <div>carregando</div>
+      <div>Carregando Perfil...</div>
     )
   }
 
@@ -59,7 +51,6 @@ export function Profile() {
     <Container>
       <Content>
         <Title>Perfil</Title>
-
         <FormContainer>
           <ProfileContent>
             <TitleInput>Nome:</TitleInput>
@@ -78,22 +69,12 @@ export function Profile() {
               <Modal data={undefined} route="" title="Alterar senha" variant="changePassword">
                 <span>alterar senha</span>
               </Modal>
-            </ButtonEdit>
-
+            </ButtonEdit>            
           </ProfileContent>
-          <ImageContent>
-            <ImageSide src={DefaultProfile} />
-            <Attachments>
-              <ButtonIcon>
-                <UploadSimple size={"1rem"} color={"#FFF"} />
-              </ButtonIcon>
-              <ButtonRemove>
-                <X size={"1rem"} color={"#FFF"} />
-              </ButtonRemove>
-            </Attachments>
-          </ImageContent>
+            <UploadImage/>
         </FormContainer>
       </Content>
     </Container>
   );
 }
+export default Profile;
