@@ -21,6 +21,7 @@ import {
 } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../Modal";
+import { Prints, useAuth } from "../../hooks/auth";
 
 export interface ClientListTableDataProps {
   id: string;
@@ -30,7 +31,7 @@ export interface ClientListTableDataProps {
 }
 
 interface TableProps {
-  data: ClientListTableDataProps[];
+  data: Prints[];
   header: string[];
   isView?: boolean;
   isDelete?: boolean;
@@ -38,12 +39,13 @@ interface TableProps {
 }
 
 export function ClientListTable({
-  data = [] as ClientListTableDataProps[],
+  data = [] as Prints[],
   header,
   isView = false,
   isDelete = false,
   isEdit = false,
 }: TableProps) {
+  const { user } = useAuth();
   const navigate = useNavigate();
   return (
     <Container>
@@ -61,7 +63,7 @@ export function ClientListTable({
             return (
               <Row>
                 <TableData>{item.title}</TableData>
-                <TableData>{item.date}</TableData>
+                <TableData>{item.created_at}</TableData>
                 <TableData>
                   <Status variant={item.status} />
                 </TableData>
@@ -71,24 +73,20 @@ export function ClientListTable({
                       <Modal
                         title="Detalhes"
                         variant="detailsPrint"
-                        route={"/client/my_prints/edit_print"}
+                        route={`/${user?.role}/my_prints/edit_print/${item.identifier}`}
+                        data={item}
                       >
                         <ButtonIcon>
                           <MagnifyingGlass size={"1rem"} color={"#FFF"} />
                         </ButtonIcon>
                       </Modal>
                     )}
-                    {isEdit && (
-                      <ButtonIcon
-                        onClick={() => navigate("/client/my_prints/edit_print")}
-                      >
-                        <PencilSimpleLine size={"1rem"} color={"#FFF"} />
-                      </ButtonIcon>
-                    )}
-                    {isDelete && (
-                      <ButtonIcon onClick={() => alert("FOI")}>
-                        <Trash size={"1rem"} color={"#FFF"} />
-                      </ButtonIcon>
+                    {item.status === 'pending' && (
+                      <Modal data={item} title="Você deseja excluir?" variant="deletePrint" route="" >
+                        <ButtonIcon>
+                          <Trash size={"1rem"} color={"#FFF"} />
+                        </ButtonIcon>
+                      </Modal>
                     )}
                   </RowIcons>
                 </TableData>

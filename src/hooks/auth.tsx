@@ -9,6 +9,7 @@ import { id, tr } from "date-fns/locale";
 import { ListTableDataProps } from "../components/Table/ListTable";
 import { format } from "date-fns";
 import { date } from "yup";
+import { DateProps } from "../components/Modal/detailsAnonymous/detailsAnonymous";
 
 interface EditPrintProps {
   status: string;
@@ -19,6 +20,11 @@ interface EditPrintProps {
 }
 interface PrintRequest {
   prints: Prints[];
+  totalPage: number;
+}
+
+interface MyPrintRequest {
+  prtins: DateProps[];
   totalPage: number;
 }
 export interface Prints {
@@ -82,6 +88,7 @@ interface AuthContextData {
   signed: boolean;
   createPrinter: ({ title, type, material, description }: Printers) => void;
   deletePrinter: (id: string) => void;
+  deletePrint: (id: string) => void;
   getPrinters: (page: number) => Promise<void>;
   getUsersData: (page: number) => Promise<void>;
   updateRole: ({ id, role }: ChangeRoleProps) => void;
@@ -89,7 +96,9 @@ interface AuthContextData {
   printers: Printers[];
   editPrinter: ({ title, type, material, description, id, status }: Printers) => void;
   usersData: UsersData[];
+  getMyPrints: (page: number) => Promise<void>;
   getPrints: (page: number) => Promise<void>;
+  myPrintData: Prints[];
   printsData: ListTableDataProps[];
   totalPages: number;
   editPrints: ({ id, printer_id, printing_duration, status }: EditPrintProps) => Promise<void>;
@@ -109,6 +118,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   const [printers, setPrinters] = useState<PrintersProps[]>([])
   const [usersData, setUsersData] = useState<UserProps[]>([])
   const [printsData, setPrintsData] = useState<Prints[]>([]);
+  const [myPrintData, setMyPrintData] = useState<Prints[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [print, setPrint] = useState<Prints>({} as Prints);
 
@@ -251,6 +261,28 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function getMyPrints(page: number) {
+    try {
+      const response = await api.get<PrintRequest>(`/getUserPrint/${page}`, {
+        headers: { Authorization: `$Bearer ${user?.token}` }
+      });
+
+      if (response.data) {
+        const prints = response.data.prints;
+
+        const formattedPrints = prints.map((print) => ({
+          ...print,
+          created_at: format(new Date(print.created_at), 'dd/MM/yyyy')
+        }));
+        
+        setMyPrintData(formattedPrints);
+        setTotalPages(response.data.totalPage);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   async function getPrinters(page: number) {
     try {
       const response = await api.get<PrintersRequestProps>(`/printers/${page}`, {
@@ -304,6 +336,21 @@ function AuthProvider({ children }: AuthProviderProps) {
         const filteredPrinters = printers.filter(printer => id !== printer.id);
         setPrinters(filteredPrinters);
         toast.success('Impressora foi deletada com sucesso!')
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function deletePrint(id: string) {
+    try {
+      const response = await api.delete(`/deletePrint/${id}`, {
+        headers: { Authorization: `$Bearer ${user?.token}` },
+      });
+      if (response) {
+        const filteredPrints = myPrintData.filter(printer => id !== printer.id);
+        setMyPrintData(filteredPrints);
+        toast.success('A Impressão foi deletada com sucesso!')
       }
     } catch (err) {
       console.log(err);
@@ -394,6 +441,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         loading,
         createPrinter,
         deletePrinter,
+        deletePrint,
         getPrinters,
         getUsersData,
         printers,
@@ -401,7 +449,9 @@ function AuthProvider({ children }: AuthProviderProps) {
         changePassword,
         editPrinter,
         updateRole,
+        getMyPrints,
         getPrints,
+        myPrintData,
         printsData,
         totalPages,
         editPrints,

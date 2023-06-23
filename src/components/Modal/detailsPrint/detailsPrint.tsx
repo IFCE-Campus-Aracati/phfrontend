@@ -25,7 +25,7 @@ import { X, PencilSimpleLine } from "@phosphor-icons/react";
 import { Status } from "../../Status";
 import { Button } from "../../Button";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Prints } from "../../../hooks/auth";
+import { Prints, useAuth } from "../../../hooks/auth";
 
 interface DetailsPrintsProps {
   children: React.ReactNode;
@@ -36,6 +36,7 @@ interface DetailsPrintsProps {
 
 export function DetailsPrint({ children, title, route, data }: DetailsPrintsProps) {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -89,17 +90,22 @@ export function DetailsPrint({ children, title, route, data }: DetailsPrintsProp
             <TextInfo>
               Tipo de material: <Text>{data?.material}</Text>
             </TextInfo>
-          </Body>
-          <ButtonArea>
-            <Button
-              size="medium"
-              variant="fill"
-              title="Editar"
-              onClick={() => navigate(route)}
-            >
-              <PencilSimpleLine size={"1.25rem"} color={theme.colors.white} />
-            </Button>
-          </ButtonArea>
+          </Body>{
+            pathname !== `/${user?.role}/my_prints` && (
+              data.status === 'pending' && (
+                <ButtonArea>
+                  <Button
+                    size="medium"
+                    variant="fill"
+                    title="Editar"
+                    onClick={() => navigate(route)}
+                  >
+                    <PencilSimpleLine size={"1.25rem"} color={theme.colors.white} />
+                  </Button>
+                </ButtonArea>
+              )
+            )
+          }
         </Content>
       </Portal>
     </Root>

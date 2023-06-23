@@ -5,10 +5,11 @@ import { DetailsUser } from "./DetailsUser/detailsUser";
 import { ChangePassword } from "./changePassword/changePassword";
 import { DateProps, DetailsAnonymous } from "./detailsAnonymous/detailsAnonymous";
 import { Printers, Prints, UsersData } from "../../hooks/auth";
+import { DeletePrint } from "./DeletePrint/DeletePrint";
 
 interface ModalProps {
   data: Printers | UsersData | Prints | DateProps | undefined;
-  variant: "changePassword" | "detailsAnonymous" | "detailsPrint" | "detailsPrinters" | "detailsUser" | "delete";
+  variant: "changePassword" | "detailsAnonymous" | "detailsPrint" | "detailsPrinters" | "detailsUser" | "delete" | "deletePrint";
   children?: React.ReactNode;
   title: string;
   route: string;
@@ -52,6 +53,12 @@ export function Modal({ data, variant, children, title, route, value, setValue }
         <Delete id={data?.id} tilte={title}>
           {children}
         </Delete>
+      );
+    case "deletePrint":
+      return (
+        <DeletePrint id={data?.id} tilte={title}>
+          {children}
+        </DeletePrint>
       );
   }
 }

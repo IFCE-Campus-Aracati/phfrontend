@@ -8,29 +8,33 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../../../hooks/auth";
 import { useEffect, useState } from "react";
 import api from "../../../server/api";
+import { Pagination } from "../../../components/Pagination";
 
 const header = ["Título", "Data", "Status", "Detalhes"];
 
 export function MyPrints() {
-  const { user } = useAuth();
+  const { user, getMyPrints, totalPages, myPrintData } = useAuth();
   const navigate = useNavigate();
 
-  const [myPrintsData, setMyPrintsData] = useState<ClientListTableDataProps[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+
+  async function handlePreviousPage() {
+    await getMyPrints(currentPage - 1).then(() => {
+      setCurrentPage(currentPage - 1);
+    })
+  }
+
+  async function handleNextPage() {
+    await getMyPrints(currentPage + 1).then(() => {
+      setCurrentPage(currentPage + 1);
+    });
+  }
+
 
   useEffect(() => {
-    async function getMyPrints() {
-      try {
-        const response = await api.get<ClientListTableDataProps[]>("/getUserPrint", {
-          headers: { Authorization: `$Bearer ${user?.token}` }
-        });
 
-        setMyPrintsData(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    getMyPrints();
+    getMyPrints(1);
 
   }, []);
 
@@ -47,13 +51,21 @@ export function MyPrints() {
           size="medium"
           title="Adicionar impressão"
           variant="outline"
-          onClick={() => navigate("/client/my_prints/create_print")}
+          onClick={() => navigate(`/${user?.role}/my_prints/create_print`)}
         >
           <Plus size={"1.5rem"} color={"#FFF"} />
         </Button>
       </Row>
 
-      <Table data={myPrintsData} header={header} variant="client" />
+      <Table data={myPrintData} header={header} variant="client" />
+      
+      <Pagination
+        currentPage={currentPage}
+        finalPage={totalPages}
+        onNextPage={handleNextPage}
+        onPreviousPage={handlePreviousPage}
+      />
+
     </Container>
   );
 }
