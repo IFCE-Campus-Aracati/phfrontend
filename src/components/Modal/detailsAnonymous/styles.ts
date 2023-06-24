@@ -35,7 +35,7 @@ export const TextInfo = styled.span`
 
 export const Text = styled.span`
   font-weight: bold;
-`
+`;
 export const Description = styled.p`
   display: block;
   color: ${theme.colors.white};
@@ -59,7 +59,7 @@ export const ButtonFile = styled.button`
   font-size: 0.875rem;
   align-items: center;
   cursor: pointer;
-  
+
   :hover {
     background-color: ${theme.colors.blue.light};
   }

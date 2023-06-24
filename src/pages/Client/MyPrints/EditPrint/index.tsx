@@ -1,17 +1,15 @@
 import { Button } from "../../../../components/Button";
-import { InputFile } from "../../../../components/InputFile";
 import { PrintFormInput } from "../../../../components/PrintFormInput";
 import { SelectInput } from "../../../../components/Select";
 import { TextArea } from "../../../../components/TextArea";
-import { FileUploader } from "../../../../components/FileUploader"
+import { FileUploader } from "../../../../components/FileUploader";
 import { Container, Content, Footer, FormContainer, Title, TitleInput, Attachments } from "./styles";
 import { useNavigate, useParams } from "react-router-dom";
-import { SideBar } from "../../../../components/SideBar";
 import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import api from "../../../../server/api";
 import { useAuth } from "../../../../hooks/auth";
-import { DateProps } from "../../../../components/Modal/detailsAnonymous/detailsAnonymous";
+import { PrintProps } from "../../../../utils/interfaces";
 
 const options = [
   { value: "ABS", text: "ABS" },
@@ -24,7 +22,7 @@ export function EditPrint() {
   const { id } = useParams();
   const { user, getPrintDetail, print } = useAuth();
 
-  const [myPrintData, setMyPrintData] = useState<DateProps>({} as DateProps);
+  const [myPrintData, setMyPrintData] = useState<PrintProps>({} as PrintProps);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [material, setMaterial] = useState("");
@@ -33,11 +31,11 @@ export function EditPrint() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function getMyPrint(){
-      try{
+    async function getMyPrint() {
+      try {
         setIsLoading(true);
 
-        const response = await api.get<DateProps>(`/searchByIdPrint/${id}`, {
+        const response = await api.get<PrintProps>(`/searchByIdPrint/${id}`, {
           headers: { Authorization: `$Bearer ${user?.token}` },
         });
 
@@ -46,8 +44,7 @@ export function EditPrint() {
         setDescription(response.data.description);
         setMaterial(response.data.material);
         // setFile(response.data.archive);
-        
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       } finally {
         setIsLoading(false);
@@ -55,7 +52,7 @@ export function EditPrint() {
     }
 
     getMyPrint();
-  }, [])
+  }, []);
 
   function onSubitFile(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files?.[0]) {
@@ -80,8 +77,8 @@ export function EditPrint() {
   console.log(myPrintData);
   console.log(description);
 
-  if(isLoading) {
-    <div>Carregando</div>
+  if (isLoading) {
+    <div>Carregando</div>;
   }
 
   return (
@@ -107,7 +104,6 @@ export function EditPrint() {
           <TitleInput>Arquivo para impressão</TitleInput>
           <Attachments>
             <FileUploader onFileChange={onSubitFile} handleRemoveFile={handleRemoveFile} nameFile={fileName} />
-
           </Attachments>
           <TitleInput>Material para Impressão</TitleInput>
           <SelectInput
@@ -124,11 +120,7 @@ export function EditPrint() {
               size="small"
               onClick={() => navigate(`/${user?.role}/my_prints`)}
             />
-            <Button
-              title="ATUALIZAR"
-              variant="fill"
-              size="small"
-            />
+            <Button title="ATUALIZAR" variant="fill" size="small" />
           </Footer>
         </FormContainer>
       </Content>

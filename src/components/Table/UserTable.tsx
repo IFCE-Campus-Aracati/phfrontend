@@ -1,40 +1,13 @@
-import React from "react";
+import { Container, TableContainer, Row, Head, TH, Body, TableData, RowIcons, ButtonIcon } from "./styles";
 
-import {
-  Container,
-  TableContainer,
-  Row,
-  Head,
-  TH,
-  Body,
-  TableData,
-  RowIcons,
-  ButtonIcon,
-} from "./styles";
-
-import {
-  MagnifyingGlass,
-  PencilSimpleLine,
-  Trash,
-} from "@phosphor-icons/react";
-import { Modal } from "../Modal";
+import { MagnifyingGlass, PencilSimpleLine, Trash } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
-import { UsersData } from "../../hooks/auth";
+import { Modal } from "../Modal";
 
-export interface UserProps {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  profile_photo: string;
-}
-export interface UserRequestProps {
-  users: UserProps[],
-  totalPage: number
-}
+import { UserProps } from "../../utils/interfaces";
 
 interface UserTableProps {
-  data: UsersData[];
+  data: UserProps[];
   header: string[];
   isView?: boolean;
   isDelete?: boolean;
@@ -42,7 +15,7 @@ interface UserTableProps {
 }
 
 export function UserTable({
-  data = [] as UsersData[],
+  data = [] as UserProps[],
   header,
   isView = false,
   isDelete = false,
@@ -66,9 +39,7 @@ export function UserTable({
               <Row key={item.id}>
                 <TableData>{item.name}</TableData>
                 <TableData>{item.email}</TableData>
-                <TableData>{
-                  item.role === 'admin' ? ('Administrador') : ('Cliente')
-                }</TableData>
+                <TableData>{item.role === "admin" ? "Administrador" : "Cliente"}</TableData>
                 <TableData>
                   <RowIcons>
                     {isView && (

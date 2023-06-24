@@ -10,6 +10,7 @@ import { Profile } from "../pages/Client/Profile";
 import { EditPrint } from "../pages/Client/MyPrints/EditPrint";
 
 import { RequestPrinting } from "../pages/Anonymous/RequestPrinting";
+// import { SearchPrint } from "../pages/Anonymous/SearchPrint";
 import { SearchPrint } from "../pages/Anonymous/SearchPrint";
 
 import { ListPrints } from "../pages/Admin/ListPrints";

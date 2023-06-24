@@ -60,17 +60,17 @@ export function SideBar({ variant }: SideBarProps) {
           ),
           to: "/admin/list_prints",
         },
-        {
-          label: "Dashboard",
-          icon: (
-            <ChartPieSlice
-              color={"#FFF"}
-              size={"1.5rem"}
-              weight={pathname === "/admin/dashboard" ? "fill" : "regular"}
-            />
-          ),
-          to: "/admin/dashboard",
-        },
+        // {
+        //   label: "Dashboard",
+        //   icon: (
+        //     <ChartPieSlice
+        //       color={"#FFF"}
+        //       size={"1.5rem"}
+        //       weight={pathname === "/admin/dashboard" ? "fill" : "regular"}
+        //     />
+        //   ),
+        //   to: "/admin/dashboard",
+        // },
         {
           label: "Users",
           icon: (

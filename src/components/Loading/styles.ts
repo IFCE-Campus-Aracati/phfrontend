@@ -9,18 +9,18 @@ const rotate360 = keyframes`
   }
 `;
 
-const Loading = styled.div`
-  animation: ${rotate360} 1s linear infinite;
-  transform: translateZ(0);
-  
-  border-top: 2px solid grey;
-  border-right: 2px solid grey;
-  border-bottom: 2px solid grey;
-  border-left: 4px solid black;
-  background: transparent;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+export const Container = styled.div`
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
 `;
 
-export default Loading;
+export const Spinner = styled.div`
+  width: 2rem;
+  height: 2rem;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid transparent;
+  border-radius: 50%;
+  animation: ${rotate360} 1s linear infinite;
+`;

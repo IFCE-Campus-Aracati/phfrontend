@@ -1,37 +1,13 @@
-import React from "react";
-
-import { Status } from "./../Status";
-
-import {
-  Container,
-  TableContainer,
-  Row,
-  Head,
-  TH,
-  Body,
-  TableData,
-  RowIcons,
-  ButtonIcon,
-} from "./styles";
-
-import {
-  MagnifyingGlass,
-  PencilSimpleLine,
-  Trash,
-} from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
+import { MagnifyingGlass, Trash } from "@phosphor-icons/react";
 import { Modal } from "../Modal";
-import { Prints, useAuth } from "../../hooks/auth";
+import { useAuth } from "../../hooks/auth";
+import { Status } from "./../Status";
+import { ListTableDataProps } from "../../utils/interfaces";
 
-export interface ClientListTableDataProps {
-  id: string;
-  title: string;
-  date: string;
-  status: "pending" | "approved" | "decline";
-}
-
+import { Container, TableContainer, Row, Head, TH, Body, TableData, RowIcons, ButtonIcon } from "./styles";
 interface TableProps {
-  data: Prints[];
+  data: ListTableDataProps[];
   header: string[];
   isView?: boolean;
   isDelete?: boolean;
@@ -39,7 +15,7 @@ interface TableProps {
 }
 
 export function ClientListTable({
-  data = [] as Prints[],
+  data = [] as ListTableDataProps[],
   header,
   isView = false,
   isDelete = false,
@@ -81,8 +57,8 @@ export function ClientListTable({
                         </ButtonIcon>
                       </Modal>
                     )}
-                    {item.status === 'pending' && (
-                      <Modal data={item} title="Você deseja excluir?" variant="deletePrint" route="" >
+                    {item.status === "pending" && (
+                      <Modal data={item} title="Você deseja excluir?" variant="deletePrint" route="">
                         <ButtonIcon>
                           <Trash size={"1rem"} color={"#FFF"} />
                         </ButtonIcon>

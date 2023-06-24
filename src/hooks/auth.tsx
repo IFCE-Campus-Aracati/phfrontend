@@ -1,73 +1,29 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import api from "../server/api";
-import request from 'axios';
-import { PrintersProps, PrintersRequestProps } from "../components/Table/PrintersTable";
-import { UserProps, UserRequestProps } from "../components/Table/UserTable";
-import { id, tr } from "date-fns/locale";
-import { ListTableDataProps } from "../components/Table/ListTable";
 import { format } from "date-fns";
-import { date } from "yup";
-import { DateProps } from "../components/Modal/detailsAnonymous/detailsAnonymous";
+import api from "../server/api";
+import request from "axios";
+
+import {
+  PrinterProps,
+  PrinterRequestProps,
+  ListTableDataProps,
+  UserProps,
+  UserRequestProps,
+  ChangePasswordProps,
+  ChangeRoleProps,
+} from "../utils/interfaces";
 
 interface EditPrintProps {
   status: string;
   id: string;
   printing_duration: string;
-  // printing_date: Date;
   printer_id: string;
 }
 interface PrintRequest {
-  prints: Prints[];
+  prints: ListTableDataProps[];
   totalPage: number;
-}
-
-interface MyPrintRequest {
-  prtins: DateProps[];
-  totalPage: number;
-}
-export interface Prints {
-  id?: string;
-  title: string;
-  identifier?: string;
-  owner?: {
-    name?: string;
-  };
-  owner_id?: string;
-  created_at: string;
-  status: "pending" | "approved" | "decline";
-  description?: string;
-  material?: string;
-  archive?: string;
-  printer_id?: string;
-  printing_date?: string;
-  printing_duration?: string;
-}
-export interface Printers {
-  id?: string;
-  title: string;
-  description: string;
-  type: string;
-  material: string;
-  status: "pending" | "approved" | "decline" | "available" | "unavailable" | undefined;
-}
-
-export interface UsersData {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
-
-export interface ChangePasswordProps {
-  oldPassword: string;
-  password: string;
-}
-
-export interface ChangeRoleProps {
-  id: string;
-  role: string;
 }
 
 interface IUser {
@@ -86,24 +42,27 @@ interface AuthContextData {
   user: IUser | null;
   loading: boolean;
   signed: boolean;
-  createPrinter: ({ title, type, material, description }: Printers) => void;
+  createPrinter: ({ title, type, material, description }: PrinterProps) => void;
   deletePrinter: (id: string) => void;
   deletePrint: (id: string) => void;
   getPrinters: (page: number) => Promise<void>;
   getUsersData: (page: number) => Promise<void>;
   updateRole: ({ id, role }: ChangeRoleProps) => void;
   changePassword: ({ oldPassword, password }: ChangePasswordProps) => void;
-  printers: Printers[];
-  editPrinter: ({ title, type, material, description, id, status }: Printers) => void;
-  usersData: UsersData[];
+  printers: PrinterProps[];
+  editPrinter: ({ title, type, material, description, id, status }: PrinterProps) => void;
+  usersData: UserProps[];
   getMyPrints: (page: number) => Promise<void>;
   getPrints: (page: number) => Promise<void>;
-  myPrintData: Prints[];
+  myPrintData: ListTableDataProps[];
   printsData: ListTableDataProps[];
   totalPages: number;
   editPrints: ({ id, printer_id, printing_duration, status }: EditPrintProps) => Promise<void>;
   getPrintDetail: (id: string) => void;
-  print: Prints;
+  print: ListTableDataProps;
+  loadingRequest: boolean;
+  getUserProfileData: () => void;
+  userProfileData: UserProps;
 }
 interface AuthProviderProps {
   children: ReactNode;
@@ -114,13 +73,15 @@ export const AuthContext = createContext({} as AuthContextData);
 function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<IUser>({} as IUser);
   const [loading, setLoading] = useState(true);
-  const [userRole, setUserRole] = useState<string | null>(null);
-  const [printers, setPrinters] = useState<PrintersProps[]>([])
-  const [usersData, setUsersData] = useState<UserProps[]>([])
-  const [printsData, setPrintsData] = useState<Prints[]>([]);
-  const [myPrintData, setMyPrintData] = useState<Prints[]>([]);
+  // const [userRole, setUserRole] = useState<string | null>(null);
+  const [printers, setPrinters] = useState<PrinterProps[]>([]);
+  const [usersData, setUsersData] = useState<UserProps[]>([]);
+  const [printsData, setPrintsData] = useState<ListTableDataProps[]>([]);
+  const [myPrintData, setMyPrintData] = useState<ListTableDataProps[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const [print, setPrint] = useState<Prints>({} as Prints);
+  const [print, setPrint] = useState<ListTableDataProps>({} as ListTableDataProps);
+  const [loadingRequest, setLoadingRequest] = useState<boolean>(false);
+  const [userProfileData, setUserProfileDate] = useState<UserProps>({} as UserProps);
 
   const navigate = useNavigate();
 
@@ -131,7 +92,7 @@ function AuthProvider({ children }: AuthProviderProps) {
       if (userStorage) {
         const userData = JSON.parse(userStorage) as IUser;
         setUser(userData);
-        setUserRole(userData.role);
+        // setUserRole(userData.role);
 
         if (userData.role === "admin") {
           navigate("/admin/list_prints");
@@ -151,80 +112,84 @@ function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function signUp(name: string, email: string, password: string) {
-    try {
-      const response = await api.post("/signUp", {
-        name: name,
-        email: email,
-        password: password,
-      });
+    setLoadingRequest(true);
 
-      if (response.status === 200) {
-        const userData = response.data as IUser;
+    await api
+      .post("/signUp", {
+        email: email,
+        name: name,
+        password: password,
+      })
+      .then((response) => {
+        const user = response.data;
 
         let data = {
-          id: userData.id,
-          name: userData.name,
-          email: userData.email,
-          role: userData.role,
-          token: userData.token,
-          profile_photo: userData.profile_photo,
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          token: user.token,
+          profile_photo: user.profile_photo,
         };
-
-        api.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
 
         setUser(data);
         userStorage(data);
-        setUserRole(data.role);
 
         if (data.role === "admin") {
           navigate("/admin/list_prints");
-          toast.success(`Seja bem-vindo, ${userData.name}`);
+          toast.success(`Seja bem-vindo, ${user.name}`);
         } else if (data.role === "client") {
           navigate("/client/my_prints");
-          toast.success(`Seja bem-vindo, ${userData.name}`);
+          toast.success(`Seja bem-vindo, ${user.name}`);
         }
-      }
-    } catch (error) {
-      return toast.error("Usuário ou senha inválida");
-    }
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Erro ao cadastrar");
+      })
+      .finally(() => {
+        setLoadingRequest(false);
+      });
   }
 
   async function signIn(email: string, password: string) {
-    try {
-      const response = await api.post("/signIn", {
+    setLoadingRequest(true);
+
+    await api
+      .post("/signIn", {
         email: email,
         password: password,
-      });
-
-      if (response.status === 200) {
-        const userData = response.data as IUser;
+      })
+      .then((response) => {
+        const user = response.data;
 
         let data = {
-          id: userData.id,
-          name: userData.name,
-          email: userData.email,
-          role: userData.role,
-          token: userData.token,
-          profile_photo: userData.profile_photo,
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          token: user.token,
+          profile_photo: user.profile_photo,
         };
-
-        api.defaults.headers.common["Authorization"] = `Bearer ${userData.token}`;
 
         setUser(data);
         userStorage(data);
-        setUserRole(data.role);
 
         if (data.role === "admin") {
           navigate("/admin/list_prints");
-          return toast.success(`Sejá bem-vindo, ${userData.name}`);
+          return toast.success(`Seja bem-vindo, ${user.name}`);
         } else if (data.role === "client") {
           navigate("/client/my_prints");
-          return toast.success(`Sejá bem-vindo, ${userData.name}`);
+          return toast.success(`Seja bem-vindo, ${user.name}`);
         }
-      }
-    } catch (err) {
-      return toast.error("Usuário ou senha inválida");
-    }
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Usuário ou senha inválida");
+      })
+      .finally(() => {
+        setLoadingRequest(false);
+      });
   }
 
   async function signOut() {
@@ -234,97 +199,126 @@ function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function getUsersData(page: number) {
-    try {
-      const response = await api.get<UserRequestProps>(`/users/${page}`, {
-        headers: { Authorization: `$Bearer ${user?.token}` }
-      });
+    setLoadingRequest(true);
 
-      setUsersData(response.data.users);
-      setTotalPages(response.data.totalPage);
-    } catch (err) {
-      console.log(err);
-    }
+    await api
+      .get<UserRequestProps>(`/users/${page}`, {
+        headers: { Authorization: `$Bearer ${user?.token}` },
+      })
+      .then((response) => {
+        setUsersData(response.data.users);
+        setTotalPages(response.data.totalPage);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Não foi possível carregar os registro de usuários");
+      })
+      .finally(() => {
+        setLoadingRequest(false);
+      });
   }
 
   async function updateRole({ id, role }: ChangeRoleProps) {
     try {
-      const response = await api.put('/changeRole', { id, role }, {
-        headers: { Authorization: `Bearer ${user.token}` }
-      });
+      const response = await api.put(
+        "/changeRole",
+        { id, role },
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
 
       if (response) {
-        toast.success('Cargo do usuário alterado com sucesso!')
-        navigate('/admin/list_users');
+        toast.success("Cargo do usuário alterado com sucesso!");
+        navigate("/admin/list_users");
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   }
 
   async function getMyPrints(page: number) {
-    try {
-      const response = await api.get<PrintRequest>(`/getUserPrint/${page}`, {
-        headers: { Authorization: `$Bearer ${user?.token}` }
-      });
+    setLoadingRequest(true);
 
-      if (response.data) {
+    await api
+      .get<PrintRequest>(`/getUserPrint/${page}`, {
+        headers: { Authorization: `$Bearer ${user?.token}` },
+      })
+      .then((response) => {
         const prints = response.data.prints;
 
         const formattedPrints = prints.map((print) => ({
           ...print,
-          created_at: format(new Date(print.created_at), 'dd/MM/yyyy')
+          created_at: format(new Date(print.created_at), "dd/MM/yyyy"),
         }));
-        
+
         setMyPrintData(formattedPrints);
         setTotalPages(response.data.totalPage);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Não foi possível carregar os seus registros de impressões");
+      })
+      .finally(() => {
+        setLoadingRequest(false);
+      });
   }
 
   async function getPrinters(page: number) {
-    try {
-      const response = await api.get<PrintersRequestProps>(`/printers/${page}`, {
-        headers: { Authorization: `$Bearer ${user?.token}` }
-      });
+    setLoadingRequest(true);
 
-      setPrinters(response.data.printers);
-      setTotalPages(response.data.totalPage);
-    } catch (err) {
-      console.log(err);
-    }
+    await api
+      .get<PrinterRequestProps>(`/printers/${page}`, {
+        headers: { Authorization: `$Bearer ${user?.token}` },
+      })
+      .then((response) => {
+        setPrinters(response.data.printers);
+        setTotalPages(response.data.totalPage);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Não foi possível carregar as impressoras");
+      })
+      .finally(() => {
+        setLoadingRequest(false);
+      });
   }
 
-  async function createPrinter({ type, title, description, material }: Printers) {
+  async function createPrinter({ type, title, description, material }: PrinterProps) {
     try {
-      const response = await api.post('/createPrinter', { title, description, type, material }, {
-        headers: { Authorization: `Bearer ${user.token}` }
-      })
+      const response = await api.post(
+        "/createPrinter",
+        { title, description, type, material },
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
 
       if (response) {
         const printer = response.data;
         setPrinters((oldValue) => [...oldValue, printer]);
-        toast.success('Impressora foi Criada com sucesso!')
+        toast.success("Impressora foi Criada com sucesso!");
       }
     } catch (error) {
-      console.log(error)
-      toast.success('Não possível criar uma nova impressora!')
+      console.log(error);
+      toast.success("Não possível criar uma nova impressora!");
     }
   }
 
-  async function editPrinter({ description, material, title, type, status, id }: Printers) {
+  async function editPrinter({ description, material, title, type, status, id }: PrinterProps) {
     try {
-      const response = await api.put('/updatePrinter', { description, material, title, type, status, id }, {
-        headers: { Authorization: `Bearer ${user.token}` }
-      })
+      const response = await api.put(
+        "/updatePrinter",
+        { description, material, title, type, status, id },
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
 
       if (response) {
-        toast.success('Impressora foi editada com sucesso!')
+        toast.success("Impressora foi editada com sucesso!");
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   async function deletePrinter(id: string) {
@@ -333,9 +327,9 @@ function AuthProvider({ children }: AuthProviderProps) {
         headers: { Authorization: `$Bearer ${user?.token}` },
       });
       if (response) {
-        const filteredPrinters = printers.filter(printer => id !== printer.id);
+        const filteredPrinters = printers.filter((printer) => id !== printer.id);
         setPrinters(filteredPrinters);
-        toast.success('Impressora foi deletada com sucesso!')
+        toast.success("Impressora foi deletada com sucesso!");
       }
     } catch (err) {
       console.log(err);
@@ -348,9 +342,9 @@ function AuthProvider({ children }: AuthProviderProps) {
         headers: { Authorization: `$Bearer ${user?.token}` },
       });
       if (response) {
-        const filteredPrints = myPrintData.filter(printer => id !== printer.id);
+        const filteredPrints = myPrintData.filter((printer) => id !== printer.id);
         setMyPrintData(filteredPrints);
-        toast.success('A Impressão foi deletada com sucesso!')
+        toast.success("A Impressão foi deletada com sucesso!");
       }
     } catch (err) {
       console.log(err);
@@ -359,12 +353,16 @@ function AuthProvider({ children }: AuthProviderProps) {
 
   async function changePassword({ oldPassword, password }: ChangePasswordProps) {
     try {
-      const response = await api.put("/resetPassword", { oldPassword, password }, {
-        headers: { Authorization: `$Bearer ${user?.token}` },
-      });
+      const response = await api.put(
+        "/resetPassword",
+        { oldPassword, password },
+        {
+          headers: { Authorization: `$Bearer ${user?.token}` },
+        }
+      );
 
       if (response) {
-        toast.success('Senha atualizada com sucesso!');
+        toast.success("Senha atualizada com sucesso!");
       }
     } catch (err) {
       if (request.isAxiosError(err)) {
@@ -375,39 +373,45 @@ function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function getPrints(page: number) {
-    try {
-      const response = await api.get<PrintRequest>(`/getAllPrints/${page}`, {
-        headers: { Authorization: `$Bearer ${user?.token}` }
-      });
-      if (response.data) {
+    setLoadingRequest(true);
+
+    await api
+      .get<PrintRequest>(`/getAllPrints/${page}`, {
+        headers: { Authorization: `$Bearer ${user?.token}` },
+      })
+      .then((response) => {
         const prints = response.data.prints;
-        console.log()
 
         const formattedPrints = prints.map((print) => ({
           ...print,
-          created_at: format(new Date(print.created_at), 'dd/MM/yyyy')
+          created_at: format(new Date(print.created_at), "dd/MM/yyyy"),
         }));
 
         setPrintsData(formattedPrints);
         setTotalPages(response.data.totalPage);
-      }
-    } catch (error) {
-      console.log(error)
-      toast.error('Não foi possível carregar suas impressões')
-    }
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Não foi possível carregar os registro de impressão");
+      })
+      .finally(() => {
+        setLoadingRequest(false);
+      });
   }
 
   async function editPrints({ id, printer_id, printing_duration, status }: EditPrintProps) {
     try {
-      const response = await api.put('/updatePrint', { status, id, printer_id, printing_duration }, {
-        headers: { Authorization: `$Bearer ${user?.token}` }
-      })
+      const response = await api.put(
+        "/updatePrint",
+        { status, id, printer_id, printing_duration },
+        {
+          headers: { Authorization: `$Bearer ${user?.token}` },
+        }
+      );
 
       if (response.data) {
-        console.log("AUth", response.data)
-        toast.success('Deu certo')
+        toast.success("Impresão atulizada com sucesso");
       }
-
     } catch (error) {
       console.log(error);
     }
@@ -416,18 +420,37 @@ function AuthProvider({ children }: AuthProviderProps) {
   async function getPrintDetail(id: string) {
     try {
       const response = await api.get(`/searchByIdPrint/${id}`, {
-        headers: { Authorization: `Bearer ${user?.token}` }
-      })
+        headers: { Authorization: `Bearer ${user?.token}` },
+      });
 
       if (response) {
         const print = response.data;
-        console.log(print)
+        console.log(print);
 
-        setPrint(print)
+        setPrint(print);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
+  }
+
+  async function getUserProfileData() {
+    setLoadingRequest(true);
+
+    await api
+      .get(`/detailsUser`, {
+        headers: { Authorization: `$Bearer ${user?.token}` },
+      })
+      .then((response) => {
+        setUserProfileDate(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Não foi possível carregar os dados do perfil");
+      })
+      .finally(() => {
+        setLoadingRequest(false);
+      });
   }
 
   return (
@@ -456,7 +479,10 @@ function AuthProvider({ children }: AuthProviderProps) {
         totalPages,
         editPrints,
         getPrintDetail,
-        print
+        print,
+        loadingRequest,
+        getUserProfileData,
+        userProfileData,
       }}
     >
       {children}

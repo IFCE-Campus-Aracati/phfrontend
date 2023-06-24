@@ -1,31 +1,20 @@
 import React from "react";
 
-import {
-  Root,
-  Trigger,
-  Portal,
-  Overlay,
-  Content,
-  Title,
-  Header,
-  ButtonClose,
-  TextButton,
-  Close,
-} from "../styles";
+import { Root, Trigger, Portal, Overlay, Content, Title, Header, ButtonClose, TextButton, Close } from "../styles";
 
 import { TextInfo, Text, Body, ButtonArea } from "./styles";
-
-interface DetailsUserProps {
-  data: UsersData;
-  children: React.ReactNode;
-  tilte: string;
-}
 
 import { X, PencilSimpleLine } from "@phosphor-icons/react";
 import { theme } from "../../../styles/theme";
 import { Button } from "../../Button";
 import { useNavigate } from "react-router-dom";
-import { UsersData } from "../../../hooks/auth";
+import { UserProps } from "../../../utils/interfaces";
+
+interface DetailsUserProps {
+  data: UserProps;
+  children: React.ReactNode;
+  tilte: string;
+}
 
 export function DetailsUser({ data, children, tilte }: DetailsUserProps) {
   const navigate = useNavigate();
@@ -52,9 +41,7 @@ export function DetailsUser({ data, children, tilte }: DetailsUserProps) {
               Email: <Text>{data.email}</Text>
             </TextInfo>
             <TextInfo>
-              Cargo: <Text>{
-                data.role === 'admin' ? ('Administrador') : ('Cliente')
-              }</Text>
+              Cargo: <Text>{data.role === "admin" ? "Administrador" : "Cliente"}</Text>
             </TextInfo>
           </Body>
           <ButtonArea>

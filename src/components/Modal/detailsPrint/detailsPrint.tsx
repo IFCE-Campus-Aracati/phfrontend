@@ -1,37 +1,21 @@
 import React, { useEffect } from "react";
 
-import {
-  Root,
-  Trigger,
-  Portal,
-  Overlay,
-  Content,
-  Title,
-  Header,
-  ButtonClose,
-  TextButton,
-  Close,
-} from "../styles";
+import { Root, Trigger, Portal, Overlay, Content, Title, Header, ButtonClose, TextButton, Close } from "../styles";
 import { theme } from "../../../styles/theme";
-import {
-  Body,
-  ButtonArea,
-  StatusArea,
-  Text,
-  TextInfo,
-  RowTextInfo,
-} from "./styles";
+import { Body, ButtonArea, StatusArea, Text, TextInfo, RowTextInfo } from "./styles";
 import { X, PencilSimpleLine } from "@phosphor-icons/react";
 import { Status } from "../../Status";
 import { Button } from "../../Button";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Prints, useAuth } from "../../../hooks/auth";
+import { useAuth } from "../../../hooks/auth";
+
+import { ListTableDataProps } from "../../../utils/interfaces";
 
 interface DetailsPrintsProps {
   children: React.ReactNode;
   title: string;
   route: string;
-  data: Prints;
+  data: ListTableDataProps;
 }
 
 export function DetailsPrint({ children, title, route, data }: DetailsPrintsProps) {
@@ -76,10 +60,7 @@ export function DetailsPrint({ children, title, route, data }: DetailsPrintsProp
               <Status variant={data?.status} />
             </StatusArea>
             <TextInfo>
-              Descrição:{" "}
-              <Text>
-                {data?.description}
-              </Text>
+              Descrição: <Text>{data?.description}</Text>
             </TextInfo>
 
             <RowTextInfo>
@@ -90,22 +71,14 @@ export function DetailsPrint({ children, title, route, data }: DetailsPrintsProp
             <TextInfo>
               Tipo de material: <Text>{data?.material}</Text>
             </TextInfo>
-          </Body>{
-            pathname !== `/${user?.role}/my_prints` && (
-              data.status === 'pending' && (
-                <ButtonArea>
-                  <Button
-                    size="medium"
-                    variant="fill"
-                    title="Editar"
-                    onClick={() => navigate(route)}
-                  >
-                    <PencilSimpleLine size={"1.25rem"} color={theme.colors.white} />
-                  </Button>
-                </ButtonArea>
-              )
-            )
-          }
+          </Body>
+          {pathname !== `/${user?.role}/my_prints` && data.status === "pending" && (
+            <ButtonArea>
+              <Button size="medium" variant="fill" title="Editar" onClick={() => navigate(route)}>
+                <PencilSimpleLine size={"1.25rem"} color={theme.colors.white} />
+              </Button>
+            </ButtonArea>
+          )}
         </Content>
       </Portal>
     </Root>

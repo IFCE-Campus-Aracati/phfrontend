@@ -1,6 +1,6 @@
-import { RadioGroupProps } from '@radix-ui/react-radio-group';
-import { Form, Indicator, Item, Label, RadioContainer, Root } from './styles';
-import { useState } from 'react';
+import { RadioGroupProps } from "@radix-ui/react-radio-group";
+import { Form, Indicator, Item, Label, RadioContainer, Root } from "./styles";
+import { useState } from "react";
 
 interface Options {
   value: string;
@@ -21,15 +21,13 @@ export function RadioGroup({ onValueChange, options, ...props }: StatusPrinterPr
 
   return (
     <Form>
-      <Root defaultValue={value} aria-label="View density" onValueChange={handleValueChange} {...props} >
+      <Root defaultValue={value} aria-label="View density" onValueChange={handleValueChange} {...props}>
         {options.map((option) => (
-          <RadioContainer >
+          <RadioContainer>
             <Item value={option.value} id="r1">
               <Indicator />
             </Item>
-            <Label htmlFor="r1">
-              {option.text}
-            </Label>
+            <Label htmlFor="r1">{option.text}</Label>
           </RadioContainer>
         ))}
       </Root>

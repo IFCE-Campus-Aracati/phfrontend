@@ -3,13 +3,22 @@ import { DetailsPrint } from "./detailsPrint/detailsPrint";
 import { DetailsPrinters } from "./detailsPrinters/detailsPrinters";
 import { DetailsUser } from "./DetailsUser/detailsUser";
 import { ChangePassword } from "./changePassword/changePassword";
-import { DateProps, DetailsAnonymous } from "./detailsAnonymous/detailsAnonymous";
-import { Printers, Prints, UsersData } from "../../hooks/auth";
+import { DetailsAnonymous } from "./detailsAnonymous/detailsAnonymous";
 import { DeletePrint } from "./DeletePrint/DeletePrint";
 
+import { PrinterProps, ListTableDataProps, UserProps, PrintProps } from "../../utils/interfaces";
+
 interface ModalProps {
-  data: Printers | UsersData | Prints | DateProps | undefined;
-  variant: "changePassword" | "detailsAnonymous" | "detailsPrint" | "detailsPrinters" | "detailsUser" | "delete" | "deletePrint";
+  data: PrinterProps | UserProps | ListTableDataProps | PrintProps | PrintProps | undefined;
+  variant:
+    | "changePassword"
+    | "detailsAnonymous"
+    | "detailsPrint"
+    | "detailsPrinters"
+    | "detailsUser"
+    | "delete"
+    | "detailsAnonymousTable"
+    | "deletePrint";
   children?: React.ReactNode;
   title: string;
   route: string;
@@ -24,27 +33,38 @@ export function Modal({ data, variant, children, title, route, value, setValue }
     case "detailsAnonymous":
       return (
         <DetailsAnonymous
-          data={data as DateProps}
+          data={data as PrintProps}
           value={value as boolean}
           setValue={setValue as (value: boolean) => void}
           title={title}
         />
       );
+    case "detailsAnonymousTable":
+      return (
+        <DetailsAnonymous
+          data={data as PrintProps}
+          value={value as boolean}
+          setValue={setValue as (value: boolean) => void}
+          title={title}
+        >
+          {children}
+        </DetailsAnonymous>
+      );
     case "detailsPrint":
       return (
-        <DetailsPrint data={data as Prints} title={title} route={route}>
+        <DetailsPrint data={data as ListTableDataProps} title={title} route={route}>
           {children}
         </DetailsPrint>
       );
     case "detailsPrinters":
       return (
-        <DetailsPrinters data={data as Printers} tilte={title}>
+        <DetailsPrinters data={data as PrinterProps} tilte={title}>
           {children}
         </DetailsPrinters>
       );
     case "detailsUser":
       return (
-        <DetailsUser data={data as UsersData} tilte={title}>
+        <DetailsUser data={data as UserProps} tilte={title}>
           {children}
         </DetailsUser>
       );

@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 import api from "../../../server/api";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { DateProps, DetailsAnonymous } from "../../../components/Modal/detailsAnonymous/detailsAnonymous";
 import { Modal } from "../../../components/Modal";
+import { PrintProps } from "../../../utils/interfaces";
 
 export function RequestPrinting() {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export function RequestPrinting() {
   const [material, setMaterial] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string>("");
-  const [data, setDate] = useState<DateProps>({} as DateProps);
+  const [data, setDate] = useState<PrintProps>({} as PrintProps);
 
   const [modalView, setModalView] = useState<boolean>(false);
 
@@ -96,11 +96,7 @@ export function RequestPrinting() {
           />
 
           <TitleInput>Arquivo para impressão</TitleInput>
-          <FileUploader
-            onFileChange={onSubitFile}
-            handleRemoveFile={handleRemoveFile}
-            nameFile={fileName}
-          />
+          <FileUploader onFileChange={onSubitFile} handleRemoveFile={handleRemoveFile} nameFile={fileName} />
 
           <TitleInput>Material para Impressão</TitleInput>
           <SelectInput

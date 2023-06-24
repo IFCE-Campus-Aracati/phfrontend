@@ -1,45 +1,13 @@
-import React, { useState } from "react";
-
-import { Status } from "./../Status";
-
-import {
-  Container,
-  TableContainer,
-  Row,
-  Head,
-  TH,
-  Body,
-  TableData,
-  RowIcons,
-  ButtonIcon,
-} from "./styles";
-
-import {
-  MagnifyingGlass,
-  PencilSimpleLine,
-  Trash,
-} from "@phosphor-icons/react";
+import { MagnifyingGlass, PencilSimpleLine, Trash } from "@phosphor-icons/react";
 import { Modal } from "../Modal";
 import { useNavigate } from "react-router-dom";
-import api from "../../server/api";
-import { Printers, useAuth } from "../../hooks/auth";
+import { PrinterProps } from "../../utils/interfaces";
+import { Status } from "./../Status";
 
-export interface PrintersProps {
-  id: string;
-  title: string;
-  description: string;
-  type: string;
-  material: string;
-  status: "pending" | "approved" | "decline" | "available" | "unavailable" | undefined;
-}
-
-export interface PrintersRequestProps {
-  printers: PrintersProps[];
-  totalPage: number;
-}
+import { Container, TableContainer, Row, Head, TH, Body, TableData, RowIcons, ButtonIcon } from "./styles";
 
 interface TableProps {
-  data: Printers[];
+  data: PrinterProps[];
   header: string[];
   isView?: boolean;
   isDelete?: boolean;
@@ -47,13 +15,12 @@ interface TableProps {
 }
 
 export function PrintersTable({
-  data = [] as Printers[],
+  data = [] as PrinterProps[],
   header,
   isView = false,
   isDelete = false,
   isEdit = false,
 }: TableProps) {
-
   const navigate = useNavigate();
 
   return (
@@ -87,11 +54,7 @@ export function PrintersTable({
                       </Modal>
                     )}
                     {isEdit && (
-                      <ButtonIcon
-                        onClick={() =>
-                          navigate(`/admin/list_printers/edit_printer/${item.id}`)
-                        }
-                      >
+                      <ButtonIcon onClick={() => navigate(`/admin/list_printers/edit_printer/${item.id}`)}>
                         <PencilSimpleLine size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}

@@ -1,44 +1,10 @@
-import React from "react";
-
 import { Status } from "./../Status";
-
-import {
-  Container,
-  TableContainer,
-  Row,
-  Head,
-  TH,
-  Body,
-  TableData,
-  RowIcons,
-  ButtonIcon,
-} from "./styles";
-
-import {
-  MagnifyingGlass,
-  PencilSimpleLine,
-  Trash,
-} from "@phosphor-icons/react";
+import { MagnifyingGlass, PencilSimpleLine, Trash } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../Modal";
+import { ListTableDataProps } from "../../utils/interfaces";
 
-export interface ListTableDataProps {
-  id?: string;
-  title: string;
-  identifier?: string;
-  owner_id?: string;
-  owner?: {
-    name?: string;
-  };
-  created_at: string;
-  status: "pending" | "approved" | "decline";
-  description?: string;
-  material?: string;
-  archive?: string;
-  printer_id?: string;
-  printing_date?: string;
-  printing_duration?: string;
-}
+import { Container, TableContainer, Row, Head, TH, Body, TableData, RowIcons, ButtonIcon } from "./styles";
 
 interface TableProps {
   data: ListTableDataProps[];
@@ -72,7 +38,7 @@ export function ListTable({
             return (
               <Row key={item.id}>
                 <TableData>{item.title}</TableData>
-                <TableData>{item.owner?.name}</TableData>
+                <TableData>{item.owner?.name ? item.owner.name : "Usuário anônimo"}</TableData>
                 <TableData>{item.created_at}</TableData>
                 <TableData>
                   <Status variant={item.status} />
@@ -92,11 +58,7 @@ export function ListTable({
                       </Modal>
                     )}
                     {isEdit && (
-                      <ButtonIcon
-                        onClick={() =>
-                          navigate(`/admin/list_prints/edit_print/${item.identifier}`)
-                        }
-                      >
+                      <ButtonIcon onClick={() => navigate(`/admin/list_prints/edit_print/${item.identifier}`)}>
                         <PencilSimpleLine size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}

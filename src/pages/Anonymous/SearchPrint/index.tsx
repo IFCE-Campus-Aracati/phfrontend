@@ -1,24 +1,45 @@
 import { ArrowLeft } from "@phosphor-icons/react";
-import { ButtonBack, InputTitle, Container, Content, Header, Title, TitleContainer, InputWrapper, InputContainer } from "./styles";
+import {
+  ButtonBack,
+  InputTitle,
+  Container,
+  Content,
+  Header,
+  Title,
+  TitleContainer,
+  InputWrapper,
+  InputContainer,
+} from "./styles";
 import { Table } from "../../../components/Table";
-import { SearchTableDataProps } from "../../../components/Table/SearchTable";
 import { Input } from "../../../components/Input";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import api from "../../../server/api";
+import { toast } from "react-toastify";
 
 const header = ["Id", "Título", "Data", "Status", "Detalhes"];
 
-const data: SearchTableDataProps[] = [
-  {
-    id: "1",
-    idSearch: "3D123456A",
-    title: "Peça de xadrez",
-    date: "02/04/2023",
-    status: "approved"
-  }
-]
+import { PrintProps } from "../../../utils/interfaces";
 
 export function SearchPrint() {
   const navigate = useNavigate();
+
+  const [data, setDate] = useState<PrintProps>({} as PrintProps);
+  const [modalView, setModalView] = useState<boolean>(false);
+
+  const [identifier, setIdentifier] = useState<string>("");
+
+  async function handleSearchbyId() {
+    await api
+      .get(`/searchByIdPrint/${identifier}`)
+      .then((response) => {
+        setDate(response.data);
+        setModalView(true);
+      })
+      .catch((error) => {
+        toast.error("Nenhuma pedido de impressão encontrado");
+      });
+  }
 
   return (
     <Container>
@@ -36,9 +57,10 @@ export function SearchPrint() {
             <Input
               placeholder="Buscar pedido de impressão"
               variant="search"
+              onClick={handleSearchbyId}
+              onChange={(e) => setIdentifier(e.target.value)}
             />
           </InputContainer>
-
         </InputWrapper>
       </Header>
       <Content>

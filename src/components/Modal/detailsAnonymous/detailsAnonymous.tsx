@@ -13,43 +13,30 @@ import {
 } from "./styles";
 import { Download, X } from "@phosphor-icons/react";
 import { theme } from "../../../styles/theme";
-import { useNavigate } from "react-router-dom";
-
-export interface DateProps {
-  id: string;
-  identifier: string;
-  title: string;
-  description: string;
-  status: string;
-  material: string;
-  archive: string;
-  printing_date: null;
-  printing_duration: null;
-  created_at: string;
-  updated_at: string;
-  owner_id: null;
-  printer_id: null;
-}
+import { useNavigate, useLocation } from "react-router-dom";
+import { PrintProps } from "../../../utils/interfaces";
 
 interface DetailsAnonymousProps {
   title: string;
-  data: DateProps;
+  data: PrintProps;
   value: boolean;
   setValue: (value: boolean) => void;
-  // children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-export function DetailsAnonymous({ title, data, value, setValue }: DetailsAnonymousProps) {
+export function DetailsAnonymous({ children, title, data, value, setValue }: DetailsAnonymousProps) {
   const navigate = useNavigate();
+
+  const { pathname } = useLocation();
 
   return (
     <Root onOpenChange={setValue} open={value}>
-      {/* <Trigger>{children}</Trigger> */}
+      <Trigger>{children}</Trigger>
       <Portal>
         <Content>
           <Header>
             <Close>
-              <ButtonClose onClick={() => navigate("/")}>
+              <ButtonClose onClick={() => (pathname === "/anonymous/search_print" ? null : navigate("/"))}>
                 <X size={"1.5rem"} color={theme.colors.white} />
                 <ButtonText>Fechar</ButtonText>
               </ButtonClose>

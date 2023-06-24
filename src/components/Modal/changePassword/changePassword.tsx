@@ -18,7 +18,7 @@ import { theme } from "../../../styles/theme";
 import { Button } from "../../Button";
 import { Input } from "../../Input";
 import { ButtonArea, Body } from "./styles";
-import { ChangePasswordProps, useAuth } from "../../../hooks/auth";
+import { useAuth } from "../../../hooks/auth";
 import { object, string, ref, ValidationError } from "yup";
 import { toast } from "react-toastify";
 
@@ -30,18 +30,20 @@ interface ChangePassword {
 export function ChangePassword({ children, tilte }: ChangePassword) {
   const { changePassword } = useAuth();
 
-  const [oldPassword, setOldPassword] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [oldPassword, setOldPassword] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   async function handleChangePassword() {
     try {
       const schema = object().shape({
-        oldPassword: string().required('Informar a senha antiga é obrigatório'),
-        password: string().required('Informar a senha nova é obrigatória.'),
-        confirmPassword: string().oneOf([ref('password')], 'As senha são diferentes.').required('É necessário confirmar a senha nova.')
-      })
+        confirmPassword: string()
+          .oneOf([ref("password")], "As senha são diferentes.")
+          .required("É necessário confirmar a senha nova."),
+        password: string().required("Informar a senha nova é obrigatória."),
+        oldPassword: string().required("Informar a senha antiga é obrigatório"),
+      });
 
       await schema.validate({ oldPassword, password, confirmPassword });
 
@@ -70,9 +72,7 @@ export function ChangePassword({ children, tilte }: ChangePassword) {
             </Close>
           </Header>
           <Title>{tilte}</Title>
-          <Description>
-            Sua senha deve conter no mínimo 8 e no máximo 70 caracteres.
-          </Description>
+          <Description>Sua senha deve conter no mínimo 8 e no máximo 70 caracteres.</Description>
           <Body>
             <Input
               password={true}
@@ -97,7 +97,7 @@ export function ChangePassword({ children, tilte }: ChangePassword) {
             ></Input>
           </Body>
           <ButtonArea>
-            <Button size="small" variant="fill" title="CONFIRMAR" onClick={handleChangePassword}/>
+            <Button size="small" variant="fill" title="CONFIRMAR" onClick={handleChangePassword} />
           </ButtonArea>
         </Content>
       </Portal>

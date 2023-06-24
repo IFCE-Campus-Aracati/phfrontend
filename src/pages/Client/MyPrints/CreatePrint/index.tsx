@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Button } from "../../../../components/Button";
-import { FileUploader } from "../../../../components/FileUploader"
+import { FileUploader } from "../../../../components/FileUploader";
 import { PrintFormInput } from "../../../../components/PrintFormInput";
 import { SelectInput } from "../../../../components/Select";
 import { TextArea } from "../../../../components/TextArea";
 import { Container, Content, Footer, FormContainer, Title, TitleInput, ButtonFile } from "./styles";
 import { useNavigate } from "react-router-dom";
-import { DateProps } from "../../../../components/Modal/detailsAnonymous/detailsAnonymous";
 import api from "../../../../server/api";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../../hooks/auth";
@@ -47,7 +46,7 @@ export function CreatePrint() {
         }
       )
       .then((response) => {
-        toast.success('Pedido Realizado com sucesso');
+        toast.success("Pedido Realizado com sucesso");
         navigate(`/${user?.role}/my_prints`);
       })
       .catch((error) => {
@@ -110,12 +109,7 @@ export function CreatePrint() {
               size="small"
               onClick={() => navigate(`/${user?.role}/my_prints`)}
             />
-            <Button
-              title="SALVAR"
-              variant="fill"
-              size="small"
-              onClick={handleRequestPrint}
-            />
+            <Button title="SALVAR" variant="fill" size="small" onClick={handleRequestPrint} />
           </Footer>
         </FormContainer>
       </Content>
