@@ -1,34 +1,10 @@
-import React from "react";
-
 import { Status } from "./../Status";
-
-import {
-  Container,
-  TableContainer,
-  Row,
-  Head,
-  TH,
-  Body,
-  TableData,
-  RowIcons,
-  ButtonIcon,
-} from "./styles";
-
-import {
-  MagnifyingGlass,
-  PencilSimpleLine,
-  Trash,
-} from "@phosphor-icons/react";
+import { MagnifyingGlass, PencilSimpleLine, Trash } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "../Modal";
+import { ListTableDataProps } from "../../utils/interfaces";
 
-export interface ListTableDataProps {
-  id: string;
-  title: string;
-  owner: string;
-  date: string;
-  status: "pending" | "approved" | "decline";
-}
+import { Container, TableContainer, Row, Head, TH, Body, TableData, RowIcons, ButtonIcon } from "./styles";
 
 interface TableProps {
   data: ListTableDataProps[];
@@ -52,7 +28,7 @@ export function ListTable({
         <Head>
           <Row>
             {header.map((item) => {
-              return <TH>{item}</TH>;
+              return <TH key={item}>{item}</TH>;
             })}
           </Row>
         </Head>
@@ -60,10 +36,10 @@ export function ListTable({
         <Body>
           {data.map((item) => {
             return (
-              <Row>
+              <Row key={item.id}>
                 <TableData>{item.title}</TableData>
-                <TableData>{item.owner}</TableData>
-                <TableData>{item.date}</TableData>
+                <TableData>{item.owner?.name ? item.owner.name : "Usuário anônimo"}</TableData>
+                <TableData>{item.created_at}</TableData>
                 <TableData>
                   <Status variant={item.status} />
                 </TableData>
@@ -71,9 +47,10 @@ export function ListTable({
                   <RowIcons>
                     {isView && (
                       <Modal
-                        title="Deatalhes"
+                        data={item}
+                        title="Detalhes"
                         variant="detailsPrint"
-                        route={"/admin/list_prints/edit_print"}
+                        route={`/admin/list_prints/edit_print/${item.identifier}`}
                       >
                         <ButtonIcon>
                           <MagnifyingGlass size={"1rem"} color={"#FFF"} />
@@ -81,11 +58,7 @@ export function ListTable({
                       </Modal>
                     )}
                     {isEdit && (
-                      <ButtonIcon
-                        onClick={() =>
-                          navigate("/admin/list_prints/edit_print")
-                        }
-                      >
+                      <ButtonIcon onClick={() => navigate(`/admin/list_prints/edit_print/${item.identifier}`)}>
                         <PencilSimpleLine size={"1rem"} color={"#FFF"} />
                       </ButtonIcon>
                     )}

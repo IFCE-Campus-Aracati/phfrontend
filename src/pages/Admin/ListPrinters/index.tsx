@@ -7,11 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../hooks/auth";
 import { useEffect, useState } from "react";
 import { Pagination } from "../../../components/Pagination";
+import { EmpytRegister, EmpytRegisterText } from "../../Client/MyPrints/styles";
+import { Loading } from "../../../components/Loading";
+import { EmpytTable } from "../../../components/EmpytTable";
 
 const header = ["Nome", "Tipo", "Material", "Status", "Detalhes"];
 
 export function ListPrinters() {
-  const { totalPages, getPrinters, printers } = useAuth();
+  const { totalPages, getPrinters, printers, loadingRequest } = useAuth();
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -19,7 +22,7 @@ export function ListPrinters() {
   async function handlePreviousPage() {
     await getPrinters(currentPage - 1).then(() => {
       setCurrentPage(currentPage - 1);
-    })
+    });
   }
 
   async function handleNextPage() {
@@ -32,15 +35,15 @@ export function ListPrinters() {
     getPrinters(1);
   }, []);
 
+  if (loadingRequest) {
+    return <Loading />;
+  }
+
   return (
     <Container>
       <Title>Lista de Impressoras</Title>
       <Row>
-        <Input
-          variant="search"
-          placeholder="Buscar impressora"
-          style={{ maxWidth: "20%" }}
-        />
+        <Input variant="search" placeholder="Buscar impressora" />
         <Button
           size="medium"
           title="Adicionar impressora"
@@ -50,14 +53,19 @@ export function ListPrinters() {
           <Plus size={"1.5rem"} color={"#FFF"} />
         </Button>
       </Row>
-
-      <Table data={printers} header={header} variant="printers" />
-      <Pagination
-        currentPage={currentPage}
-        finalPage={totalPages}
-        onNextPage={handleNextPage}
-        onPreviousPage={handlePreviousPage}
-      />
+      {printers.length >= 1 ? (
+        <>
+          <Table data={printers} header={header} variant="printers" />
+          <Pagination
+            currentPage={currentPage}
+            finalPage={totalPages}
+            onNextPage={handleNextPage}
+            onPreviousPage={handlePreviousPage}
+          />
+        </>
+      ) : (
+        <EmpytTable text="Nenhuma impressora foi criada" />
+      )}
     </Container>
   );
 }

@@ -26,14 +26,14 @@ interface DeleteProps {
   tilte: string;
 }
 
-export function Delete({ id, children, tilte }: DeleteProps) {
-  const { deletePrinter } = useAuth();
+export function DeletePrint({ id, children, tilte }: DeleteProps) {
+  const { deletePrint } = useAuth();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   async function handleDelete() {
     try {
-      await deletePrinter(id as string);
+      await deletePrint(id as string);
       setIsOpen(false);
     } catch (err) {
       console.log(err);

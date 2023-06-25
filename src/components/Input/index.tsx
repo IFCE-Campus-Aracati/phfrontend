@@ -1,32 +1,19 @@
 import React, { useState } from "react";
 
-import {
-  Container,
-  Label,
-  ContainerInput,
-  InputArea,
-  Button,
-  IconArea,
-} from "./styles";
+import { Container, Label, ContainerInput, InputArea, Button, IconArea } from "./styles";
 
 import { Eye, EyeSlash, MagnifyingGlass } from "@phosphor-icons/react";
 import { theme } from "../../styles/theme";
-
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   placeholder: string;
   variant: "search" | "form";
   password?: boolean;
+  onClick?: () => void;
 }
 
-export function Input({
-  label,
-  placeholder,
-  variant,
-  password,
-  ...rest
-}: InputProps) {
+export function Input({ label, placeholder, variant, password, onClick, ...rest }: InputProps) {
   const [isViewPassword, setIsViewPassword] = useState(password ? true : false);
 
   switch (variant) {
@@ -35,11 +22,7 @@ export function Input({
         <Container>
           <Label>{label}</Label>
           <ContainerInput variant="form">
-            <InputArea
-              placeholder={placeholder}
-              type={isViewPassword ? "password" : "text"}
-              {...rest}
-            />
+            <InputArea placeholder={placeholder} type={isViewPassword ? "password" : "text"} {...rest} />
             {password && (
               <Button onClick={() => setIsViewPassword(!isViewPassword)}>
                 {isViewPassword ? (
@@ -56,13 +39,12 @@ export function Input({
       return (
         <Container>
           <ContainerInput variant="search">
-            <InputArea placeholder={placeholder} type={"text"} />
-            <IconArea>
+            <InputArea placeholder={placeholder} type={"text"} {...rest} />
+            <IconArea onClick={onClick}>
               <MagnifyingGlass color={theme.colors.white} size={24} />
             </IconArea>
           </ContainerInput>
         </Container>
       );
-
   }
 }

@@ -21,3 +21,15 @@ export const Row = styled.div`
   align-items: center;
   margin: 1rem 0;
 `;
+
+export const EmpytRegister = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 6rem;
+`;
+
+export const EmpytRegisterText = styled.span`
+  text-align: center;
+  color: ${theme.colors.white};
+  font-weight: bold;
+`;

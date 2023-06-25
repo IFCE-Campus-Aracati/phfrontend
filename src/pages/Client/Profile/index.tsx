@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 import {
   Container,
   Content,
@@ -13,46 +11,25 @@ import {
   ProfileContent,
   ImageContent,
   ButtonIcon,
-  ButtonRemove
+  ButtonRemove,
 } from "./styles";
 
+import { useEffect } from "react";
 import DefaultProfile from "../../../assets/default-profile.jpeg";
 import { Modal } from "../../../components/Modal";
 import { UploadSimple, X } from "@phosphor-icons/react";
 import { useAuth } from "../../../hooks/auth";
-import { useEffect, useState } from "react";
-import api from "../../../server/api";
-import { UserTableDataProps } from "../../../components/Table/UserTable";
+import { Loading } from "../../../components/Loading";
 
 export function Profile() {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-
-  const [profileData, setProfileData] = useState<UserTableDataProps>();
-  const [isLoading, setIsLoading] = useState(true);
+  const { getUserProfileData, userProfileData, loadingRequest } = useAuth();
 
   useEffect(() => {
-    async function getProfileData() {
-      try {
-        const response = await api.get(`/detailsUser`, {
-          headers: { Authorization: `$Bearer ${user?.token}` },
-        });
-        setProfileData(response.data);
+    getUserProfileData();
+  }, []);
 
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    getProfileData();
-  }, [])
-
-  if (isLoading) {
-    return (
-      <div>carregando</div>
-    )
+  if (loadingRequest) {
+    return <Loading />;
   }
 
   return (
@@ -63,13 +40,13 @@ export function Profile() {
         <FormContainer>
           <ProfileContent>
             <TitleInput>Nome:</TitleInput>
-            <Subtitle>{profileData?.name}</Subtitle>
+            <Subtitle>{userProfileData.name}</Subtitle>
 
             <TitleInput>Email:</TitleInput>
-            <Subtitle>{profileData?.email}</Subtitle>
+            <Subtitle>{userProfileData.email}</Subtitle>
 
             <TitleInput>Cargo:</TitleInput>
-            <Subtitle>{profileData?.role}</Subtitle>
+            <Subtitle>{userProfileData.role}</Subtitle>
 
             <TitleInput>Senha:</TitleInput>
             <Subtitle>************</Subtitle>
@@ -79,7 +56,6 @@ export function Profile() {
                 <span>alterar senha</span>
               </Modal>
             </ButtonEdit>
-
           </ProfileContent>
           <ImageContent>
             <ImageSide src={DefaultProfile} />

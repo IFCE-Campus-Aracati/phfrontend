@@ -1,39 +1,26 @@
 import React, { useEffect } from "react";
 
-import {
-  Root,
-  Trigger,
-  Portal,
-  Overlay,
-  Content,
-  Title,
-  Header,
-  ButtonClose,
-  TextButton,
-  Close,
-} from "../styles";
+import { Root, Trigger, Portal, Overlay, Content, Title, Header, ButtonClose, TextButton, Close } from "../styles";
 import { theme } from "../../../styles/theme";
-import {
-  Body,
-  ButtonArea,
-  StatusArea,
-  Text,
-  TextInfo,
-  RowTextInfo,
-} from "./styles";
+import { Body, ButtonArea, StatusArea, Text, TextInfo, RowTextInfo } from "./styles";
 import { X, PencilSimpleLine } from "@phosphor-icons/react";
 import { Status } from "../../Status";
 import { Button } from "../../Button";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../../hooks/auth";
+
+import { ListTableDataProps } from "../../../utils/interfaces";
 
 interface DetailsPrintsProps {
   children: React.ReactNode;
-  tilte: string;
+  title: string;
   route: string;
+  data: ListTableDataProps;
 }
 
-export function DetailsPrint({ children, tilte, route }: DetailsPrintsProps) {
+export function DetailsPrint({ children, title, route, data }: DetailsPrintsProps) {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -54,34 +41,26 @@ export function DetailsPrint({ children, tilte, route }: DetailsPrintsProps) {
               </ButtonClose>
             </Close>
           </Header>
-          <Title>{tilte}</Title>
+          <Title>{title}</Title>
           <Body>
             <RowTextInfo>
               <TextInfo>
-                Emissor: <Text>Gabriel</Text>
+                Emissor: <Text>{data.owner?.name}</Text>
               </TextInfo>
               <TextInfo>
-                Data de emissão: <Text>05/02/2023</Text>
+                Data de emissão: <Text>{data?.created_at}</Text>
               </TextInfo>
             </RowTextInfo>
 
             <TextInfo>
-              Título: <Text>Peça de xadrez</Text>
+              Título: <Text>{data?.title}</Text>
             </TextInfo>
             <StatusArea>
               <TextInfo>Status:</TextInfo>
-              <Status variant="pending" />
+              <Status variant={data?.status} />
             </StatusArea>
             <TextInfo>
-              Descrição:{" "}
-              <Text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In quis
-                bibendum augue, id sodales nunc. Orci varius natoque penatibus
-                et magnis dis parturient montes, nascetur ridiculus mus. Etiam
-                consectetur pulvinar nisi, ac malesuada tortor lobortis quis.
-                Nunc non tellus eu est vulputate pellentesque. Cras turpis
-                lorem, fringilla quis libero eget.
-              </Text>
+              Descrição: <Text>{data?.description}</Text>
             </TextInfo>
 
             <RowTextInfo>
@@ -90,19 +69,16 @@ export function DetailsPrint({ children, tilte, route }: DetailsPrintsProps) {
             </RowTextInfo>
 
             <TextInfo>
-              Tipo de material: <Text>ABS</Text>
+              Tipo de material: <Text>{data?.material}</Text>
             </TextInfo>
           </Body>
-          <ButtonArea>
-            <Button
-              size="medium"
-              variant="fill"
-              title="Editar"
-              onClick={() => navigate(route)}
-            >
-              <PencilSimpleLine size={"1.25rem"} color={theme.colors.white} />
-            </Button>
-          </ButtonArea>
+          {pathname !== `/${user?.role}/my_prints` && data.status === "pending" && (
+            <ButtonArea>
+              <Button size="medium" variant="fill" title="Editar" onClick={() => navigate(route)}>
+                <PencilSimpleLine size={"1.25rem"} color={theme.colors.white} />
+              </Button>
+            </ButtonArea>
+          )}
         </Content>
       </Portal>
     </Root>

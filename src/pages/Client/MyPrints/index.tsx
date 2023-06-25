@@ -3,57 +3,69 @@ import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
 import { Container, Row, Title } from "./styles";
 import { Table } from "../../../components/Table";
-import { ClientListTableDataProps } from "../../../components/Table/ClientListTable";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../../hooks/auth";
 import { useEffect, useState } from "react";
-import api from "../../../server/api";
+import { Pagination } from "../../../components/Pagination";
+import { Loading } from "../../../components/Loading";
+import { EmpytTable } from "../../../components/EmpytTable";
 
 const header = ["Título", "Data", "Status", "Detalhes"];
 
 export function MyPrints() {
-  const { user } = useAuth();
+  const { user, getMyPrints, totalPages, myPrintData, loadingRequest } = useAuth();
   const navigate = useNavigate();
 
-  const [myPrintsData, setMyPrintsData] = useState<ClientListTableDataProps[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
+  async function handlePreviousPage() {
+    await getMyPrints(currentPage - 1).then(() => {
+      setCurrentPage(currentPage - 1);
+    });
+  }
+
+  async function handleNextPage() {
+    await getMyPrints(currentPage + 1).then(() => {
+      setCurrentPage(currentPage + 1);
+    });
+  }
 
   useEffect(() => {
-    async function getMyPrints() {
-      try {
-        const response = await api.get<ClientListTableDataProps[]>("/getUserPrint", {
-          headers: { Authorization: `$Bearer ${user?.token}` }
-        });
-
-        setMyPrintsData(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
-    getMyPrints();
-
+    getMyPrints(1);
   }, []);
+
+  if (loadingRequest) {
+    return <Loading />;
+  }
 
   return (
     <Container>
       <Title>Minhas Impressões</Title>
       <Row>
-        <Input
-          variant="search"
-          placeholder="Buscar pedido de impressão"
-          style={{ maxWidth: "20%" }}
-        />
+        <Input variant="search" placeholder="Buscar pedido de impressão" />
         <Button
           size="medium"
           title="Adicionar impressão"
           variant="outline"
-          onClick={() => navigate("/client/my_prints/create_print")}
+          onClick={() => navigate(`/${user?.role}/my_prints/create_print`)}
         >
           <Plus size={"1.5rem"} color={"#FFF"} />
         </Button>
       </Row>
 
-      <Table data={myPrintsData} header={header} variant="client" />
+      {myPrintData.length >= 1 ? (
+        <>
+          <Table data={myPrintData} header={header} variant="client" />
+          <Pagination
+            currentPage={currentPage}
+            finalPage={totalPages}
+            onNextPage={handleNextPage}
+            onPreviousPage={handlePreviousPage}
+          />
+        </>
+      ) : (
+        <EmpytTable text="Nenhum registro encontrado" />
+      )}
     </Container>
   );
 }

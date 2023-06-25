@@ -10,6 +10,7 @@ import { Profile } from "../pages/Client/Profile";
 import { EditPrint } from "../pages/Client/MyPrints/EditPrint";
 
 import { RequestPrinting } from "../pages/Anonymous/RequestPrinting";
+// import { SearchPrint } from "../pages/Anonymous/SearchPrint";
 import { SearchPrint } from "../pages/Anonymous/SearchPrint";
 
 import { ListPrints } from "../pages/Admin/ListPrints";
@@ -47,7 +48,7 @@ export function RoutesApp() {
         <Route element={<SideBar variant="admin" />}>
           <Route index path="list_prints" element={<ListPrints />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="list_prints/edit_print" element={<EditListPrint />} />
+          <Route path="list_prints/edit_print/:id" element={<EditListPrint />} />
           <Route path="list_prints/register_print" element={<RegisterListPrint />} />
           <Route path="list_users" element={<ListUsers />} />
           <Route path="list_users/edit_user/:id" element={<EditUser />} />
@@ -55,6 +56,8 @@ export function RoutesApp() {
           <Route path="list_printers/edit_printer/:id" element={<EditPrinter />} />
           <Route path="list_printers/register_printer" element={<RegisterPrinter />} />
           <Route path="my_prints" element={<MyPrints />} />
+          <Route path="my_prints/create_print" element={<CreatePrint />} />
+          <Route path="my_prints/edit_print/:id" element={<EditPrint />} />
           <Route path="dashboard" element={<Dashboard />} />
         </Route>
       </Route>

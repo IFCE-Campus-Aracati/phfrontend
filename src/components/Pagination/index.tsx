@@ -7,32 +7,16 @@ interface PaginationProps {
   onNextPage: () => void;
 }
 
-
-export function Pagination({
-  finalPage,
-  currentPage,
-  onNextPage,
-  onPreviousPage,
-}: PaginationProps) {
-
-
-
-
+export function Pagination({ finalPage, currentPage, onNextPage, onPreviousPage }: PaginationProps) {
   return (
-    <Container >
-      <button
-        onClick={onPreviousPage}
-        disabled={
-          currentPage === 1 ? true : false
-        }
-      >{'<'}</button>
+    <Container>
+      <button onClick={onPreviousPage} disabled={currentPage === 1 ? true : false}>
+        {"<"}
+      </button>
       <TextContainer>{currentPage}</TextContainer>
-      <button
-        onClick={onNextPage}
-        disabled={
-          currentPage === finalPage ? true : false
-        }
-      >{'>'}</button>
+      <button onClick={onNextPage} disabled={currentPage === finalPage ? true : false}>
+        {">"}
+      </button>
     </Container>
   );
 }

@@ -1,10 +1,21 @@
-import { Container, IconContainer, RootContainer, SelectContent, SelectItem, SelectLabel, SelectPortal, SelectValue, SelectViewPort, TextItem, TriggerContainer } from "./styles";
-import * as Select from '@radix-ui/react-select';
+import {
+  Container,
+  IconContainer,
+  RootContainer,
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectPortal,
+  SelectValue,
+  SelectViewPort,
+  TextItem,
+  TriggerContainer,
+} from "./styles";
+import * as Select from "@radix-ui/react-select";
 import { CaretDown, CaretUp, Check } from "@phosphor-icons/react";
-import classnames from 'classnames';
+import classnames from "classnames";
 import React, { SelectHTMLAttributes, useState, forwardRef, useRef } from "react";
-import { SelectProps } from '@radix-ui/react-select'
-
+import { SelectProps } from "@radix-ui/react-select";
 
 interface Options {
   value: string;
@@ -31,9 +42,7 @@ export function SelectInput({ placeholder, open, options, onValueChange, ...prop
     <Container>
       <RootContainer onOpenChange={isOpenSelect} value={value} onValueChange={handleValueChange}>
         <TriggerContainer {...props} aria-label="Opções" value={value}>
-          <SelectValue placeholder={placeholder}>
-            {value ? value : placeholder}
-          </SelectValue>
+          <SelectValue placeholder={placeholder}>{value ? value : placeholder}</SelectValue>
           <IconContainer className="SelectIcon">
             <CaretDown size={20} />
           </IconContainer>

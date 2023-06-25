@@ -61,8 +61,7 @@ export const Divider = styled.div`
 export const Button = styled.button<ButtonProps>`
   height: 2.6rem;
   width: 2.6rem;
-  background-color: ${(props) =>
-    props.isFocus ? theme.colors.blue.light : "transparent"};
+  background-color: ${(props) => (props.isFocus ? theme.colors.blue.light : "transparent")};
   border: none;
   border-radius: 0.25rem;
   display: flex;

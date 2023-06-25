@@ -16,17 +16,13 @@ export const Label = styled.p`
 `;
 
 export const ContainerInput = styled.div<DivProps>`
-  border: 0.1rem solid
-    ${(props) =>
-      props.variant === "form"
-        ? theme.colors.divider
-        : theme.colors.blue.light};
+  border: 0.1rem solid ${(props) => (props.variant === "form" ? theme.colors.divider : theme.colors.blue.light)};
   border-radius: 0.4rem;
-  background-color: ${(props) =>
-    props.variant === "form" ? "transparent" : theme.colors.blue.dark};
+  background-color: ${(props) => (props.variant === "form" ? "transparent" : theme.colors.blue.dark)};
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   padding: 0 1.2rem;
 `;
 
@@ -46,8 +42,9 @@ export const Button = styled.button`
   width: 5%;
 `;
 
-export const IconArea = styled.div`
+export const IconArea = styled.button`
   background-color: transparent;
   border: none;
   width: 5%;
+  cursor: pointer;
 `;

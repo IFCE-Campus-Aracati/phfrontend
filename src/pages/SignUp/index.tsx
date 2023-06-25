@@ -32,17 +32,17 @@ export function SignUp() {
   async function handleSignUp() {
     try {
       const schema = object().shape({
-        name: string().required('Nome é obrigatório.'),
-        email: string()
-          .required('Email é obrigatório.')
-          .email('Digite um email válido.'),
-        password: string().required('Senha é obrigatória.'),
-        confirmPassword: string().oneOf([ref('password')], 'As senha são diferentes.').required('É necessário confirmar a senha.')
-      })
+        confirmPassword: string()
+          .oneOf([ref("password")], "As senha são diferentes.")
+          .required("É necessário confirmar a senha."),
+        password: string().required("Senha é obrigatória."),
+        email: string().required("Email é obrigatório.").email("Digite um email válido."),
+        name: string().required("Nome é obrigatório."),
+      });
 
       await schema.validate({ name, email, password, confirmPassword });
 
-      await signUp(email, name, password);
+      await signUp(name, email, password);
     } catch (error) {
       if (error instanceof ValidationError) {
         return toast.error(error.message);

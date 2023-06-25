@@ -4,41 +4,81 @@ import { DetailsPrinters } from "./detailsPrinters/detailsPrinters";
 import { DetailsUser } from "./DetailsUser/detailsUser";
 import { ChangePassword } from "./changePassword/changePassword";
 import { DetailsAnonymous } from "./detailsAnonymous/detailsAnonymous";
-import { PrintersTableDataProps } from "../Table/PrintersTable";
-import { Printers, UsersData } from "../../hooks/auth";
+import { DeletePrint } from "./DeletePrint/DeletePrint";
 
+import { PrinterProps, ListTableDataProps, UserProps, PrintProps } from "../../utils/interfaces";
 
 interface ModalProps {
-  data: Printers | UsersData | undefined;
+  data: PrinterProps | UserProps | ListTableDataProps | PrintProps | PrintProps | undefined;
   variant:
-  | "changePassword"
-  | "detailsAnonymous"
-  | "detailsPrint"
-  | "detailsPrinters"
-  | "detailsUser"
-  | "delete";
-  children: React.ReactNode;
+    | "changePassword"
+    | "detailsAnonymous"
+    | "detailsPrint"
+    | "detailsPrinters"
+    | "detailsUser"
+    | "delete"
+    | "detailsAnonymousTable"
+    | "deletePrint";
+  children?: React.ReactNode;
   title: string;
   route: string;
+  value?: boolean;
+  setValue?: (value: boolean) => void;
 }
 
-export function Modal({ data, variant, children, title, route }: ModalProps) {
+export function Modal({ data, variant, children, title, route, value, setValue }: ModalProps) {
   switch (variant) {
     case "changePassword":
       return <ChangePassword tilte={title}>{children}</ChangePassword>;
     case "detailsAnonymous":
-      return <DetailsAnonymous title={title}>{children}</DetailsAnonymous>;
+      return (
+        <DetailsAnonymous
+          data={data as PrintProps}
+          value={value as boolean}
+          setValue={setValue as (value: boolean) => void}
+          title={title}
+        />
+      );
+    case "detailsAnonymousTable":
+      return (
+        <DetailsAnonymous
+          data={data as PrintProps}
+          value={value as boolean}
+          setValue={setValue as (value: boolean) => void}
+          title={title}
+        >
+          {children}
+        </DetailsAnonymous>
+      );
     case "detailsPrint":
       return (
-        <DetailsPrint tilte={title} route={route}>
+        <DetailsPrint data={data as ListTableDataProps} title={title} route={route}>
           {children}
         </DetailsPrint>
       );
     case "detailsPrinters":
-      return <DetailsPrinters data={data as Printers} tilte={title}>{children}</DetailsPrinters>;
+      return (
+        <DetailsPrinters data={data as PrinterProps} tilte={title}>
+          {children}
+        </DetailsPrinters>
+      );
     case "detailsUser":
-      return <DetailsUser data={data as UsersData} tilte={title}>{children}</DetailsUser>;
+      return (
+        <DetailsUser data={data as UserProps} tilte={title}>
+          {children}
+        </DetailsUser>
+      );
     case "delete":
-      return <Delete id={data.id} tilte={title}>{children}</Delete>;
+      return (
+        <Delete id={data?.id} tilte={title}>
+          {children}
+        </Delete>
+      );
+    case "deletePrint":
+      return (
+        <DeletePrint id={data?.id} tilte={title}>
+          {children}
+        </DeletePrint>
+      );
   }
 }

@@ -1,17 +1,31 @@
-import { Button } from "../../../../components/Button";
+import DefaultProfile from "../../../../assets/default-profile.jpeg";
 import { RadioGroup } from "../../../../components/RadioGroup";
-import { Container, Content, Footer, FormContainer, Title, TitleInput, StatusContainer, ProfileContent, ImageContent, ImageSide, Subtitle } from "./styles";
 import { useNavigate, useParams } from "react-router-dom";
-import DefaultProfile from "../../../../assets/default-profile.jpeg"
+import { Button } from "../../../../components/Button";
+import { useAuth } from "../../../../hooks/auth";
 import { useEffect, useState } from "react";
 import api from "../../../../server/api";
-import { useAuth } from "../../../../hooks/auth";
-import { UserTableDataProps } from "../../../../components/Table/UserTable";
+
+import {
+  Container,
+  Content,
+  Footer,
+  FormContainer,
+  Title,
+  TitleInput,
+  StatusContainer,
+  ProfileContent,
+  ImageContent,
+  ImageSide,
+  Subtitle,
+} from "./styles";
+
+import { UserProps } from "../../../../utils/interfaces";
 
 const userRole = [
-  { value: 'admin', text: 'Administrador' },
-  { value: 'client', text: 'Estudante' },
-]
+  { value: "admin", text: "Administrador" },
+  { value: "client", text: "Estudante" },
+];
 
 export function EditUser() {
   const { user, updateRole } = useAuth();
@@ -19,16 +33,15 @@ export function EditUser() {
   const { id } = useParams();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [userData, setUserData] = useState<UserTableDataProps>();
-  const [userRoleData, setUserRoleData] = useState<string>('');
+  const [userData, setUserData] = useState<UserProps>();
+  const [userRoleData, setUserRoleData] = useState<string>("");
 
-  
   async function handleUpdateRole(event: any) {
-    try{
+    try {
       event.preventDefault();
       const userId = userData?.id;
-      if(userId) {
-        await updateRole({id: userId, role: userRoleData})
+      if (userId) {
+        await updateRole({ id: userId, role: userRoleData });
       }
     } catch (err) {
       console.log(err);
@@ -51,14 +64,12 @@ export function EditUser() {
     }
 
     getUser();
-  }, [])
+  }, []);
 
   console.log(id);
 
   if (isLoading) {
-    return (
-      <div>carregando</div>
-    )
+    return <div>carregando</div>;
   }
 
   return (
@@ -75,11 +86,7 @@ export function EditUser() {
             <Subtitle>{userData?.email}</Subtitle>
             <TitleInput>Cargo</TitleInput>
             <StatusContainer>
-              <RadioGroup
-                options={userRole}
-                defaultValue={userData?.role}
-                onValueChange={setUserRoleData}
-              />
+              <RadioGroup options={userRole} defaultValue={userData?.role} onValueChange={setUserRoleData} />
             </StatusContainer>
             <Footer>
               <Button
@@ -88,12 +95,7 @@ export function EditUser() {
                 size="small"
                 onClick={() => navigate("/admin/list_users")}
               />
-              <Button
-                title="SALVAR"
-                variant="fill"
-                size="small"
-                onClick={handleUpdateRole}
-              />
+              <Button title="SALVAR" variant="fill" size="small" onClick={handleUpdateRole} />
             </Footer>
           </ProfileContent>
           <ImageContent>

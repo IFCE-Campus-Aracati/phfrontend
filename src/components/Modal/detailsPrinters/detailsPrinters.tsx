@@ -1,36 +1,16 @@
 import React, { useEffect, useState } from "react";
 
-import {
-  Root,
-  Trigger,
-  Portal,
-  Overlay,
-  Content,
-  Title,
-  Header,
-  ButtonClose,
-  TextButton,
-  Close,
-} from "../styles";
+import { Root, Trigger, Portal, Overlay, Content, Title, Header, ButtonClose, TextButton, Close } from "../styles";
 import { X, PencilSimpleLine } from "@phosphor-icons/react";
 import { theme } from "../../../styles/theme";
 import { Button } from "../../Button";
 import { Status } from "../../Status";
 import { useNavigate } from "react-router-dom";
-import { Printers, useAuth } from "../../../hooks/auth";
-import { PrintersTableDataProps } from "../../Table/PrintersTable";
-import api from "../../../server/api";
-import {
-  Body,
-  TextInfo,
-  Text,
-  StatusArea,
-  ButtonArea
-} from "./styles";
-
+import { PrinterProps } from "../../../utils/interfaces";
+import { Body, TextInfo, Text, StatusArea, ButtonArea } from "./styles";
 
 interface DetailsPrintersProps {
-  data: Printers;
+  data: PrinterProps;
   children: React.ReactNode;
   tilte: string;
 }
@@ -68,10 +48,7 @@ export function DetailsPrinters({ data, children, tilte }: DetailsPrintersProps)
               <Status variant={data?.status} />
             </StatusArea>
             <TextInfo>
-              Descrição:{" "}
-              <Text>
-                {data?.description}
-              </Text>
+              Descrição: <Text>{data?.description}</Text>
             </TextInfo>
           </Body>
           <ButtonArea>
